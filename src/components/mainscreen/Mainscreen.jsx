@@ -10,6 +10,22 @@ const Mainscreen = () => {
     setActiveButton(button);
   };
 
+  const cards = [
+    "Завтраки", 
+    "Барная карта", 
+    "Гриль & Мангал", 
+    "Бургеры",
+    "Горячие блюда", 
+    "Горячие закуски", 
+    "Супы", 
+    "Салаты",
+    "Тесто", 
+    "Холодные закуски", 
+    "Гарниры", 
+    "Мороженное", 
+    "Соусы"
+  ];
+
   return (
     <div className={s.mainscreen}>
       <div className={s.functionpanel}>
@@ -32,31 +48,9 @@ const Mainscreen = () => {
         </button>
       </div>
       <div className={s.cardsContainer}>
-        <div className={s.block}>
-            <Carddeffault text="Завтраки" />
-        <Carddeffault text="Барная карта" />
-        </div>
-        <div className={s.block}>
-            <Carddeffault text="Гриль & Мангал" />
-        <Carddeffault text="Бургеры" />
-        </div>
-        <div className={s.block}>
-            <Carddeffault text="Горячие блюда" />
-        <Carddeffault text="Горячие закуски" />
-        </div>
-        <div className={s.block}>
-        <Carddeffault text="Супы" />
-        <Carddeffault text="Тесто" />    
-        </div>
-        <div className={s.block}>
-        <Carddeffault text="Холодные закуски" />
-        <Carddeffault text="Гарниры" />    
-        </div>
-        <div className={s.block}>
-          <Carddeffault text="Мороженное" />
-        <Carddeffault text="Соусы" />  
-        </div>
-        
+        {cards.map((text, index) => (
+          <Carddeffault key={index} text={text} />
+        ))}
       </div>
     </div>
   );

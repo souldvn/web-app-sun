@@ -3,7 +3,8 @@
     border-radius: 10%;
     width: 156px;
     height: 156px;
-    position: relative; /* Устанавливаем относительное позиционирование */
+    position: relative;
+    
 }
 
 .text {
@@ -11,7 +12,8 @@
     text-align: center;
     width: 100%;
     position: absolute;
-    bottom: 10px; /* Отступ от нижнего края */
+    bottom: 10px;
     left: 50%;
-    transform: translateX(-50%); /* Центрируем текст по горизонтали */
+    transform: translateX(-50%);
+    font-size: 16px;
 }

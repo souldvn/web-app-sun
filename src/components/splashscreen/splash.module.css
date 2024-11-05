@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh; /* Занять всю высоту экрана */
+    background-color: #ffffff;
 }
 
 .splash {

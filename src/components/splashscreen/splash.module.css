@@ -1,0 +1,11 @@
+/* splash.module.css */
+.splashContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Занять всю высоту экрана */
+}
+
+.splash {
+    max-width: 100%; /* Ограничьте размер изображения при необходимости */
+}

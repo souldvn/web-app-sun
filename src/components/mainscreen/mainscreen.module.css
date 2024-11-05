@@ -1,0 +1,44 @@
+.mainscreen {
+    margin: 16px 10px;
+}
+
+
+.functionpanel {
+    display: flex;
+    justify-content: flex-end; /* Выровнять кнопку по правому краю */
+    margin-bottom: 16px; /* Отступ снизу для разделения элементов */
+}
+
+.balls{
+    display: flex;
+}
+
+.variants {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px; /* Отступ снизу для разделения элементов */
+}
+
+.buttonhost{
+    width: 156px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.buttondelivery{
+    width: 156px;
+    border-radius: 10px;
+    height: 30px;
+}
+
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 столбца */
+    column-gap: 0px; /* Горизонтальный отступ */
+    row-gap: 15px;
+    width: 100%;
+    max-width: 400px; /* Максимальная ширина контейнера */
+    justify-items: center; /* Центрируем карточки */
+}

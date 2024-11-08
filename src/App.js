@@ -4,7 +4,10 @@ import './App.css';
 import Splash from './components/splashscreen/Splash';
 import Mainscreen from './components/mainscreen/Mainscreen';
 import Breakfast from './components/Outline/Breakfast/Breakfast';
-import Bar from './components/Outline/Breakfast/Bar/Bar';
+import Bar from './components/Outline/Bar/Bar';
+import Grill from './components/Outline/Grill/Grill';
+import CardPrice from './components/Complite/CardPrice/CardPrice';
+import Burgers from './components/Outline/Burgers/Burgers';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -20,6 +23,8 @@ const App = () => {
   return (
     <Router>
       <div className="App">
+
+
         {loading ? (
           <Splash />
         ) : (
@@ -27,8 +32,12 @@ const App = () => {
             <Route path="/" element={<Mainscreen />} />
             <Route path="/breakfast" element={<Breakfast />} />
             <Route path="bar" element={<Bar />} />
+            <Route path="grill" element={<Grill />} />
+            <Route path="burgers" element={<Burgers/>} />
           </Routes>
         )}
+      
+          {/* <CardPrice/> */}
       </div>
     </Router>
   );

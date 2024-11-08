@@ -1,8 +1,8 @@
 import React from 'react'
 import s from './Bar.module.css'
-import Carddeffault from '../../../Complite/carddeffault/Carddeffault'
-import TopBar from '../../../Complite/TopBar/TopBar'
-import CartButton from '../../../Complite/CartButton/CartButton'
+import Carddeffault from '../../Complite/carddeffault/Carddeffault'
+import TopBar from '../../Complite/TopBar/TopBar'
+import CartButton from '../../Complite/CartButton/CartButton'
 
 
 

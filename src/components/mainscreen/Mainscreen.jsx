@@ -20,6 +20,12 @@ const Mainscreen = () => {
     if (cardName === 'Барная карта') {
         navigate('/bar');
       }
+      if (cardName === 'Гриль & Мангал') {
+        navigate('/grill');
+      }
+      if (cardName === 'Бургеры') {
+        navigate('/burgers');
+      }
   };
 
   const cards = [

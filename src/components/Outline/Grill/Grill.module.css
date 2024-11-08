@@ -1,0 +1,12 @@
+.cardsContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Два столбца */
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+/* .cardsContainer > .block:last-child {
+    grid-column: span 1;
+    justify-self: start;
+} */

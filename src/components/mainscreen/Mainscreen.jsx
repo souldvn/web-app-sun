@@ -26,6 +26,12 @@ const Mainscreen = () => {
       if (cardName === 'Бургеры') {
         navigate('/burgers');
       }
+      if (cardName === 'Горячие блюда') {
+        navigate('/hot');
+      }
+      if (cardName === 'Горячие закуски') {
+        navigate('/hotSnacks');
+      }
   };
 
   const cards = [

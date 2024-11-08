@@ -10,6 +10,7 @@ import CardPrice from './components/Complite/CardPrice/CardPrice';
 import Burgers from './components/Outline/Burgers/Burgers';
 import Hot from './components/Outline/Hot/Hot';
 import HotSnacks from './components/Outline/HotSnacks/HotSnacks';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,7 @@ const App = () => {
 
   return (
     <Router>
+      <ScrollToTop/>
       <div className="App">
 
 

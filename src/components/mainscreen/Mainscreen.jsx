@@ -1,52 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import balls from '../../assets/icons/balls.svg';
-import Carddeffault from '../carddeffault/Carddeffault';
+import Carddeffault from '../Complite/carddeffault/Carddeffault';
 import s from './mainscreen.module.css';
+import CartButton from '../Complite/CartButton/CartButton';
 
 const Mainscreen = () => {
   const [activeButton, setActiveButton] = useState(null);
-  const [isAtBottom, setIsAtBottom] = useState(false);
+  const navigate = useNavigate();
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
   };
 
-  const cards = [
-    "Завтраки", 
-    "Барная карта", 
-    "Гриль & Мангал", 
-    "Бургеры",
-    "Горячие блюда", 
-    "Горячие закуски", 
-    "Супы", 
-    "Салаты",
-    "Тесто", 
-    "Холодные закуски", 
-    "Гарниры", 
-    "Мороженное", 
-    "Соусы"
-  ];
-
-
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-
-    // Проверка, достиг ли пользователь низа страницы
-    if (scrollTop + windowHeight >= documentHeight - 20) {
-      setIsAtBottom(true);
-    } else {
-      setIsAtBottom(false);
+  const handleCardClick = (cardName) => {
+    if (cardName === 'Завтраки') {
+      navigate('/breakfast');
     }
+    if (cardName === 'Барная карта') {
+        navigate('/bar');
+      }
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const cards = [
+    "Завтраки",
+    "Барная карта",
+    "Гриль & Мангал",
+    "Бургеры",
+    "Горячие блюда",
+    "Горячие закуски",
+    "Супы",
+    "Салаты",
+    "Тесто",
+    "Холодные закуски",
+    "Гарниры",
+    "Мороженное",
+    "Соусы"
+  ];
 
   return (
     <div className={s.mainscreen}>
@@ -69,21 +59,16 @@ const Mainscreen = () => {
           Доставка
         </button>
       </div>
-        
+
       <div className={s.cardsContainer}>
         {cards.map((text, index) => (
-          <Carddeffault key={index} text={text} />
+          <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
         ))}
       </div>
-        <div className={s.buttonarea}>
-          <button className={s.cartbutton}>
-                
-                    В корзину               
-            
-          </button> 
-      </div>
+      <CartButton />
     </div>
   );
 };
 
 export default Mainscreen;
+

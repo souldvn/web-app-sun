@@ -1,27 +1,39 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Splash from './components/splashscreen/Splash';
 import Mainscreen from './components/mainscreen/Mainscreen';
+import Breakfast from './components/Outline/Breakfast/Breakfast';
+import Bar from './components/Outline/Breakfast/Bar/Bar';
 
 const App = () => {
-  const [loading, setLoading] = useState(true); // состояние для загрузки
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Имитация загрузки, например, 3 секунды
     const timer = setTimeout(() => {
-      setLoading(false); // После 3 секунд устанавливаем loading в false
+      setLoading(false);
     }, 3000);
 
-    // Очистка таймера при размонтировании
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="App">
-      {loading ? <Splash /> : <Mainscreen />} {/* Показать Splash или Mainscreen */}
-    </div>
+    <Router>
+      <div className="App">
+        {loading ? (
+          <Splash />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Mainscreen />} />
+            <Route path="/breakfast" element={<Breakfast />} />
+            <Route path="bar" element={<Bar />} />
+          </Routes>
+        )}
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
+
 

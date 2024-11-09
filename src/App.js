@@ -18,6 +18,17 @@ import ColdSnacks from './components/Outline/ColdSnacks/ColdSnacks';
 import Garnish from './components/Outline/Garnish/Garnish';
 import IceCream from './components/Outline/IceCream/IceCream';
 import Souses from './components/Outline/Souses/Souses';
+import Dishes from './components/Outline/Breakfast/Dishes/Dishes';
+import Drinks from './components/Outline/Breakfast/Drinks/Drinks';
+import ColdDrinks from './components/Outline/Bar/ColdDrinks/ColdDrinks';
+import Limonades from './components/Outline/Bar/Limonades/Limonades';
+import Coffe from './components/Outline/Bar/Coffee/Coffe';
+import Tea from './components/Outline/Bar/Tea/Tea';
+import ComTea from './components/Outline/Bar/ComTea/ComTea';
+import Beer from './components/Outline/Bar/Beer/Beer';
+import Kebabs from './components/Outline/Grill/Kebabs/Kebabs';
+import Steaks from './components/Outline/Grill/Steaks/Steaks';
+import Fish from './components/Outline/Grill/Fish/Fish';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -54,6 +65,17 @@ const App = () => {
             <Route path="garnishes" element={<Garnish/>} />
             <Route path="icecreams" element={<IceCream/>} />
             <Route path="souses" element={<Souses/>} />
+            <Route path="dishes" element={<Dishes/>} />
+            <Route path="drinks" element={<Drinks/>} />
+            <Route path="colddrinks" element={<ColdDrinks/>} />
+            <Route path="limonades" element={<Limonades/>} />
+            <Route path="coffee" element={<Coffe/>} />
+            <Route path="tea" element={<Tea/>} />
+            <Route path="comtea" element={<ComTea/>} />
+            <Route path="beer" element={<Beer/>} />
+            <Route path="kebabs" element={<Kebabs/>} />
+            <Route path="steaks" element={<Steaks/>} />
+            <Route path="fish" element={<Fish/>} />
             
           </Routes>
         )}

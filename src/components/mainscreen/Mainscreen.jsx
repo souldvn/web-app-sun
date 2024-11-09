@@ -31,6 +31,26 @@ const Mainscreen = () => {
       }
       if (cardName === 'Горячие закуски') {
         navigate('/hotSnacks');
+      }if (cardName === 'Супы') {
+        navigate('/soups');
+      }
+      if (cardName === 'Салаты') {
+        navigate('/salads');
+      }
+      if (cardName === 'Тесто') {
+        navigate('/dough');
+      }
+      if (cardName === 'Холодные закуски') {
+        navigate('/coldSnacks');
+      }
+      if (cardName === 'Гарниры') {
+        navigate('/garnishes');
+      }
+      if (cardName === 'Мороженное') {
+        navigate('/icecreams');
+      }
+      if (cardName === 'Соусы') {
+        navigate('/souses');
       }
   };
 

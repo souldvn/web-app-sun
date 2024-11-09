@@ -11,6 +11,13 @@ import Burgers from './components/Outline/Burgers/Burgers';
 import Hot from './components/Outline/Hot/Hot';
 import HotSnacks from './components/Outline/HotSnacks/HotSnacks';
 import ScrollToTop from './components/ScrollToTop';
+import Soups from './components/Outline/Soups/Soups';
+import Salads from './components/Outline/Salads/Salads';
+import Dough from './components/Outline/Dough/Dough';
+import ColdSnacks from './components/Outline/ColdSnacks/ColdSnacks';
+import Garnish from './components/Outline/Garnish/Garnish';
+import IceCream from './components/Outline/IceCream/IceCream';
+import Souses from './components/Outline/Souses/Souses';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -40,6 +47,13 @@ const App = () => {
             <Route path="burgers" element={<Burgers/>} />
             <Route path="hot" element={<Hot/>} />
             <Route path="hotSnacks" element={<HotSnacks/>} />
+            <Route path="soups" element={<Soups/>} />
+            <Route path="salads" element={<Salads/>} />
+            <Route path="dough" element={<Dough/>} />
+            <Route path="coldSnacks" element={<ColdSnacks/>} />
+            <Route path="garnishes" element={<Garnish/>} />
+            <Route path="icecreams" element={<IceCream/>} />
+            <Route path="souses" element={<Souses/>} />
             
           </Routes>
         )}

@@ -5,15 +5,15 @@ import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
 
 const cards = [
-  { text: "Цезарь с курицей", price: "500₽", weight: "230г" },
-  { text: "Цезарь с креветками", price: "750₽", weight: "230г" },
-  { text: "Цезарь с сёмгой", price: "850₽", weight: "230г" },
-  { text: "Салат из свежих овощей", price: "400₽", weight: "275г" },
-  { text: "Салат из томатов с сыром, луком и кинзой", price: "450₽", weight: "220г" },
-  { text: "Хоровац", price: "550₽",  weight: "280г" },
-  { text: "Тёплый салат с телятиной", price: "810₽",  weight: "350г" },
-  { text: "Де — руккола с креветками", price: "780₽",  weight: "250г" },
-  { text: "Салат с хрустящими баклажанами", price: "550₽",  weight: "310г" }
+  { text: "Цезарь с курицей", price: "500 ₽", weight: "230 г" },
+  { text: "Цезарь с креветками", price: "750 ₽", weight: "230 г" },
+  { text: "Цезарь с сёмгой", price: "850 ₽", weight: "230 г" },
+  { text: "Салат из свежих овощей", price: "400 ₽", weight: "275 г" },
+  { text: "Салат из томатов с сыром, луком и кинзой", price: "450 ₽", weight: "220 г" },
+  { text: "Хоровац", price: "550 ₽",  weight: "280 г" },
+  { text: "Тёплый салат с телятиной", price: "810 ₽",  weight: "350 г" },
+  { text: "Де — руккола с креветками", price: "780 ₽",  weight: "250 г" },
+  { text: "Салат с хрустящими баклажанами", price: "550 ₽",  weight: "310 г" }
 
 ];
 const Salads = () => {

@@ -5,10 +5,10 @@ import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
 
 const cards = [
-  { text: "Гамбургер", price: "550₽", weight: "325/150г" },
-  { text: "Чикен бургер", price: "500₽", weight: "300/150г" },
-  { text: "Чизбургер", price: "600₽", weight: "350/150г" },
-  { text: "Чизбургер куринный", price: "550₽", weight: "350/150г" }
+  { text: "Гамбургер", price: "550 ₽", weight: "325/150 г" },
+  { text: "Чикен бургер", price: "500 ₽", weight: "300/150 г" },
+  { text: "Чизбургер", price: "600 ₽", weight: "350/150 г" },
+  { text: "Чизбургер куринный", price: "550 ₽", weight: "350/150 г" }
 ];
 
 const Burgers = () => {

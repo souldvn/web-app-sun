@@ -5,7 +5,7 @@ import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
 
 const cards = [
-  { text: "Мороженное в ассортименте", price: "300₽", weight: "150г" },
+  { text: "Мороженное в ассортименте", price: "300 ₽", weight: "150 г" },
 ];
 const IceCream = () => {
   return (

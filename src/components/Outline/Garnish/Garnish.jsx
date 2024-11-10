@@ -5,13 +5,13 @@ import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
 
 const cards = [
-  { text: "Картофель фри", price: "200₽", weight: "150г" },
-  { text: "Картофель дольки", price: "200₽", weight: "150г" },
-  { text: "Гречка отварная", price: "350₽", weight: "250г" },
-  { text: "Пюре картофельное", price: "250₽", weight: "200г" },
-  { text: "Соте из овощей", price: "400₽", weight: "250г" },
-  { text: "Рис отварной", price: "200₽", weight: "250г" },
-  { text: "Рис с овощами", price: "250₽", weight: "250г" },
+  { text: "Картофель фри", price: "200 ₽", weight: "150 г" },
+  { text: "Картофель дольки", price: "200 ₽", weight: "150 г" },
+  { text: "Гречка отварная", price: "350 ₽", weight: "250 г" },
+  { text: "Пюре картофельное", price: "250 ₽", weight: "200 г" },
+  { text: "Соте из овощей", price: "400 ₽", weight: "250 г" },
+  { text: "Рис отварной", price: "200 ₽", weight: "250 г" },
+  { text: "Рис с овощами", price: "250 ₽", weight: "250 г" },
 
 ];
 const Garnish = () => {

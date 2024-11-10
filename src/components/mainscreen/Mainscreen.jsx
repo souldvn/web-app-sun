@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import balls from '../../assets/icons/balls.svg';
 import Carddeffault from '../Complite/carddeffault/Carddeffault';
@@ -6,11 +6,17 @@ import s from './mainscreen.module.css';
 import CartButton from '../Complite/CartButton/CartButton';
 
 const Mainscreen = () => {
-  const [activeButton, setActiveButton] = useState(null);
+  const [activeButton, setActiveButton] = useState('host');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedButton = localStorage.getItem('activeButton');
+    setActiveButton(savedButton || 'host');
+  }, []);
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
+    localStorage.setItem('activeButton', button);
   };
 
   const handleCardClick = (cardName) => {

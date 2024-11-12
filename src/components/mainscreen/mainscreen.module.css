@@ -41,6 +41,8 @@
     font-size: 14px;
 }
 
+
+
 .active {
     background-color: black; /* Цвет фона для активной кнопки */
     color: white; /* Цвет текста для активной кнопки */

@@ -29,8 +29,15 @@ import Beer from './components/Outline/Bar/Beer/Beer';
 import Kebabs from './components/Outline/Grill/Kebabs/Kebabs';
 import Steaks from './components/Outline/Grill/Steaks/Steaks';
 import Fish from './components/Outline/Grill/Fish/Fish';
+import HotDrinks from './components/Outline/Bar/HotDrinks/HotDrinks';
+import BeerDrinks from './components/Outline/Bar/BeerDrinks/BeerDrinks';
+import { CartProvider } from './components/Contextes/CartContext';
 
 const App = () => {
+
+
+
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,6 +49,7 @@ const App = () => {
   }, []);
 
   return (
+    <CartProvider>
     <Router>
       <ScrollToTop/>
       <div className="App">
@@ -76,13 +84,15 @@ const App = () => {
             <Route path="kebabs" element={<Kebabs/>} />
             <Route path="steaks" element={<Steaks/>} />
             <Route path="fish" element={<Fish/>} />
+            <Route path="hotdrinks" element={<HotDrinks/>} />
+            <Route path="beerdrinks" element={<BeerDrinks/>} />
             
           </Routes>
         )}
-      
-          {/* <CardPrice/> */}
+    
       </div>
     </Router>
+    </CartProvider>
   );
 };
 

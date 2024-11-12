@@ -12,8 +12,6 @@ const cards = [
   { text: "Молочный улун", price: "480 ₽", weight: "1 л" },
   { text: "Горный чай", price: "400 ₽", weight: "1 л" },
   { text: "Гречишный чай", price: "480 ₽", weight: "1 л" },
-
-
 ];
 const Tea = () => {
   return (

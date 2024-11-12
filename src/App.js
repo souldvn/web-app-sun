@@ -32,6 +32,7 @@ import Fish from './components/Outline/Grill/Fish/Fish';
 import HotDrinks from './components/Outline/Bar/HotDrinks/HotDrinks';
 import BeerDrinks from './components/Outline/Bar/BeerDrinks/BeerDrinks';
 import { CartProvider } from './components/Contextes/CartContext';
+import Basket from './components/Basket/Basket';
 
 const App = () => {
 
@@ -49,6 +50,9 @@ const App = () => {
   }, []);
 
   return (
+
+    
+
     <CartProvider>
     <Router>
       <ScrollToTop/>
@@ -86,6 +90,7 @@ const App = () => {
             <Route path="fish" element={<Fish/>} />
             <Route path="hotdrinks" element={<HotDrinks/>} />
             <Route path="beerdrinks" element={<BeerDrinks/>} />
+            <Route path="basket" element={<Basket/>} />
             
           </Routes>
         )}

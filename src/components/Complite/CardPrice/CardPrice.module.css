@@ -60,4 +60,14 @@
     margin-top: auto; /* Позволяет кнопке "приклеиться" к низу карточки */
 }
 
+.buttonModified {
+    justify-content: space-between; /* Добавленное свойство */
+    padding: 0 20px; /* Для визуального отступа от краев */
+    background-color: #f0f0f1;
+    color: black;
+    border: 1px solid #93949c;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 

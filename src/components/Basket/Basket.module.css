@@ -112,3 +112,61 @@
     cursor: pointer;
 }
 
+.attention{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 0px 16px;
+  }
+  
+  .backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 1001;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end; /* Выравнивание кнопок по правому краю */
+    gap: 16px; /* Расстояние между кнопками */
+    margin-top: 16px; /* Небольшое расстояние сверху */
+}
+
+.cancel {
+    color: red;
+    background-color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.clean {
+    color: black;
+    background-color: white;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+  
+

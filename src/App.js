@@ -33,6 +33,8 @@ import HotDrinks from './components/Outline/Bar/HotDrinks/HotDrinks';
 import BeerDrinks from './components/Outline/Bar/BeerDrinks/BeerDrinks';
 import { CartProvider } from './components/Contextes/CartContext';
 import Basket from './components/Basket/Basket';
+import Inline from './components/Inline/Inline';
+
 
 const App = () => {
 
@@ -91,7 +93,7 @@ const App = () => {
             <Route path="hotdrinks" element={<HotDrinks/>} />
             <Route path="beerdrinks" element={<BeerDrinks/>} />
             <Route path="basket" element={<Basket/>} />
-            
+            <Route path="/inline" element={<Inline />} />
           </Routes>
         )}
     
@@ -102,5 +104,4 @@ const App = () => {
 };
 
 export default App;
-
 

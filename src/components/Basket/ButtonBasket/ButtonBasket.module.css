@@ -1,0 +1,41 @@
+.buttonarea {
+    text-align: center;
+    background-color: white;
+    height: 56px;
+    padding: 45px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.cartbutton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    width: 100%;
+    height: 56px;
+    border-radius: 10px;
+    border: none;
+    background-color: #262737;
+    color: white;
+}
+
+.cartbutton.empty {
+    background-color: #f0f0f1; /* Новый цвет для пустой корзины */
+}
+
+.emptyMessage {
+    text-align: center;
+    margin-top: 50px; /* Центрирование по экрану */
+    color: #666;
+    font-size: 18px;
+}
+

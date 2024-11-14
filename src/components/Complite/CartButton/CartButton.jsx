@@ -35,7 +35,7 @@ const CartButton = () => {
       </button>
     </div>
   );
-};
+}; 
 
 
 export default CartButton;

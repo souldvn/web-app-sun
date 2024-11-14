@@ -27,11 +27,27 @@
 }
 
 .basket{
+    position: relative;
     width: 40px;
     height: 40px;
     border-radius: 30px;
     border: none;
     background-color: white;
+}
+
+ .number {
+        font-size: 9px;
+        color: white;
+        border-radius: 10px; /* Делает цифру круглой */
+        background-color: #e53e3e;
+        width: 19px;
+        height: 10px;
+        position: absolute;
+        bottom: 5px; 
+        left: 5px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
 }
 
 .time {

@@ -1,0 +1,62 @@
+.buttonarea {
+    text-align: center;
+    background-color: white;
+    height: 56px;
+    padding: 45px 0px;
+    position: fixed; 
+    bottom: 0; 
+    left: 16px; 
+    right: 16px; 
+    z-index: 10; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: none;
+    justify-content: space-between;
+}
+
+.info{
+    display: flex;
+    gap: 16px;
+}
+
+.price{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.weight{
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 60%;
+}
+
+.button {
+    position: absolute;
+    right: 0;
+    border: none;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    gap: 6px;
+    display: flex;
+    height: 48px;
+    width: 136px;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto; /* Позволяет кнопке "приклеиться" к низу карточки */
+}
+
+.buttonModified {
+    justify-content: space-between; /* Добавленное свойство */
+    padding: 0 20px; /* Для визуального отступа от краев */
+    background-color: #f0f0f1;
+    color: black;
+    border: 1px solid #93949c;
+    font-size: 14px;
+    font-weight: 500;
+}
+a {
+    text-decoration: none; /* Убирает подчеркивание */
+    color: inherit; /* Убирает синий цвет и наследует цвет от родительского элемента */
+  }

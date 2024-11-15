@@ -3,7 +3,7 @@ import s from './Coffe.module.css'
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-
+import { useNavigate } from 'react-router-dom';
 const cards = [
   { text: "Американо", price: "220 ₽", weight: "250 мл" },
   { text: "Эспрессо", price: "160 ₽", weight: "250 мл" },
@@ -14,17 +14,25 @@ const cards = [
   { text: "Раф классический", price: "300 ₽", weight: "250 мл" },
 ];
 const Coffe = () => {
+
+  const navigate = useNavigate();
+
+  const handleCardClick = (card) => {
+    navigate('/barin', { state: { dish: card, fromRecomendations: false } });
+  };
+
   return (
-    <div className={s.coffe}>
-        <TopBar text={"Кофе"} />
+    <div className={s.drinks}>
+      <TopBar text={"Кофе"} />
       <div className={s.cardsContainer}>
-        {cards.map((card, index) => (
-          <CardPrice 
-            key={index} 
-            text={card.text} 
-            price={card.price} 
-            weight={card.weight} 
-          />
+        {cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)}>
+            <CardPrice 
+              text={card.text} 
+              price={card.price} 
+              weight={card.weight} 
+            />
+          </div>
         ))}
       </div>
       <CartButton />

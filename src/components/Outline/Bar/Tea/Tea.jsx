@@ -3,7 +3,7 @@ import s from './Tea.module.css'
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-
+import { useNavigate } from 'react-router-dom';
 const cards = [
   { text: "Чёрный Ассам", price: "380 ₽", weight: "1 л" },
   { text: "Зелёный Сенча", price: "400 ₽", weight: "1 л" },
@@ -14,17 +14,25 @@ const cards = [
   { text: "Гречишный чай", price: "480 ₽", weight: "1 л" },
 ];
 const Tea = () => {
+
+  const navigate = useNavigate();
+
+  const handleCardClick = (card) => {
+    navigate('/barin', { state: { dish: card, fromRecomendations: false } });
+  };
+  
   return (
-    <div className={s.tea}>
-        <TopBar text={"Чай классический"} />
+    <div className={s.drinks}>
+      <TopBar text={"Чай классический"} />
       <div className={s.cardsContainer}>
-        {cards.map((card, index) => (
-          <CardPrice 
-            key={index} 
-            text={card.text} 
-            price={card.price} 
-            weight={card.weight} 
-          />
+        {cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)}>
+            <CardPrice 
+              text={card.text} 
+              price={card.price} 
+              weight={card.weight} 
+            />
+          </div>
         ))}
       </div>
       <CartButton />

@@ -16,12 +16,10 @@ const CardPrice = ({ price, text, weight, description }) => {
   );
   const itemCount = item ? item.count : 0; // Если товар найден, берем его количество, иначе 0
 
-  const handleCardClick = () => {
-    navigate('/inline', { state: { dish: { price, text, weight, description } } });
-  };
+
 
   return (
-    <div className={s.cardprice} onClick={handleCardClick}>
+    <div className={s.cardprice}>
       <div className={s.foto}></div>
       <div className={s.infosmall}>
         <p className={s.price}>{price}</p>
@@ -70,6 +68,15 @@ const CardPrice = ({ price, text, weight, description }) => {
 };
 
 export default CardPrice;
+
+
+
+
+
+
+
+
+
 
 
 

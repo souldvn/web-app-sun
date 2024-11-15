@@ -80,3 +80,16 @@
     font-size: 14px;
     font-weight: 400;
 }
+
+.info{
+    margin-bottom: 16px;
+}
+
+.compoundCon{
+    margin: 16px 0px;
+}
+.compound{
+    margin-bottom: 8px;
+    font-size: 14px;
+    opacity: 60%;
+}

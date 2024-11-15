@@ -1,9 +1,8 @@
-import React from 'react'
-import s from './Drinks.module.css'
-import TopBar from '../../../Complite/TopBar/TopBar';
-import CartButton from '../../../Complite/CartButton/CartButton';
-import CardPrice from '../../../Complite/CardPrice/CardPrice';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import s from './Recomendations.module.css';
+import CardPrice from '../../../../Complite/CardPrice/CardPrice';
+import CartButton from '../../../../Complite/CartButton/CartButton';
 
 const cards = [
   {id:1, text: "Молоко", price: "100 ₽", weight: "250 мл", description:"Полезный и освежающий напиток, который идеально подходит для завтрака на природе. Оно прекрасно дополняет каши, создавая атмосферу уюта и комфорта в горном окружении.", time:"15-25 минут" },
@@ -11,20 +10,21 @@ const cards = [
   {id:3, text: "Кефир", price: "150 ₽", weight: "250 мл", description:"Бодрящий кисломолочный напиток с лёгкой текстурой, который прекрасно подойдёт для утра на свежем воздухе. Его освежающий вкус и полезные свойства делают его отличным спутником в вашем горном отдыхе.", time:"15-25 минут" },
 
 ];
-const Drinks = () => {
 
+
+
+const Recomendations = () => {
   const navigate = useNavigate();
-  const handleCardClick = (card) => {
-    navigate('/drinksIn', { state: { dish: card, fromRecomendations: false } });
-  };
 
+  const handleCardClick = (card) => {
+    navigate('/inline', { state: { dish: card, fromRecomendations: true } });
+  };
 
   return (
     <div className={s.drinks}>
-      <TopBar text={"Блюда"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.map((card, index) => (
+          <div key={index} onClick={() => handleCardClick(card)}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
@@ -35,7 +35,7 @@ const Drinks = () => {
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Drinks
+export default Recomendations;

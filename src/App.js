@@ -38,6 +38,15 @@ import DrinksIn from './components/Inline/Breakfast/Drinks/DrinksIn';
 import BarIn from './components/Inline/Bar/Cold/BarIn';
 import RecomHot from './components/Inline/Bar/Hot/RecomHot/RecomHot';
 import HotIn from './components/Inline/Bar/Hot/HotIn';
+import KebabIn from './components/Inline/Grill/Kebabs/KebabIn';
+import SteaksIn from './components/Inline/Grill/Steaks/SteaksIn';
+import FishIn from './components/Inline/Grill/Fish/FishIn';
+import BurgersIn from './components/Inline/Burgers/BurgersIn';
+import HotbIn from './components/Inline/Hot/HotbIn';
+import HotSnacksIn from './components/Inline/HotSnaks/HotSnacksIn';
+import SaladsIn from './components/Inline/Salads/SaladsIn';
+import SoupsIn from './components/Inline/Soups/SoupsIn';
+
 
 
 const App = () => {
@@ -101,6 +110,14 @@ const App = () => {
             <Route path="/drinksIn" element={<DrinksIn />} />
             <Route path="/barin" element={<BarIn />} />
             <Route path="/barhot" element={<HotIn />} />
+            <Route path="/kebabIn" element={<KebabIn />} />
+            <Route path="/steaksIn" element={<SteaksIn />} />
+            <Route path="/fishIn" element={<FishIn />} />
+            <Route path="/burgersIn" element={<BurgersIn />} />
+            <Route path="/hotbIn" element={<HotbIn />} />
+            <Route path="/hotsnacksIn" element={<HotSnacksIn />} />
+            <Route path="/saladsIn" element={<SaladsIn />} />
+            <Route path="/soupsIn" element={<SoupsIn />} />
 
             
           </Routes>

@@ -1,0 +1,95 @@
+.inline{
+
+}
+
+.public {
+    padding: 20px 16px;
+    background-color: #D9D9D9;
+    height: 260px;
+    width: 100vw; /* Занимает всю ширину окна */
+    position: relative;
+    margin-left: calc(-1 * 16px); /* Выравнивает с учетом внешнего отступа приложения */
+    margin-top: calc(-1 * 20px); /* Убирает верхний отступ */
+    margin-bottom: 16px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.arrow{
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    background-color: white;
+}
+
+.basket{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    background-color: white;
+}
+
+ .number {
+        font-size: 9px;
+        color: white;
+        border-radius: 10px; /* Делает цифру круглой */
+        background-color: #e53e3e;
+        width: 19px;
+        height: 10px;
+        position: absolute;
+        bottom: 5px; 
+        left: 5px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+.time {
+    /* width: 225px; */
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    height: 30px;
+    border-radius: 12px;
+    background-color: #212233;
+    position: absolute; /* Позиционируем элемент */
+    right: 16px; /* Отступ от правого края */
+    bottom: 10px; /* Отступ от нижнего края */
+    font-size: 16px; /* При необходимости */
+    color: white;
+}
+
+.timeP{
+    font-size: 12px;
+}
+
+.title{
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.text{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.info{
+    margin-bottom: 16px;
+}
+
+.compoundCon{
+    margin: 16px 0px;
+}
+.compound{
+    margin-bottom: 8px;
+    font-size: 14px;
+    opacity: 60%;
+}

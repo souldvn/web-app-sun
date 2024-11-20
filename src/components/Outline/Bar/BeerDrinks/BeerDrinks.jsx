@@ -6,7 +6,7 @@ import CardPrice from '../../../Complite/CardPrice/CardPrice';
 import { useNavigate } from 'react-router-dom';
 
 const cards = [
-  { text: "Сидр в ассортименте", price: "1 400 ₽", weight: "0,75 л" },
+  { text: "Сидр в ассортименте", price: "1 400 ₽", weight: "0,75 л", time:"10-15 минут", description:"Откройте мир разнообразия с нашим ассортиментом сидров! Идеально подходят для дружеских встреч, пикников или расслабляющих вечеров." },
 ];
 const BeerDrinks = () => {
   const navigate = useNavigate();

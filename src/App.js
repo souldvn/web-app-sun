@@ -46,6 +46,11 @@ import HotbIn from './components/Inline/Hot/HotbIn';
 import HotSnacksIn from './components/Inline/HotSnaks/HotSnacksIn';
 import SaladsIn from './components/Inline/Salads/SaladsIn';
 import SoupsIn from './components/Inline/Soups/SoupsIn';
+import DoughIn from './components/Inline/Dough/DoughIn';
+import ColdSnacksIn from './components/Inline/ColdSnacks/ColdSnaksIn';
+import GarnishIn from './components/Inline/Garnish/GarnishIn';
+import IceIn from './components/Inline/Ice/IceIn';
+import SousesIn from './components/Inline/Souses/SousesIn';
 
 
 
@@ -118,6 +123,11 @@ const App = () => {
             <Route path="/hotsnacksIn" element={<HotSnacksIn />} />
             <Route path="/saladsIn" element={<SaladsIn />} />
             <Route path="/soupsIn" element={<SoupsIn />} />
+            <Route path="/doughIn" element={<DoughIn />} />
+            <Route path="/coldsnacksIn" element={<ColdSnacksIn />} />
+            <Route path="/garnishIn" element={<GarnishIn />} />
+            <Route path="/iceIn" element={<IceIn />} />
+            <Route path="/sousesIn" element={<SousesIn />} />
 
             
           </Routes>

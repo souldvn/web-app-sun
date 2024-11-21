@@ -3,6 +3,7 @@ import s from './ColdSnacks.module.css'
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
+import { useNavigate } from 'react-router-dom';
 
 const cards = [
   { text: "Плато «Кавказ»", price: "950 ₽", weight: "530 г", time:"10-15 минут", description:"Плато «Кавказ» — это как путешествие по высокогорной равнине. Сулугуни, домашний сыр, Чеддер, Дор Блю и сыр Пармезан возвышаются, словно горные вершины, а колбасы казы из курицы и конины, суджук и бастурма напоминают о глубоких долинах вкуса.", compound:"Сыр сулугуни, сыр домашний, сыр Чеддер, сыр Дор Блю, сыр Пармезан, колбаса казы курица, колбаса казы конина, суджук, бастурма, мёд, грецкий орех, соус медово-горчичный, инжирное варенье, помидоры черри, зелень" },
@@ -17,17 +18,25 @@ const cards = [
   
 ];
 const ColdSnacks = () => {
+
+  const navigate = useNavigate();
+
+  const handleCardClick = (card) => {
+    navigate('/coldsnacksIn', { state: { dish: card, fromRecomendations: false } });
+  };
+
   return (
-    <div className={s.coldSnacks}>
-        <TopBar text={"Холодные закуски"} />
+    <div className={s.hot}>
+      <TopBar text={"Холодные закуски"} />
       <div className={s.cardsContainer}>
-        {cards.map((card, index) => (
-          <CardPrice 
-            key={index} 
-            text={card.text} 
-            price={card.price} 
-            weight={card.weight} 
-          />
+        {cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)}>
+            <CardPrice 
+              text={card.text} 
+              price={card.price} 
+              weight={card.weight} 
+            />
+          </div>
         ))}
       </div>
       <CartButton />

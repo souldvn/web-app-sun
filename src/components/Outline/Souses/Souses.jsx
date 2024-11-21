@@ -3,6 +3,7 @@ import s from './Souses.module.css'
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
+import { useNavigate } from 'react-router-dom';
 
 const cards = [
   { text: "Перечный", price: "150 ₽", weight: "50 г", description:"Упрямый дядя, который сначала может показаться строгим, на самом деле оказывается полон тепла и обаяния. Его пикантный вкус может немного пощипать, но как только вы попробуете его, вы поймёте, что за этим острым внешним видом скрывается настоящая кулинарная находка. Идеально подходит для тех, кто любит сочетание остроты и глубины вкуса.", time: "5 минут" },
@@ -20,17 +21,24 @@ const cards = [
   { text: "Дор Блю", price: "150 ₽", weight: "50 г", time: "5 минут", description:"Соус Дор Блю — это сливочное лакомство, наполненное характерным вкусом голубого сыра. Насыщенный и пикантный, он придаёт вашим блюдам неповторимый глубинный аромат и лёгкую остроту. Идеален для подачи к мясу, салатам или как изысканный дип, этот соус превращает каждую трапезу в гастрономическое удовольствие."} 
 ];
 const Souses = () => {
+
+  const navigate = useNavigate();
+
+  const handleCardClick = (card) => {
+    navigate('/sousesIn', { state: { dish: card, fromRecomendations: false } });
+  };
   return (
-    <div className={s.souses}>
-        <TopBar text={"Соусы"} />
+    <div className={s.steaks}>
+      <TopBar text={"Соусы"} />
       <div className={s.cardsContainer}>
-        {cards.map((card, index) => (
-          <CardPrice 
-            key={index} 
-            text={card.text} 
-            price={card.price} 
-            weight={card.weight} 
-          />
+        {cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)}>
+            <CardPrice 
+              text={card.text} 
+              price={card.price} 
+              weight={card.weight} 
+            />
+          </div>
         ))}
       </div>
       <CartButton />

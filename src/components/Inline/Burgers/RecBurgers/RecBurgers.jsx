@@ -31,7 +31,9 @@ const RecBurgers = () => {
 
   return (
     <div className={s.drinks}>
+        <p className={s.rec}>Дополнительно рекомендуем</p>
       <div className={s.cardsContainer}>
+        
         {cards.map((card, index) => (
           <div key={index} onClick={() => handleCardClick(card)}>
             <CardPrice 

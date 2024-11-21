@@ -3,6 +3,7 @@ import s from './Dough.module.css'
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
+import { useNavigate } from 'react-router-dom';
 
 const cards = [
   {id:1, text: "Хачапури по аджарски", price: "500 ₽", weight: "390 г", description:"Хочу хачапури, да не простые, а по‑аджарски! Вот оно, тесто, которое превращается в маленький кораблик счастья, плывущий по морю растопленного сыра. А в центре — яркий желток, как солнце, которое освещает все вокруг. Разломи бортики, окуни в сырную начинку, и пусть это вкусное путешествие начнётся", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, масло сливочное, яйцо" },
@@ -17,17 +18,24 @@ const cards = [
   {id:10, text: "Хлеб домашний", price: "200 ₽",  weight: "200 г" , description:"Простой, но незаменимый герой каждого стола. Хрустящая корочка скрывает мягкий, ароматный мякиш, пропитанный теплом и уютом домашней выпечки. Этот хлеб идеально дополнит любое блюдо, наполняя его вкусом и создавая атмосферу уюта и заботы.", time:"30-60 минут" }
 ];
 const Dough = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (card) => {
+    navigate('/doughIn', { state: { dish: card, fromRecomendations: false } });
+  };
+
   return (
-    <div className={s.dough}>
-        <TopBar text={"Тесто"} />
+    <div className={s.hot}>
+      <TopBar text={"Тесто"} />
       <div className={s.cardsContainer}>
-        {cards.map((card, index) => (
-          <CardPrice 
-            key={index} 
-            text={card.text} 
-            price={card.price} 
-            weight={card.weight} 
-          />
+        {cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)}>
+            <CardPrice 
+              text={card.text} 
+              price={card.price} 
+              weight={card.weight} 
+            />
+          </div>
         ))}
       </div>
       <CartButton />

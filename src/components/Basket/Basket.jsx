@@ -5,10 +5,10 @@ import TopBar from '../Complite/TopBar/TopBar';
 import minus from '../../assets/icons/minuscart.svg';
 import plus from '../../assets/icons/pluscart.svg';
 import ButtonBasket from './ButtonBasket/ButtonBasket';
-import trash from '.././../assets/icons/trash.svg';
+import trash from '../../assets/icons/trash.svg';
 
 const Basket = () => {
-  const { cartItems, removeFromCart, addToCart, clearCart } = useContext(CartContext);
+  const { cartItems, removeFromCart, addToCart, clearCart, giftSelection, syrupSelection } = useContext(CartContext);
   const [showOverlay, setShowOverlay] = useState(false);
   const isEmpty = cartItems.length === 0;
 
@@ -23,15 +23,15 @@ const Basket = () => {
   };
 
   const handleClearCart = () => {
-    clearCart(); // Очищает корзину
-    setShowOverlay(false); // Закрывает модальное окно
+    clearCart();
+    setShowOverlay(false);
   };
 
   return (
     <div className={s.basket}>
-      <TopBar className={s.topBar} text={"Корзина"} />
+      <TopBar className={s.topBar} text={'Корзина'} />
       <button className={s.trash} onClick={handleTrashClick}>
-        <img src={trash} alt='trash' />
+        <img src={trash} alt="trash" />
       </button>
 
       {showOverlay && (
@@ -73,20 +73,22 @@ const Basket = () => {
                     </p>
                     <p className={s.weight}>{item.weight}</p>
                   </div>
+                  {/* Отображаем подарок, если он есть */}
+                  {giftSelection[item.text] && (
+                    <p className={s.gift}>{giftSelection[item.text]}</p>
+                  )}
+                  {/* Отображаем информацию о сиропе для капучино */}
+                  {item.text === 'Капучино' && syrupSelection[item.text] && (
+                    <p className={s.gift}>Сироп в ассортименте</p>
+                  )}
                 </div>
               </div>
               <div className={s.lenght}>
-                <button
-                  className={s.button}
-                  onClick={() => removeFromCart(item)}
-                >
+                <button className={s.button} onClick={() => removeFromCart(item)}>
                   <img className={s.icon} src={minus} alt="minus" />
                 </button>
                 <p className={s.itemCount}>{item.count}</p>
-                <button
-                  className={s.button}
-                  onClick={() => addToCart(item)}
-                >
+                <button className={s.button} onClick={() => addToCart(item)}>
                   <img className={s.icon} src={plus} alt="plus" />
                 </button>
               </div>
@@ -94,11 +96,9 @@ const Basket = () => {
           ))
         )}
       </div>
-      <ButtonBasket isEmpty={isEmpty} />
+      <ButtonBasket />
     </div>
   );
 };
 
 export default Basket;
-
-

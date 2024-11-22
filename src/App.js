@@ -110,7 +110,7 @@ const App = () => {
             <Route path="fish" element={<Fish/>} />
             <Route path="hotdrinks" element={<HotDrinks/>} />
             <Route path="beerdrinks" element={<BeerDrinks/>} />
-            <Route path="basket" element={<Basket/>} />
+            <Route path="basket" element={<Basket />} />
             <Route path="/inline" element={<Inline />} />
             <Route path="/drinksIn" element={<DrinksIn />} />
             <Route path="/barin" element={<BarIn />} />

@@ -4,8 +4,10 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [giftSelection, setGiftSelection] = useState({}); // Хранит выбранные подарки для блюд
+  const [syrupSelection, setSyrupSelection] = useState({}); // Хранит данные о сиропах
 
-  const addToCart = (item) => {
+  const addToCart = (item, gift = null) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (cartItem) => cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight
@@ -18,6 +20,9 @@ export const CartProvider = ({ children }) => {
             : cartItem
         );
       } else {
+        if (gift && (item.text === 'Русский завтрак' || item.text === 'Английский завтрак')) {
+          setGiftSelection((prevGifts) => ({ ...prevGifts, [item.text]: gift }));
+        }
         return [...prevItems, { ...item, count: 1 }];
       }
     });
@@ -38,7 +43,8 @@ export const CartProvider = ({ children }) => {
           );
         } else {
           return prevItems.filter(
-            (cartItem) => !(cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight)
+            (cartItem) =>
+              !(cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight)
           );
         }
       }
@@ -48,10 +54,37 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCartItems([]);
+    setGiftSelection({});
+    setSyrupSelection({}); // Очищаем также выбранные сиропы
+  };
+
+  const setSelectedGift = (gift, itemName) => {
+    setGiftSelection((prevGifts) => ({
+      ...prevGifts,
+      [itemName]: gift,
+    }));
+  };
+
+  const setSyrupForItem = (itemName, hasSyrup) => {
+    setSyrupSelection((prevSyrups) => ({
+      ...prevSyrups,
+      [itemName]: hasSyrup,
+    }));
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        giftSelection,
+        setSelectedGift,
+        syrupSelection,
+        setSyrupForItem,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import s from './Inline.module.css';
@@ -6,29 +6,31 @@ import arrowback from '../../../../assets/icons/arrowback.svg';
 import basket from '../../../../assets/icons/basketbig.svg';
 import BottomInfo from '../../BottomInfo/BottomInfo';
 import { CartContext } from '../../../Contextes/CartContext';
-import Drinks from '../../../Outline/Breakfast/Drinks/Drinks';
 import Recomendations from './Recomendations/Recomendations';
 import more from '../../../../assets/icons/more.svg';
-
+import PresentButton from '../../../Complite/PresentButton/PresentButton';
 
 const Inline = () => {
-  
   const { cartItems } = useContext(CartContext);
 
-  // Вычисление общего количества товаров в корзине
+  // Состояние для отображения шторки
+  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
+
+
   const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedDish } = useContext(CartContext);
   const { dish, fromRecomendations } = location.state || { dish: selectedDish, fromRecomendations: false };
 
-    if (!dish) {
-      return <div>Блюдо не найдено</div>;
-    }
+  if (!dish) {
+    return <div>Блюдо не найдено</div>;
+  }
 
-    const handleBackClick = () => {
-      navigate(-1); // Вернуться на предыдущую страницу
-    };
+  const handleBackClick = () => {
+    navigate(-1); // Вернуться на предыдущую страницу
+  };
+
   const handleCardClick = () => {
     if (cartCount > 0) {
       navigate('/basket');
@@ -36,6 +38,11 @@ const Inline = () => {
       alert('Ваша корзина пуста!');
     }
   };
+
+  const openGiftModal = () => setIsGiftModalOpen(true);
+  const closeGiftModal = () => setIsGiftModalOpen(false);
+
+
 
   return (
     <div className={s.Inline}>
@@ -64,9 +71,9 @@ const Inline = () => {
         </div>
       )}
       <div className={s.buttonsMore}>
-        {(dish.text.includes("Русский завтрак") || dish.text.includes("Английский завтрак")) && (
+        {(dish.text.includes('Русский завтрак') || dish.text.includes('Английский завтрак')) && (
           <>
-            <button className={s.present}>
+            <button className={s.present} onClick={openGiftModal}>
               Подарок к завтраку
               <img src={more} alt="more" />
             </button>
@@ -77,17 +84,15 @@ const Inline = () => {
           </>
         )}
       </div>
-      <div className={s.more}>
-      <p className={s.moreTitle}>Дополнительная информация</p>
-      <p className={s.moreText}>Наличие доступных позиций из секций «Подарок к завтраку» и «Дополнительно к завтраку» можно уточнить в чате с рестораном — просто и удобно!</p>
-      </div>
 
-      
       {!fromRecomendations && <Recomendations />}
       <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} />
+      {isGiftModalOpen && <PresentButton onClose={closeGiftModal} itemName={dish.text} />}
+
+      {/* Оверлей и шторка */}
+
     </div>
   );
-  
 };
 
 export default Inline;

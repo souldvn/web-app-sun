@@ -1,0 +1,125 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 1000; /* Поверх всех элементов */
+  }
+  
+  .giftModal {
+    position: relative;
+    width: 100%;
+    height: 80%; /* Высота шторки */
+    background-color: white;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    animation: slideUp 0.3s ease-in-out;
+    overflow-y: auto; /* Прокрутка, если контент не помещается */
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .giftContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1; /* Это заставляет содержимое растягиваться, освобождая место для кнопки */
+  }
+  
+  .radioOption {
+    display: flex;
+    justify-content: space-between; /* Размещаем элементы с расстоянием между ними */
+    align-items: center;
+    font-size: 16px;
+    padding: 8px 0; /* Добавим отступы для визуальной четкости */
+  }
+  
+  .radioOption label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer; /* Указатель при наведении для удобства */
+  }
+  
+  .radioOption input {
+    margin-left: 16px; /* Отступ от текста для радиокнопки */
+  }
+  
+  /* Новый контейнер для кнопки */
+  .buttonContainer {
+    margin-top: auto; 
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+  }
+
+  /* Стиль для серой кнопки */
+.closeButtonGray {
+    background-color: #f0f0f1; /* Серый фон */
+    color: #93949c; /* Цвет текста */
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Стиль для белой кнопки */
+  .closeButtonWhite {
+    background-color: black; /* Белый фон */
+    color: white; /* Цвет текста */
+    padding: 12px;
+    border: 1px solid #93949c; /* Серый контур */
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Общий стиль контейнера кнопки */
+  .buttonContainer {
+    margin-top: auto; 
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+  }
+  
+  .checkboxOption {
+    margin-top: 16px; /* Отступ сверху */
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Равное распределение текста и чекбокса */
+    width: 100%; /* Убедимся, что блок занимает всю ширину */
+  }
+  
+  .checkboxOption label {
+    width: 100%; /* Расширяем контейнер для выравнивания содержимого */
+    display: flex; /* Устанавливаем flex-контейнер */
+    justify-content: space-between; /* Текст слева, чекбокс справа */
+    cursor: pointer; /* Указатель при наведении */
+  }
+  
+  .checkboxOption input {
+    margin-left: 0; /* Убираем отступ, так как space-between справится с выравниванием */
+    cursor: pointer;
+  }
+  
+  
+  
+
+  

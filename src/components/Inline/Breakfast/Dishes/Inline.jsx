@@ -8,6 +8,7 @@ import BottomInfo from '../../BottomInfo/BottomInfo';
 import { CartContext } from '../../../Contextes/CartContext';
 import Drinks from '../../../Outline/Breakfast/Drinks/Drinks';
 import Recomendations from './Recomendations/Recomendations';
+import more from '../../../../assets/icons/more.svg';
 
 
 const Inline = () => {
@@ -62,6 +63,26 @@ const Inline = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
+      <div className={s.buttonsMore}>
+        {(dish.text.includes("Русский завтрак") || dish.text.includes("Английский завтрак")) && (
+          <>
+            <button className={s.present}>
+              Подарок к завтраку
+              <img src={more} alt="more" />
+            </button>
+            <button className={s.present}>
+              Дополнительно к завтраку
+              <img src={more} alt="more" />
+            </button>
+          </>
+        )}
+      </div>
+      <div className={s.more}>
+      <p className={s.moreTitle}>Дополнительная информация</p>
+      <p className={s.moreText}>Наличие доступных позиций из секций «Подарок к завтраку» и «Дополнительно к завтраку» можно уточнить в чате с рестораном — просто и удобно!</p>
+      </div>
+
+      
       {!fromRecomendations && <Recomendations />}
       <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} />
     </div>

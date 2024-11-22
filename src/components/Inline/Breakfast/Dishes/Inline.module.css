@@ -93,3 +93,54 @@
     font-size: 14px;
     opacity: 60%;
 }
+
+.buttonsMore{
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+}
+.present {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    border: none;
+    background-color: white;
+    font-size: 14px;
+    font-weight: 400;
+    position: relative; /* Для псевдоэлемента */
+    
+}
+.present:first-child {
+    margin-top: 16px;
+    
+}
+
+.present:last-child {
+    margin-bottom: 32px;
+    
+}
+
+.present::after {
+    content: ""; /* Создаем пустой элемент */
+    display: block;
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: -10px; /* Расстояние от текста */
+    left: 0; /* Выравниваем по левой границе */
+    width: 100%; /* Ширина равна кнопке */
+    height: 1px; /* Толщина линии */
+    background-color: black; /* Светло-серый цвет */
+    opacity: 9%;
+}
+
+.more{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.moreTitle{
+    font-size: 14px;
+    opacity: 60%;
+}

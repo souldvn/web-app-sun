@@ -3,28 +3,32 @@ import s from './PresentButton.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 
 const PresentButton = ({ onClose, itemName }) => {
-  const { giftSelection, setSelectedGift, setSyrupForItem } = useContext(CartContext);
+  const { giftSelection, setSelectedGift, syrupSelection, setSyrupForItem } = useContext(CartContext);
   const [selectedGift, setSelectedGiftState] = useState('Без подарка');
   const [addSyrup, setAddSyrup] = useState(false);
 
   useEffect(() => {
+    // Устанавливаем начальное состояние подарка
     setSelectedGiftState(giftSelection[itemName] || 'Без подарка');
-    setAddSyrup(false);
-  }, [giftSelection, itemName]);
+
+    // Устанавливаем состояние сиропа, если он был выбран для этого блюда
+    setAddSyrup(syrupSelection[itemName] || false);
+  }, [giftSelection, itemName, syrupSelection]);
 
   const handleGiftChange = (event) => {
     const gift = event.target.value;
     setSelectedGiftState(gift);
     setSelectedGift(gift === 'Без подарка' ? null : gift, itemName);
     if (gift !== 'Капучино') {
-      setAddSyrup(false);
+      setAddSyrup(false); // Если выбран не капучино, сбрасываем сироп
+      setSyrupForItem(itemName, false);
     }
   };
 
   const handleCheckboxChange = (event) => {
     const checked = event.target.checked;
     setAddSyrup(checked);
-    setSyrupForItem(itemName, checked); // Обновляем данные в контексте
+    setSyrupForItem(itemName, checked); // Обновляем данные о сиропе в контексте
   };
 
   const handleOverlayClick = (event) => {

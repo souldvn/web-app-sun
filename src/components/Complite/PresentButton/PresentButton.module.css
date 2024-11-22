@@ -118,6 +118,95 @@
     margin-left: 0; /* Убираем отступ, так как space-between справится с выравниванием */
     cursor: pointer;
   }
+
+  /* Кастомизация радиокнопок */
+input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px; /* Увеличиваем размер */
+    height: 24px;
+    border: 2px solid #000; /* Черная рамка */
+    border-radius: 50%; /* Округлая форма */
+    background-color: #fff; /* Белый фон */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  input[type="radio"]:checked {
+    background-color: #fff; /* Белый фон при проверке */
+    border-color: #000; /* Черная рамка */
+  }
+  
+  input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%; /* Центрируем точку по вертикали */
+    left: 50%; /* Центрируем точку по горизонтали */
+    width: 12px; /* Размер точки */
+    height: 12px;
+    background-color: #000; /* Черная точка */
+    border-radius: 50%; /* Круглая точка */
+    transform: translate(-50%, -50%); /* Выравнивание по центру */
+  }
+  
+  input[type="radio"]:not(:checked)::after {
+    content: ''; /* Скрываем точку, если не выбрано */
+  }
+  
+  /* Кастомизация чекбоксов */
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px; /* Увеличиваем размер */
+    height: 24px;
+    background-color: #fff; /* Белый фон */
+    border: 2px solid #000; /* Черная рамка */
+    border-radius: 4px; /* Квадратные углы для чекбокса */
+    position: relative;
+    cursor: pointer;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #000; /* Черный фон при активном состоянии */
+    border-color: #000; /* Черная рамка */
+  }
+  
+  input[type="checkbox"]:checked::after {
+    content: '\2713'; /* Галочка */
+    position: absolute;
+    top: 50%; /* Центрируем галочку по вертикали */
+    left: 50%; /* Центрируем галочку по горизонтали */
+    font-size: 16px; /* Размер галочки */
+    color: #fff; /* Белая галочка */
+    transform: translate(-50%, -50%); /* Выравнивание по центру */
+  }
+  
+  input[type="checkbox"]:not(:checked)::after {
+    content: ''; /* Скрываем галочку, если не выбрано */
+  }
+  
+  /* Дополнительные стили для меток */
+  label {
+    font-size: 16px;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+  
+  /* Радио и чекбоксы в лейблах */
+  .radioOption,
+  .checkboxOption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 8px 0;
+  }
+  
+
+  
   
   
   

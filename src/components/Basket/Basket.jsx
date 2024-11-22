@@ -77,8 +77,8 @@ const Basket = () => {
                   {giftSelection[item.text] && (
                     <p className={s.gift}>{giftSelection[item.text]}</p>
                   )}
-                  {/* Отображаем информацию о сиропе для капучино */}
-                  {item.text === 'Капучино' && syrupSelection[item.text] && (
+                  {/* Отображаем сироп, если он выбран */}
+                  {syrupSelection[item.text] && (
                     <p className={s.gift}>Сироп в ассортименте</p>
                   )}
                 </div>

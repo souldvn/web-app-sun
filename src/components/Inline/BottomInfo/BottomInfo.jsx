@@ -8,11 +8,11 @@ import plus from '../../../assets/icons/plus.svg';
 const BottomInfo = ({ price, text, weight }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
 
-  // Ищем товар в корзине и получаем его количество
+  
   const item = cartItems.find(
     (item) => item.price === price && item.text === text && item.weight === weight
   );
-  const itemCount = item ? item.count : 0; // Если товар найден, берем его количество, иначе 0
+  const itemCount = item ? item.count : 0; 
 
   return (
     <div className={s.buttonarea}>
@@ -24,7 +24,7 @@ const BottomInfo = ({ price, text, weight }) => {
         <button
           className={`${s.button} ${s.buttonModified}`}
           onClick={(event) => {
-            event.stopPropagation(); // Останавливаем всплытие события
+            event.stopPropagation(); 
             removeFromCart({ price, text, weight });
           }}
         >
@@ -35,7 +35,7 @@ const BottomInfo = ({ price, text, weight }) => {
             src={plusdark}
             alt="plus"
             onClick={(event) => {
-              event.stopPropagation(); // Останавливаем всплытие события
+              event.stopPropagation(); 
               addToCart({ price, text, weight });
             }}
           />
@@ -44,7 +44,7 @@ const BottomInfo = ({ price, text, weight }) => {
         <button
           className={s.button}
           onClick={(event) => {
-            event.stopPropagation(); // Останавливаем всплытие события
+            event.stopPropagation(); 
             addToCart({ price, text, weight });
           }}
         >

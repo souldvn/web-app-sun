@@ -27,7 +27,7 @@ const DrinksIn = () => {
     }
 
     const handleBackClick = () => {
-      navigate(-1); // Вернуться на предыдущую страницу
+      navigate(-1); 
     };
   const handleCardClick = () => {
     if (cartCount > 0) {

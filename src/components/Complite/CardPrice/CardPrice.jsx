@@ -6,17 +6,31 @@ import s from './CardPrice.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 import { useNavigate } from 'react-router-dom';
 
-const CardPrice = ({ price, text, weight, description }) => {
+const CardPrice = ({ price, text, weight, description, time, compound }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // Ищем товар в корзине и получаем его количество
   const item = cartItems.find(
     (item) => item.price === price && item.text === text && item.weight === weight
   );
-  const itemCount = item ? item.count : 0; // Если товар найден, берем его количество, иначе 0
+  const itemCount = item ? item.count : 0;
 
+  const handleAddClick = (event) => {
+    event.stopPropagation(); // Останавливаем всплытие события
 
+    // Проверяем название карточки
+    if (text === 'Русский завтрак' || text === 'Английский завтрак') {
+      navigate('/inline', {
+        state: {
+          dish: { text, price, weight, description, time, compound },
+          fromRecomendations: false,
+        },
+      });
+    } else {
+      // Добавляем в корзину, если это не завтрак
+      addToCart({ price, text, weight });
+    }
+  };
 
   return (
     <div className={s.cardprice}>
@@ -30,7 +44,7 @@ const CardPrice = ({ price, text, weight, description }) => {
           <button
             className={`${s.button} ${s.buttonModified}`}
             onClick={(event) => {
-              event.stopPropagation(); // Останавливаем всплытие события
+              event.stopPropagation();
               removeFromCart({ price, text, weight });
             }}
           >
@@ -45,19 +59,13 @@ const CardPrice = ({ price, text, weight, description }) => {
               src={plusdark}
               alt="plus"
               onClick={(event) => {
-                event.stopPropagation(); // Останавливаем всплытие события
+                event.stopPropagation();
                 addToCart({ price, text, weight });
               }}
             />
           </button>
         ) : (
-          <button
-            className={s.button}
-            onClick={(event) => {
-              event.stopPropagation(); // Останавливаем всплытие события
-              addToCart({ price, text, weight });
-            }}
-          >
+          <button className={s.button} onClick={handleAddClick}>
             <img src={plus} alt="plus" />
             <p>Добавить</p>
           </button>
@@ -68,21 +76,3 @@ const CardPrice = ({ price, text, weight, description }) => {
 };
 
 export default CardPrice;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

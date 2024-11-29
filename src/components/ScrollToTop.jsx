@@ -5,7 +5,7 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Прокрутка к началу страницы при изменении пути
+    window.scrollTo(0, 0); 
   }, [pathname]);
 
   return null;

@@ -9,12 +9,14 @@ import { CartContext } from '../../../Contextes/CartContext';
 import Recomendations from './Recomendations/Recomendations';
 import more from '../../../../assets/icons/more.svg';
 import PresentButton from '../../../Complite/PresentButton/PresentButton';
+import MoreButton from '../../../Complite/MoreButton/MoreButton';
 
 const Inline = () => {
   const { cartItems } = useContext(CartContext);
 
   // Состояние для отображения шторки
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
+  const [isMoreModalOpen, setIsMoreModalOpen] = useState(false);
 
 
   const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
@@ -31,6 +33,9 @@ const Inline = () => {
     navigate(-1); // Вернуться на предыдущую страницу
   };
 
+
+
+
   const handleCardClick = () => {
     if (cartCount > 0) {
       navigate('/basket');
@@ -41,6 +46,9 @@ const Inline = () => {
 
   const openGiftModal = () => setIsGiftModalOpen(true);
   const closeGiftModal = () => setIsGiftModalOpen(false);
+
+  const openMoreModal = () => setIsMoreModalOpen(true);
+  const closeMoreModal = () => setIsMoreModalOpen(false);
 
 
 
@@ -77,7 +85,7 @@ const Inline = () => {
               Подарок к завтраку
               <img src={more} alt="more" />
             </button>
-            <button className={s.present}>
+            <button className={s.present} onClick={openMoreModal}>
               Дополнительно к завтраку
               <img src={more} alt="more" />
             </button>
@@ -86,8 +94,17 @@ const Inline = () => {
       </div>
 
       {!fromRecomendations && <Recomendations />}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} />
+      <BottomInfo 
+          price={dish.price} 
+          text={dish.text} 
+          weight={dish.weight} 
+          specialButton={dish.text === "Русский завтрак" || dish.text === "Английский завтрак"} 
+          
+        />
+
       {isGiftModalOpen && <PresentButton onClose={closeGiftModal} itemName={dish.text} />}
+
+      {isMoreModalOpen && <MoreButton onClose={closeMoreModal} itemName={dish.text} />}
 
       {/* Оверлей и шторка */}
 

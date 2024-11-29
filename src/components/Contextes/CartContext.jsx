@@ -7,6 +7,9 @@ export const CartProvider = ({ children }) => {
   const [giftSelection, setGiftSelection] = useState({}); // Хранит выбранные подарки для блюд
   const [syrupSelection, setSyrupSelection] = useState({}); // Хранит данные о сиропах
 
+
+  
+
   const addToCart = (item, gift = null) => {
     console.log('Adding to cart', item, gift); // Add log here to check the arguments
   

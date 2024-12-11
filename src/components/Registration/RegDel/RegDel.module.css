@@ -1,0 +1,95 @@
+.del {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Высота на весь экран */
+  }
+  
+  .delform {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .input {
+    padding: 16px;
+    border-radius: 10px;
+    outline: none;
+    border-width: 2px;
+    border-color: #9c9da4;
+  }
+  
+  .option {
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .option p {
+    font-size: 14px;
+  }
+  
+  .option input[type="checkbox"] {
+    -webkit-appearance: none; /* Убирает стандартный стиль */
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #9c9da4;
+    border-radius: 4px; /* Квадрат с небольшими скруглениями */
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .option input[type="checkbox"]:checked {
+    background-color: #4caf50; /* Зеленый цвет при выборе */
+    border-color: #4caf50;
+  }
+  
+  .price {
+    margin-top: 26px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .result {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .pay {
+    width: 136px;
+    height: 48px;
+    background-color: #f0f0f1;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+  }
+  
+  /* Разъединение кнопки и цены */
+  .result .price {
+    flex: 1; /* Заполняет доступное пространство слева */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .result .pay {
+    margin-left: 16px; /* Отступ слева для кнопки */
+    flex-shrink: 0; /* Не уменьшается */
+    width: 136px;
+    height: 48px;
+    background-color: #f0f0f1;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+  }
+  

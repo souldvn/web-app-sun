@@ -1,23 +1,46 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [giftSelection, setGiftSelection] = useState({}); // Хранит выбранные подарки для блюд
-  const [syrupSelection, setSyrupSelection] = useState({}); // Хранит данные о сиропах
+  const [giftSelection, setGiftSelection] = useState({});
+  const [syrupSelection, setSyrupSelection] = useState({});
+  const [extraItems, setExtraItems] = useState([]);
+  const [extraItemsTotalPrice, setExtraItemsTotalPrice] = useState(0);
+  const [additionalProducts, setAdditionalProducts] = useState({});
+  const [selectedOption, setSelectedOption] = useState('host');
+  const [restrictedItems, setRestrictedItems] = useState(['Айран', 'Молоко', 'Кефир', 'Русский завтрак', 'Английский завтрак']);
 
+  useEffect(() => {
+    // Очищаем корзину при изменении режима доставки, если продукт входит в список ограниченных
+    if (selectedOption === 'delivery') {
+      setCartItems(prevItems =>
+        prevItems.filter(item => !restrictedItems.includes(item.text))
+      );
+    }
+  }, [selectedOption, restrictedItems]);
 
-  
+  const addExtraItems = (items, totalPrice) => {
+    setExtraItems(items);
+    setExtraItemsTotalPrice(totalPrice);
+  };
+
+  const setOption = (option) => {
+    setSelectedOption(option);
+    localStorage.setItem('activeButton', option);
+  };
 
   const addToCart = (item, gift = null) => {
-    console.log('Adding to cart', item, gift); // Add log here to check the arguments
-  
+    if (selectedOption === 'delivery' && restrictedItems.includes(item.text)) {
+      return;
+    }
+
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (cartItem) => cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight
       );
-  
+
       if (existingItem) {
         return prevItems.map((cartItem) =>
           cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight
@@ -25,37 +48,18 @@ export const CartProvider = ({ children }) => {
             : cartItem
         );
       } else {
-        if (item.text === 'Капучино') {
-          setSyrupSelection((prevSyrups) => {
-            console.log('Updating syrup selection:', { ...prevSyrups, [item.text]: true }); // Add log here
-            return { ...prevSyrups, [item.text]: true };
-          });
-        }
-  
-        if (gift && (item.text === 'Русский завтрак' || item.text === 'Английский завтрак')) {
-          setGiftSelection((prevGifts) => {
-            console.log('Updating gift selection:', { ...prevGifts, [item.text]: gift }); // Add log here
-            return { ...prevGifts, [item.text]: gift };
-          });
-        }
-  
         return [...prevItems, { ...item, count: 1 }];
       }
     });
   };
-  
-  
-  
-
 
   const removeFromCart = (item) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (cartItem) => cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight
       );
-  
+
       if (existingItem) {
-        // Удаляем товар из корзины
         const updatedItems = existingItem.count > 1
           ? prevItems.map((cartItem) =>
               cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight
@@ -66,28 +70,41 @@ export const CartProvider = ({ children }) => {
               (cartItem) =>
                 !(cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight)
             );
-        
-        // Сбрасываем выбранный подарок и сироп для этого товара
+
         const newGiftSelection = { ...giftSelection };
         const newSyrupSelection = { ...syrupSelection };
-  
-        delete newGiftSelection[item.text]; // Удаляем подарок для этого товара
-        delete newSyrupSelection[item.text]; // Удаляем сироп для этого товара
-  
+
+        delete newGiftSelection[item.text];
+        delete newSyrupSelection[item.text];
+
         setGiftSelection(newGiftSelection);
         setSyrupSelection(newSyrupSelection);
-  
+
         return updatedItems;
       }
       return prevItems;
     });
   };
-  
 
   const clearCart = () => {
     setCartItems([]);
     setGiftSelection({});
-    setSyrupSelection({}); // Очищаем также выбранные сиропы
+    setSyrupSelection({});
+    setAdditionalProducts({});
+    setExtraItems([]);
+    setExtraItemsTotalPrice(0);
+  };
+
+  const addExtraItemsToDish = (item, selectedExtras) => {
+    setCartItems((prevItems) => {
+      return prevItems.map((cartItem) => {
+        if (cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight) {
+          const newExtras = [...(cartItem.extras || []), ...selectedExtras];
+          return { ...cartItem, extras: newExtras };
+        }
+        return cartItem;
+      });
+    });
   };
 
   const setSelectedGift = (gift, itemName) => {
@@ -104,6 +121,18 @@ export const CartProvider = ({ children }) => {
     }));
   };
 
+  const addAdditionalProduct = (item, additionalProduct) => {
+    setCartItems((prevItems) => {
+      return prevItems.map((cartItem) => {
+        if (cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight) {
+          const newExtras = [...(cartItem.extras || []), additionalProduct];
+          return { ...cartItem, extras: newExtras };
+        }
+        return cartItem;
+      });
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -115,9 +144,21 @@ export const CartProvider = ({ children }) => {
         setSelectedGift,
         syrupSelection,
         setSyrupForItem,
+        extraItems,
+        extraItemsTotalPrice,
+        setExtraItemsTotalPrice,
+        addExtraItems,
+        addExtraItemsToDish,
+        additionalProducts,
+        addAdditionalProduct,
+        selectedOption,
+        setOption,
+        restrictedItems // Передаем список ограниченных товаров
       }}
     >
       {children}
     </CartContext.Provider>
   );
 };
+
+export default CartContext;

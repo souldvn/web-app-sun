@@ -51,6 +51,20 @@ import ColdSnacksIn from './components/Inline/ColdSnacks/ColdSnaksIn';
 import GarnishIn from './components/Inline/Garnish/GarnishIn';
 import IceIn from './components/Inline/Ice/IceIn';
 import SousesIn from './components/Inline/Souses/SousesIn';
+import RegRest from './components/Registration/RegRest/RegRest';
+import Time from './components/Registration/RegRest/Period/Time';
+import Day from './components/Registration/RegRest/Period/Day';
+import Morning from './components/Registration/RegRest/Period/Morning';
+import Evening from './components/Registration/RegRest/Period/Evening';
+import RegDel from './components/Registration/RegDel/RegDel';
+import TimeDel from './components/Registration/RegDel/TimeDel';
+import DayDel from './components/Registration/RegDel/DayDel';
+import EveningDel from './components/Registration/RegDel/EveningDel';
+import Address from './components/Registration/RegDel/Address/Address';
+import SunVill from './components/Registration/RegDel/SunVill/SunVill';
+import FlatDel from './components/Registration/RegDel/Address/FlatDel/FlatDel';
+import { DeliveryProvider } from './components/Contextes/RegContext';
+
 
 
 
@@ -74,6 +88,7 @@ const App = () => {
     
 
     <CartProvider>
+      <DeliveryProvider>
     <Router>
       <ScrollToTop/>
       <div className="App">
@@ -127,14 +142,30 @@ const App = () => {
             <Route path="/coldsnacksIn" element={<ColdSnacksIn />} />
             <Route path="/garnishIn" element={<GarnishIn />} />
             <Route path="/iceIn" element={<IceIn />} />
-            <Route path="/sousesIn" element={<SousesIn />} />
-
-            
+            <Route path="/sousesIn" element={<SousesIn />} />   
+            <Route path="/regrest" element={<RegRest />} />
+            <Route path="/time" element={<Time />} />
+            <Route path="/day" element={<Day />} />
+            <Route path="/morning" element={<Morning />} />
+            <Route path="/evening" element={<Evening />} />
+            <Route path="regdel" element={<RegDel />} />
+            <Route path="/time" element={<Time />} />
+            <Route path="/day" element={<Day />} />
+            <Route path="/morning" element={<Morning />} />
+            <Route path="/evening" element={<Evening />} />
+            <Route path="/regdel" element={<RegDel />} />
+            <Route path="/timedel" element={<TimeDel />} />
+            <Route path="/daydel" element={<DayDel />} />
+            <Route path="/eveningdel" element={<EveningDel />} />
+            <Route path="/address" element={<Address />} />
+            <Route path="/sunvill" element={<SunVill />} />
+            <Route path="/flatdel" element={<FlatDel />} />
           </Routes>
         )}
     
       </div>
     </Router>
+    </DeliveryProvider>
     </CartProvider>
   );
 };

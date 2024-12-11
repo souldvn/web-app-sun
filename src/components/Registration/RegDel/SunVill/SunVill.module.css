@@ -1,0 +1,17 @@
+.timecontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Убираем отступы между элементами */
+  }
+  
+  .time {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0; /* Добавляем вертикальный отступ для линий */
+    border-bottom: 1px solid #d3d3d3; /* Светло-серая линия */
+  }
+  
+  .time:last-child {
+
+  }
+  

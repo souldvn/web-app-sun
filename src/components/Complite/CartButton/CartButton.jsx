@@ -6,10 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 const CartButton = () => {
   const navigate = useNavigate();
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, selectedOption } = useContext(CartContext);
 
   // Вычисление общего количества товаров в корзине
-  const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
+  const cartCount = cartItems.reduce((total, item) => {
+    if (selectedOption === 'delivery' && ['Айран', 'Молоко', 'Кефир', 'Русский завтрак', 'Английский завтрак'].includes(item.text)) {
+      return total;
+    }
+    return total + item.count;
+  }, 0);
 
   const handleCardClick = () => {
     if (cartCount > 0) {
@@ -24,6 +29,7 @@ const CartButton = () => {
       <button 
         className={`${s.cartbutton} ${cartCount > 0 ? s.filled : ''}`} 
         onClick={handleCardClick}
+        // disabled={selectedOption === 'delivery'}
       >
         Перейти в корзину
         {cartCount > 0 && (
@@ -37,6 +43,4 @@ const CartButton = () => {
   );
 }; 
 
-
 export default CartButton;
-

@@ -1,63 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../Contextes/CartContext';
 import balls from '../../assets/icons/balls.svg';
 import Carddeffault from '../Complite/carddeffault/Carddeffault';
 import s from './mainscreen.module.css';
 import CartButton from '../Complite/CartButton/CartButton';
 
 const Mainscreen = () => {
-  const [activeButton, setActiveButton] = useState('host');
+  const { selectedOption, setOption } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedButton = localStorage.getItem('activeButton');
-    setActiveButton(savedButton || 'host');
-  }, []);
+    const savedOption = localStorage.getItem('activeButton') || 'host';
+    setOption(savedOption);
+  }, [setOption]);
 
-  const handleButtonClick = (button) => {
-    setActiveButton(button);
-    localStorage.setItem('activeButton', button);
+  const handleButtonClick = (option) => {
+    setOption(option);
   };
 
   const handleCardClick = (cardName) => {
-    if (cardName === 'Завтраки') {
-      navigate('/breakfast');
+    const routes = {
+      "Завтраки": "/breakfast",
+      "Барная карта": "/bar",
+      "Гриль & Мангал": "/grill",
+      "Бургеры": "/burgers",
+      "Горячие блюда": "/hot",
+      "Горячие закуски": "/hotSnacks",
+      "Супы": "/soups",
+      "Салаты": "/salads",
+      "Тесто": "/dough",
+      "Холодные закуски": "/coldSnacks",
+      "Гарниры": "/garnishes",
+      "Мороженное": "/icecreams",
+      "Соусы": "/souses",
+    };
+
+    if (routes[cardName]) {
+      navigate(routes[cardName]);
     }
-    if (cardName === 'Барная карта') {
-        navigate('/bar');
-      }
-      if (cardName === 'Гриль & Мангал') {
-        navigate('/grill');
-      }
-      if (cardName === 'Бургеры') {
-        navigate('/burgers');
-      }
-      if (cardName === 'Горячие блюда') {
-        navigate('/hot');
-      }
-      if (cardName === 'Горячие закуски') {
-        navigate('/hotSnacks');
-      }if (cardName === 'Супы') {
-        navigate('/soups');
-      }
-      if (cardName === 'Салаты') {
-        navigate('/salads');
-      }
-      if (cardName === 'Тесто') {
-        navigate('/dough');
-      }
-      if (cardName === 'Холодные закуски') {
-        navigate('/coldSnacks');
-      }
-      if (cardName === 'Гарниры') {
-        navigate('/garnishes');
-      }
-      if (cardName === 'Мороженное') {
-        navigate('/icecreams');
-      }
-      if (cardName === 'Соусы') {
-        navigate('/souses');
-      }
   };
 
   const cards = [
@@ -73,8 +54,12 @@ const Mainscreen = () => {
     "Холодные закуски",
     "Гарниры",
     "Мороженное",
-    "Соусы"
+    "Соусы",
   ];
+
+  const filteredCards = selectedOption === 'delivery'
+    ? cards.filter((card) => card !== "Завтраки")
+    : cards;
 
   return (
     <div className={s.mainscreen}>
@@ -85,13 +70,13 @@ const Mainscreen = () => {
       </div>
       <div className={s.variants}>
         <button
-          className={`${s.buttonhost} ${activeButton === 'host' ? s.active : ''}`}
+          className={`${s.buttonhost} ${selectedOption === 'host' ? s.active : ''}`}
           onClick={() => handleButtonClick('host')}
         >
           В ресторане
         </button>
         <button
-          className={`${s.buttondelivery} ${activeButton === 'delivery' ? s.active : ''}`}
+          className={`${s.buttondelivery} ${selectedOption === 'delivery' ? s.active : ''}`}
           onClick={() => handleButtonClick('delivery')}
         >
           Доставка
@@ -99,7 +84,7 @@ const Mainscreen = () => {
       </div>
 
       <div className={s.cardsContainer}>
-        {cards.map((text, index) => (
+        {filteredCards.map((text, index) => (
           <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
         ))}
       </div>
@@ -109,4 +94,3 @@ const Mainscreen = () => {
 };
 
 export default Mainscreen;
-

@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import s from './Inline.module.css';
 import arrowback from '../../../../assets/icons/arrowback.svg';
 import basket from '../../../../assets/icons/basketbig.svg';
 import BottomInfo from '../../BottomInfo/BottomInfo';
 import { CartContext } from '../../../Contextes/CartContext';
 import Recomendations from './Recomendations/Recomendations';
-import more from '../../../../assets/icons/more.svg';
-import PresentButton from '../../../Complite/PresentButton/PresentButton';
-import MoreButton from '../../../Complite/MoreButton/MoreButton';
+
 
 const Inline = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, extraItemsTotalPrice, setExtraItemsTotalPrice, addExtraItems } = useContext(CartContext);
 
-  // Состояние для отображения шторки
-  const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
-  const [isMoreModalOpen, setIsMoreModalOpen] = useState(false);
+  const [extras, setExtras] = useState({});
 
 
   const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedDish } = useContext(CartContext);
+
   const { dish, fromRecomendations } = location.state || { dish: selectedDish, fromRecomendations: false };
 
   if (!dish) {
@@ -30,11 +26,8 @@ const Inline = () => {
   }
 
   const handleBackClick = () => {
-    navigate(-1); // Вернуться на предыдущую страницу
+    navigate(-1);
   };
-
-
-
 
   const handleCardClick = () => {
     if (cartCount > 0) {
@@ -44,12 +37,34 @@ const Inline = () => {
     }
   };
 
-  const openGiftModal = () => setIsGiftModalOpen(true);
-  const closeGiftModal = () => setIsGiftModalOpen(false);
+  useEffect(() => {
+    // Загружаем данные для текущего блюда
+    const savedData = localStorage.getItem(`extras-${dish.id}`);
+    const savedTotalPrice = localStorage.getItem(`totalPrice-${dish.id}`);
+    
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setExtras((prevExtras) => ({
+        ...prevExtras,
+        [dish.id]: { selectedExtras: parsedData, totalPrice: Number(savedTotalPrice) },
+      }));
+    }
+  }, [dish.id]); // Загружаем данные при изменении dish.id
 
-  const openMoreModal = () => setIsMoreModalOpen(true);
-  const closeMoreModal = () => setIsMoreModalOpen(false);
-
+  // Функция для обработки добавления дополнительных товаров
+  const handleAddExtras = (extraData) => {
+    const { extras: selectedExtras, totalPrice } = extraData;
+    setExtras((prevExtras) => ({
+      ...prevExtras,
+      [dish.id]: { selectedExtras, totalPrice },
+    }));
+    setExtraItemsTotalPrice(totalPrice);
+    addExtraItems(selectedExtras, totalPrice);  // Make sure this updates the cart context
+  
+    // Save to localStorage
+    localStorage.setItem(`extras-${dish.id}`, JSON.stringify(selectedExtras));
+    localStorage.setItem(`totalPrice-${dish.id}`, totalPrice);
+  };
 
 
   return (
@@ -78,35 +93,19 @@ const Inline = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
-      <div className={s.buttonsMore}>
-        {(dish.text.includes('Русский завтрак') || dish.text.includes('Английский завтрак')) && (
-          <>
-            <button className={s.present} onClick={openGiftModal}>
-              Подарок к завтраку
-              <img src={more} alt="more" />
-            </button>
-            <button className={s.present} onClick={openMoreModal}>
-              Дополнительно к завтраку
-              <img src={more} alt="more" />
-            </button>
-          </>
-        )}
-      </div>
+
 
       {!fromRecomendations && <Recomendations />}
-      <BottomInfo 
-          price={dish.price} 
-          text={dish.text} 
-          weight={dish.weight} 
-          specialButton={dish.text === "Русский завтрак" || dish.text === "Английский завтрак"} 
-          
-        />
 
-      {isGiftModalOpen && <PresentButton onClose={closeGiftModal} itemName={dish.text} />}
-
-      {isMoreModalOpen && <MoreButton onClose={closeMoreModal} itemName={dish.text} />}
-
-      {/* Оверлей и шторка */}
+      <BottomInfo
+        itemId={dish.id}
+        price={dish.price}
+        text={dish.text}
+        weight={dish.weight}
+        specialButton={dish.text === "Русский завтрак" || dish.text === "Английский завтрак"}
+        extraPrice={extras[dish.id]?.totalPrice || 0}
+        onExtrasChange={(newExtras) => handleAddExtras({ extras: newExtras, totalPrice: extras[dish.id]?.totalPrice })}
+      />
 
     </div>
   );

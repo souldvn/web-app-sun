@@ -6,29 +6,34 @@ import s from './CardPrice.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 import { useNavigate } from 'react-router-dom';
 
-const CardPrice = ({ price, text, weight, description, time, compound }) => {
+const CardPrice = ({ price, text, weight, description, time, compound, extrasPrice = 0 }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
 
+  const formattedPrice = parseInt(price.replace(/\D/g, ""));
   const item = cartItems.find(
-    (item) => item.price === price && item.text === text && item.weight === weight
+    (cartItem) =>
+      cartItem.price === formattedPrice &&
+      cartItem.text.trim() === text.trim() &&
+      cartItem.weight.trim() === weight.trim()
   );
   const itemCount = item ? item.count : 0;
 
-  const handleAddClick = (event) => {
-    event.stopPropagation(); // Останавливаем всплытие события
 
-    // Проверяем название карточки
-    if (text === 'Русский завтрак' || text === 'Английский завтрак') {
-      navigate('/inline', {
+
+  const totalPrice = formattedPrice + extrasPrice;
+
+  const handleAddClick = (event) => {
+    event.stopPropagation();
+    if (text === "Русский завтрак" || text === "Английский завтрак") {
+      navigate("/inline", {
         state: {
           dish: { text, price, weight, description, time, compound },
           fromRecomendations: false,
         },
       });
     } else {
-      // Добавляем в корзину, если это не завтрак
-      addToCart({ price, text, weight });
+      addToCart({ price: totalPrice, text, weight });
     }
   };
 
@@ -36,7 +41,7 @@ const CardPrice = ({ price, text, weight, description, time, compound }) => {
     <div className={s.cardprice}>
       <div className={s.foto}></div>
       <div className={s.infosmall}>
-        <p className={s.price}>{price}</p>
+        <p className={s.price}>{totalPrice} ₽</p>
         <p className={s.text}>{text}</p>
         <p className={s.weight}>{weight}</p>
 
@@ -45,14 +50,10 @@ const CardPrice = ({ price, text, weight, description, time, compound }) => {
             className={`${s.button} ${s.buttonModified}`}
             onClick={(event) => {
               event.stopPropagation();
-              removeFromCart({ price, text, weight });
+              removeFromCart({ price: totalPrice, text, weight });
             }}
           >
-            <img
-              className={s.icon}
-              src={minus}
-              alt="minus"
-            />
+            <img className={s.icon} src={minus} alt="minus" />
             <p className={s.itemCount}>{itemCount}</p>
             <img
               className={s.icon}
@@ -60,7 +61,7 @@ const CardPrice = ({ price, text, weight, description, time, compound }) => {
               alt="plus"
               onClick={(event) => {
                 event.stopPropagation();
-                addToCart({ price, text, weight });
+                addToCart({ price: totalPrice, text, weight });
               }}
             />
           </button>
@@ -75,4 +76,7 @@ const CardPrice = ({ price, text, weight, description, time, compound }) => {
   );
 };
 
+
 export default CardPrice;
+
+

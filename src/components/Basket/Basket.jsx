@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import s from './Basket.module.css';
 import { CartContext } from '../Contextes/CartContext';
 import TopBar from '../Complite/TopBar/TopBar';
@@ -8,9 +9,12 @@ import ButtonBasket from './ButtonBasket/ButtonBasket';
 import trash from '../../assets/icons/trash.svg';
 
 const Basket = () => {
-  const { cartItems, removeFromCart, addToCart, clearCart, giftSelection, syrupSelection } = useContext(CartContext);
+  const { cartItems, removeFromCart, addToCart, clearCart, giftSelection, syrupSelection, selectedOption, restrictedItems } = useContext(CartContext);
   const [showOverlay, setShowOverlay] = useState(false);
   const isEmpty = cartItems.length === 0;
+
+
+
 
   const handleTrashClick = () => {
     if (!isEmpty) {
@@ -61,39 +65,59 @@ const Basket = () => {
             <p>Добавьте что‑нибудь в корзину</p>
           </div>
         ) : (
-          cartItems.map((item) => (
-            <div className={s.basketPosition} key={`${item.price}-${item.text}-${item.weight}`}>
-              <div className={s.other}>
-                <div className={s.basImg}></div>
-                <div className={s.info}>
-                  {item.text}
-                  <div className={s.priceweight}>
-                    <p className={s.price}>
-                      {(parseFloat(item.price) || 0) * (item.count || 0)} ₽
-                    </p>
-                    <p className={s.weight}>{item.weight}</p>
+          cartItems.map((item) => {
+            // Проверяем, входит ли товар в restrictedItems
+            const isRestricted = restrictedItems.includes(item.text);
+            if (selectedOption === 'delivery' && isRestricted) return null;
+
+            return (
+              <div className={s.basketPosition} key={`${item.price}-${item.text}-${item.weight}`}>
+                <div className={s.other}>
+                  <div className={s.basImg}></div>
+                  <div className={s.info}>
+                    {item.text}
+                    <div className={s.priceweight}>
+                      <p className={s.price}>
+                        {(parseFloat(item.price) || 0) * (item.count || 0)} ₽
+                      </p>
+                      <p className={s.weight}>{item.weight}</p>
+                    </div>
+
+                    {/* Отображаем подарок, если он есть */}
+                    {giftSelection[item.text] && (
+                      <p className={s.gift}>{giftSelection[item.text]}</p>
+                    )}
+
+                    {/* Отображаем сироп, если он выбран */}
+                    {syrupSelection[item.text] && (
+                      <p className={s.gift}>Сироп в ассортименте</p>
+                    )}
+
+                    {/* Отображаем дополнительные товары, если они есть */}
+                    {item.extras && item.extras.length > 0 && (
+                      <div className={s.extras}>
+                        <h4>Дополнительные товары:</h4>
+                        {item.extras.map((extra, index) => (
+                          <p key={index} className={s.extraItem}>
+                            {extra}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  {/* Отображаем подарок, если он есть */}
-                  {giftSelection[item.text] && (
-                    <p className={s.gift}>{giftSelection[item.text]}</p>
-                  )}
-                  {/* Отображаем сироп, если он выбран */}
-                  {syrupSelection[item.text] && (
-                    <p className={s.gift}>Сироп в ассортименте</p>
-                  )}
+                </div>
+                <div className={s.lenght}>
+                  <button className={s.button} onClick={() => removeFromCart(item)}>
+                    <img className={s.icon} src={minus} alt="minus" />
+                  </button>
+                  <p className={s.itemCount}>{item.count}</p>
+                  <button className={s.button} onClick={() => addToCart(item)}>
+                    <img className={s.icon} src={plus} alt="plus" />
+                  </button>
                 </div>
               </div>
-              <div className={s.lenght}>
-                <button className={s.button} onClick={() => removeFromCart(item)}>
-                  <img className={s.icon} src={minus} alt="minus" />
-                </button>
-                <p className={s.itemCount}>{item.count}</p>
-                <button className={s.button} onClick={() => addToCart(item)}>
-                  <img className={s.icon} src={plus} alt="plus" />
-                </button>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
       <ButtonBasket />

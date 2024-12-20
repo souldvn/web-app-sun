@@ -1,39 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
 import s from './Burgers.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
-
-const cards = [
-  { text: "Гамбургер", price: "550 ₽", weight: "325/150 г", time:"30-60 минут", description:"Все его знают, каждый о нем слышал — этот гамбургер как тот самый популярный парень в школе. Сочный, уверенный в себе, со свежей булкой, говяжьей котлетой и секретным соусом, который завораживает. Айсберг, томат и солёный огурчик добавляют свежести, а маринованный лук придаёт остроту.", compound:"Булка, котлета говяжья, соус «Бургер», салат айсберг, томат, солёный огурчик, маринованный красный лук, картофель фри" },
-  { text: "Чикен бургер", price: "500 ₽", weight: "300/150 г", time:"30-60 минут", description:"Это как бургер, только чикен бургер. Нежная котлета уютно устроилась на мягкой булке, окружённая свежим салатом айсберг и томатом, а соус «Тар-тар» придаёт всему этому свою пикантную нотку. А рядом — порция хрустящего картофеля фри, который никогда не оставит без внимания!", compound:"Булка, котлета куриная, соус «Тар-тар», салат айсберг, томат, картофель фри" },
-  { text: "Чизбургер", price: "600 ₽", weight: "350/150 г", time:"30-60 минут", description:"Чизбургер — это как приехать в отель Sun Village Arkhyz после долгой дороги. Мягкая булка — как тёплый номер, куда хочется вернуться. Говяжья котлета и Чеддер создают уют, как панорамный вид на горы. Свежий салат и томаты добавляют бодрости, как прогулка на свежем воздухе.", compound:"Булка, сыр Чеддер, котлета говяжья, соус «Бургер», салат айсберг, томат, солёный огурчик, маринованный красный лук, картофель фри" },
-  { text: "Чизбургер куринный", price: "550 ₽", weight: "350/150 г", time:"30-60 минут", description:"На Софийской поляне, где вкус всегда на высоте, появился герой — Чизбургер с курицей. Мягкая булка словно облако, поддерживает хрустящий айсберг и горячую куриную котлету, сыр Чеддер обнимает всё, как солнечный луч, а соус «Тар-тар» — как лёгкий ветерок, добавляет пикантности.", compound:"Булка, сыр Чеддер, котлета куриная, соус «Тар-тар», салат айсберг, томат, картофель фри" }
-];
+import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
 
 const Burgers = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBurgers = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "burgers"));
+        if (snapshot.exists()) {
+          const burgersData = snapshot.val();
+          const burgersArray = Object.keys(burgersData).map(key => ({
+            id: key,
+            ...burgersData[key],
+          }));
+          console.log("Fetched burgers data:", burgersArray);
+          setCards(burgersArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching burgers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBurgers();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/burgersIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className={s.burgers}>
       <TopBar text={"Бургеры"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noBurgers}>No available burgers</div>
+        )}
       </div>
       <CartButton />
     </div>

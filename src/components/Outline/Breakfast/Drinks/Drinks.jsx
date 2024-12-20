@@ -1,41 +1,78 @@
-import React from 'react'
-import s from './Drinks.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Drinks.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  {id:1, text: "Молоко", price: "100 ₽", weight: "250 мл", description:"Полезный и освежающий напиток, который идеально подходит для завтрака на природе. Оно прекрасно дополняет каши, создавая атмосферу уюта и комфорта в горном окружении.", time:"15-25 минут" },
-  {id:2, text: "Айран", price: "150 ₽", weight: "250 мл", description: "Отличное дополнение к завтраку на природе. Его лёгкая кислинка прекрасно освежает и утоляет жажду, создавая атмосферу комфорта и удовольствия во время отдыха в горах.", time:"15-25 минут" },
-  {id:3, text: "Кефир", price: "150 ₽", weight: "250 мл", description:"Бодрящий кисломолочный напиток с лёгкой текстурой, который прекрасно подойдёт для утра на свежем воздухе. Его освежающий вкус и полезные свойства делают его отличным спутником в вашем горном отдыхе.", time:"15-25 минут" },
-
-];
 const Drinks = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDrinks = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "drinks"));
+        if (snapshot.exists()) {
+          const drinksData = snapshot.val();
+          const drinksArray = Object.keys(drinksData).map(key => ({
+            id: key,
+            ...drinksData[key],
+          }));
+          console.log("Fetched drinks data:", drinksArray);
+          setCards(drinksArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching drinks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDrinks();
+  }, []);
+
   const handleCardClick = (card) => {
     navigate('/drinksIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className={s.drinks}>
-      <TopBar text={"Блюда"} />
+      <TopBar text={"Напитки"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDrinks}>No available drinks</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Drinks
+export default Drinks;

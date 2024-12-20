@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import TopBar from '../../../../Complite/TopBar/TopBar';
-import s from './HouseDel.module.css';
+import s from './Hotels.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDeliveryContext } from '../../../../Contextes/RegContext';
 
-const HouseDel = () => {
+const Hotels = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
@@ -13,9 +13,10 @@ const HouseDel = () => {
   const location = useLocation();
   const { totalPrice } = location.state || { totalPrice: 0 };
 
-    const flats = [
-        'Дом Suite № 1', 'Дом Suite № 2', 'Дом Suite № 3', 'Дом Suite № 4', 'Дом Duplex № 5', 'Дом Duplex № 6', 'Дом Duplex № 7', 'Дом Duplex № 8', 'Дом Duplex № 9', 'Дом Duplex № 10', 'Сруб № 1', 'Сруб № 2', 'Баня по белому'
-    ];
+  const flats = [
+    'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet', 'Daut Resort', 'Leopard Hotel', 'La Vida',  'Горная Жемчужина', 'Гостевой дом Шишка'
+  ];
+
 
   const handleCheckboxChange = (index) => {
     setActiveIndex(index);
@@ -57,4 +58,4 @@ const HouseDel = () => {
   );
 };
 
-export default HouseDel;
+export default Hotels;

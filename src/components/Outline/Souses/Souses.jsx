@@ -1,49 +1,78 @@
-import React from 'react'
-import s from './Souses.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database";
+import s from './Souses.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../firebaseConfig'; // Adjust path if necessary
 
-const cards = [
-  { text: "Перечный", price: "150 ₽", weight: "50 г", description:"Упрямый дядя, который сначала может показаться строгим, на самом деле оказывается полон тепла и обаяния. Его пикантный вкус может немного пощипать, но как только вы попробуете его, вы поймёте, что за этим острым внешним видом скрывается настоящая кулинарная находка. Идеально подходит для тех, кто любит сочетание остроты и глубины вкуса.", time: "5 минут" },
-  { text: "Аджика домашняя", price: "120 ₽", weight: "50 г", description:"Как ваша заботливая бабушка, которая всегда знает, как добавить тепла и вкуса в любую еду. Сначала кажется, что она слегка пряная, но за этой остротой скрывается богатство вкусов и ароматов, которые создают уют и напоминают о доме.", time: "5 минут" }, 
-  { text: "Кетчуп", price: "100 ₽", weight: "50 г", description:"Тот самый друг, которого все зовут за компанию, потому что он идеально подходит ко всему. Без него не обходится ни одно застолье: будь то картошка, бургер или просто макароны, он всегда рядом, чтобы сделать вкус лучше.", time: "5 минут" },
-  {text: "Сырный", price: "100 ₽", weight: "50г", description: "Ох, каких только блюд не придумали с сыром! Сырные палочки, пицца, лазанья, макароны с сыром, сырные омлеты, фондю, сэндвичи, сырные пироги, запечённые овощи с сыром… Вот и до соуса добрались!", time: "5 минут" },
-  { text: "Наршараб", price: "100 ₽", weight: "50 г", description:"Наршараб — это как имя восточной принцессы. Богатый и насыщенный вкус, с тонкой кисло-сладкой ноткой, словно воспоминание о тёплом закате среди гранатовых деревьев.", time: "5 минут" },
-  { text: "BBQ", price: "100 ₽", weight: "50 г", description:"Это BBQ — вперёд на барбекю! Или не на барбекю, а прямо в ресторан SUNVILL REST, чтобы добавить вкуса к самому сочному мясу или бургеру. Этот соус знает своё дело: Подавайте его к мясу на гриле, ароматному шашлыку или вкусным бургерам, и ваш ужин станет ещё вкуснее!", time: "5 минут" },
-  { text: "Чатни из манго", price: "120 ₽", weight: "50 г", description:"Зачётный чатни из манго как домашка на пятёрку для ваших блюд! Сладкое манго и пряности делают его идеальным компаньоном для любого застолья. Этот соус добавит вашему столу вкусную изюминку и станет вашим кулинарным хитрым решением.", time:"5 минут" },
-  { text: "Цахтон", price: "120 ₽", weight: "50 г", description:"Давай по чесноку, честно: это самый вкусный чесночный соус. Честное-пречестное, он богатый, насыщенный и просто идеален для всех ваших любимых блюд. Будь то мясо, овощи или картошка, этот соус добавит неповторимый чесночный вкус и аромат, который невозможно забыть!", time:"5 минут" },
-  { text: "Шрирача", price: "150 ₽", weight: "50 г", description:"Тайский соус, созданный для тех, кто любит остроту и насыщенный вкус. Сочетание чили, чеснока и уксуса придаёт блюдам приятную остроту и богатый аромат, превращая каждое угощение в настоящее открытие.", time: "5 минут" },
-  { text: "Сметана", price: "100 ₽", weight: "50 г", description:"Да-да, и не говори, как среди целого набора соусов могло затаиться такое сокровище. Эта сметанка — как изысканная жемчужина среди простых украшений.", time: "5 минут" },
-  { text: "Горчица", price: "100 ₽", weight: "50 г", description:"Пробовали этот шедевр? Мы слегка огорчены, что до сих пор не все оценили его прелесть. Эта горчица — как волшебный штрих к любому блюду, её острота и насыщенный вкус придают исключительный характер и незабываемое послевкусие, делая каждую трапезу по‑настоящему особенной.", time: "5 минут" },
-  { text: "Мёд", price: "300 ₽", weight: "50 г", time: "5 минут", description:"По секрету от косолапого медведя узнали, что этот мёд — не просто сладость, а настоящий эликсир природы. Его густая золотая текстура и насыщенный вкус делают его идеальным для добавления в чай, десерты или просто для наслаждения ложкой."},
-  { text: "Дор Блю", price: "150 ₽", weight: "50 г", time: "5 минут", description:"Соус Дор Блю — это сливочное лакомство, наполненное характерным вкусом голубого сыра. Насыщенный и пикантный, он придаёт вашим блюдам неповторимый глубинный аромат и лёгкую остроту. Идеален для подачи к мясу, салатам или как изысканный дип, этот соус превращает каждую трапезу в гастрономическое удовольствие."} 
-];
 const Souses = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSouses = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "souses"));
+        if (snapshot.exists()) {
+          const sousesData = snapshot.val();
+          const sousesArray = Object.keys(sousesData).map(key => ({
+            id: key,
+            ...sousesData[key],
+          }));
+          console.log("Fetched souses data:", sousesArray);
+          setCards(sousesArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching souses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSouses();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/sousesIn', { state: { dish: card, fromRecomendations: false } });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.steaks}>
       <TopBar text={"Соусы"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noSouses}>No available souses</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Souses
+export default Souses;

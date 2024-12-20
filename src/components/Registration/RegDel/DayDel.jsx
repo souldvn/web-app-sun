@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './DayDel.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDeliveryContext } from '../../Contextes/RegContext';
 
 const Day = () => {
@@ -9,6 +9,9 @@ const Day = () => {
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
   const { deliveryData, setDeliveryData } = useDeliveryContext();
+
+  const location = useLocation();
+  const { totalPrice } = location.state || { totalPrice: 0 };
 
 
   const times = [
@@ -25,7 +28,7 @@ const Day = () => {
   const handleApplyClick = () => {
     if (activeIndex !== null) {
       setDeliveryData((prev) => ({ ...prev, time: times[activeIndex] }));
-      navigate('/regdel');
+      navigate('/regdel', { state: { time: times[activeIndex], totalPrice } });
     }
   };
 

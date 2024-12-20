@@ -1,26 +1,45 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Импорт ref, get, и child
 import s from './Dishes.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-
-const cards = [
-  { id: 1, text: "Русский завтрак", price: "850", weight: "880 г", description: "Русский завтрак — это идеальное начало дня: пышный омлет с нежной ветчиной и сыром, свежие овощи, хлеб и каша манная, которая согревает изнутри. Сливочное масло добавляет мягкости каждому кусочку, а простота и сытность сырника со сметаной подарят заряд бодрости на весь день.", time: "15-25 минут", compound: "Каша манная, омлет, огурец, помидор, сыр, ветчина, сырник, сметана, хлеб тостовый, масло сливочное"  },
-  { id: 2, text: "Английский завтрак", price: "850", weight: "680 г", description: "Настоящий английский завтрак — отличное начало дня: овсянка, глазунья с сосисками, тост с маслом, свежий огурец и помидор. Завершают завтрак воздушные панкейки со сгущённым молоком, даря заряд энергии на весь день.", time: "15-25 минут", compound: "Каша овсяная, яичница глазунья, сосиски, огурец, помидор, хлеб тостовый, масло сливочное, панкейки, сгущёное молоко" },
-  { id: 3, text: "Шакшука с гренкой", price: "450", weight: "590 г", description: "Погрузитесь в атмосферу Архыза с нашей шакшукой! Яйца, помидоры, болгарский перец и ароматные специи создают идеальное сочетание, а хрустящий домашний хлеб прекрасно дополняет это яркое блюдо.", time: "10-15 минут", compound: "Яйцо, помидоры, лук, перец болгарский, зелень, соль, специи, хлеб домашний" },
-  { id: 4, text: "Яичница глазунья из двух яиц", price: "250", weight: "150г", description: "Насладитесь утренним уютом в Sun Village с нашей яичницей-глазуньей из двух яиц! Нежные куриные яйца, щедро приправленные специями и свежей зеленью, создают идеальное начало дня.", time: "10-15 минут", compound: "Яйца куриные, специи, зелень" },
-  { id: 5, text: "Яйцо отварное", price: "60", weight: "1 шт", description: "Отварное яйцо — лёгкий и питательный перекус, идеально подходящий для начала дня в расслабленном ритме.", time: "15-25 минут" },
-  { id: 6, text: "Сэндвич с сёмгой", price: "400", weight: "280 г", description: "Сэндвич с сёмгой — идеальный перекус для утреннего отдыха в горах. Нежная сёмга и свежий хлеб отлично насыщают, даря энергию для покорения новых высот и наслаждения горными пейзажами.", time: "15-25 минут", compound: "Хлеб тостовый, филе сёмги, сыр голландский, помидор, салат Романо, соус «Сырный»" },
-  { id: 7, text: "Сэндвич с курицей", price: "350", weight: "280 г", description: "Сэндвич с курицей — вкусное сочетание для отдыха. Тостовый хлеб с сочным куриным филе, голландским сыром и свежими помидорами, дополненный салатом Романо и сырным соусом, дарит насыщение и освежает в горах.", time: "15-25 минут", compound:"Хлеб тостовый, филе куриное, сыр голландский, помидор, салат Романо, соус «Сырный»" },
-  { id: 8, text: "Сэндвич с ветчиной", price: "300", weight: "280 г", description: "Сэндвич с ветчиной индейки — это вкусное угощение. Тостовый хлеб с нежной ветчиной индейки, голландским сыром, свежим помидором и салатом Романо создаёт атмосферу уюта и наслаждения.", time: "15-25 минут", compound:"Хлеб тостовый, ветчина индейки, сыр голландский, помидор, салат Романо, соус «Сырный»" },
-  { id: 9, text: "Каша в ассортименте", price: "250", weight: "300 г", description: "Каша в ассортименте — это отличный выбор для завтрака на свежем воздухе. Она согревает и дарит энергию, создавая атмосферу уюта и комфортного начала дня в горах.", time: "15-25 минут" },
-];
+import { database } from '../../../../firebaseConfig'; // Импорт database из firebaseConfig
 
 const Dishes = () => {
   const navigate = useNavigate();
-
+  const [cards, setCards] = useState([]);
   const [extras, setExtras] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "dishes"));
+        if (snapshot.exists()) {
+          const dishesData = snapshot.val();
+          const dishesArray = Object.keys(dishesData).map(key => ({
+            id: key,
+            ...dishesData[key],
+          }));
+          console.log("Fetched dishes data:", dishesArray);
+          setCards(dishesArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Ошибка при получении блюд:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDishes();
+  }, []);
 
   const handleExtrasChange = (id, newExtras) => {
     setExtras((prevExtras) => ({
@@ -32,14 +51,21 @@ const Dishes = () => {
   const handleCardClick = (card) => {
     navigate('/inline', { state: { dish: card, fromRecomendations: false } });
   };
-  
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Произошла ошибка: {error.message}</div>;
+  }
 
   return (
     <div className={s.dishes}>
       <TopBar text={"Блюда"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
@@ -51,7 +77,9 @@ const Dishes = () => {
               onExtrasChange={(newExtras) => handleExtrasChange(card.id, newExtras)}
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDishes}>Нет доступных блюд</div>
+        )}
       </div>
       <CartButton />
     </div>

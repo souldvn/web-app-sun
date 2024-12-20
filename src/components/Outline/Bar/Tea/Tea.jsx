@@ -1,43 +1,78 @@
-import React from 'react'
-import s from './Tea.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database";
+import s from './Tea.module.css'; // Assuming a similar CSS file exists
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
-const cards = [
-  { text: "Чёрный Ассам", price: "380 ₽", weight: "1 л", time:"10-15 минут", description:"Его глубокий вкус и характерный аромат дарят ощущение тепла и уюта, а каждый глоток наполняет бодростью. Идеальный выбор для утреннего пробуждения или спокойного вечера, этот чай подарит вам незабываемые моменты наслаждения и расслабления." },
-  { text: "Зелёный Сенча", price: "400 ₽", weight: "1 л", time:"10-15 минут", description:"Японский чай с нежным вкусом и свежим ароматом. Ярко-зеленые листья раскрываются в чашке, даря освежающий напиток с лёгкой травянистой ноткой." },
-  { text: "Эрл Грей", price: "400 ₽", weight: "1 л", time:"10-15 минут", description:"Эрл Грей — это элегантный чёрный чай, в котором гармонично сочетаются насыщенный вкус и освежающий аромат бергамота. Отлично подходит для утреннего чаепития или спокойного вечера, наполняя атмосферу теплом и уютом." },
-  { text: "Чёрный с чабрецом", price: "450 ₽", weight: "1 л", time:"10-15 минут", description:"Ароматный чай, в котором насыщенный чёрный чай встречается с травянистой ноткой чабреца. Такой симбиоз придаёт чаю уникальный вкус и лёгкую пряность, создавая атмосферу уюта и гармонии. Каждый глоток этого чая напоминает о тепле домашних вечеров и спокойных моментах." },
-  { text: "Молочный улун", price: "480 ₽", weight: "1 л", time:"10-15 минут", description:"Молочный улун — это изысканный чай с мягким сливочным вкусом и нежным ароматом. Лёгкие молочные нотки делают его настоящим удовольствием, а каждый глоток дарит ощущение уюта. Идеальный выбор для тех, кто ищет моменты спокойствия и наслаждения." },
-  { text: "Горный чай", price: "400 ₽", weight: "1 л", time:"10-15 минут", description:"Натуральный напиток, собранный из растений высокогорий. Он обладает свежим, лёгким вкусом и ароматом, наполненным нотами дикой природы. Этот чай отлично подходит для расслабления и создаёт атмосферу близости к природе." },
-  { text: "Гречишный чай", price: "480 ₽", weight: "1 л", time:"10-15 минут", description:"Гречишный чай — это насыщенный напиток из обжаренных гречишных семян. С его ореховым вкусом и мягким ароматом, он дарит уют и тепло. Полезный и богатый антиоксидантами, этот чай станет отличным выбором для расслабляющего чаепития." },
-];
-const Tea = () => {
+import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
 
+const Tea = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTeas = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "teas"));
+        if (snapshot.exists()) {
+          const teasData = snapshot.val();
+          const teasArray = Object.keys(teasData).map(key => ({
+            id: key,
+            ...teasData[key],
+          }));
+          console.log("Fetched teas data:", teasArray);
+          setCards(teasArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching teas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeas();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/barin', { state: { dish: card, fromRecomendations: false } });
   };
-  
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.drinks}>
       <TopBar text={"Чай классический"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDrinks}>No available teas</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Tea
+export default Tea;

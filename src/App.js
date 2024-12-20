@@ -64,6 +64,9 @@ import Address from './components/Registration/RegDel/Address/Address';
 import SunVill from './components/Registration/RegDel/SunVill/SunVill';
 import FlatDel from './components/Registration/RegDel/Address/FlatDel/FlatDel';
 import { DeliveryProvider } from './components/Contextes/RegContext';
+import HouseDel from './components/Registration/RegDel/Address/HouseDel/HouseDel';
+import Hotels from './components/Registration/RegDel/Address/Hotels/Hotels';
+
 
 
 
@@ -160,6 +163,8 @@ const App = () => {
             <Route path="/address" element={<Address />} />
             <Route path="/sunvill" element={<SunVill />} />
             <Route path="/flatdel" element={<FlatDel />} />
+            <Route path="/housedel" element={<HouseDel />} />
+            <Route path="/hotels" element={<Hotels />} />
           </Routes>
         )}
     

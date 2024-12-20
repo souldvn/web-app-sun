@@ -1,67 +1,60 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import s from './Bar.module.css'
-import Carddeffault from '../../Complite/carddeffault/Carddeffault'
-import TopBar from '../../Complite/TopBar/TopBar'
-import CartButton from '../../Complite/CartButton/CartButton'
-
-
+import { CartContext } from '../../Contextes/CartContext'; // Подключаем контекст
+import s from './Bar.module.css';
+import Carddeffault from '../../Complite/carddeffault/Carddeffault';
+import TopBar from '../../Complite/TopBar/TopBar';
+import CartButton from '../../Complite/CartButton/CartButton';
 
 const cards = [
-    "Холодные напитки", 
-    "Лимонады",
-    "Кофе",
-    "Чай классический" ,
-    "Фирменные чаи",
-    "Горячие напитки",
-    "Пиво",
-    "Пивные напитки"
-  ];
+  "Холодные напитки", 
+  "Лимонады",
+  "Кофе",
+  "Чай классический",
+  "Фирменные чаи",
+  "Горячие напитки",
+  "Пиво",
+  "Пивные напитки"
+];
 
 const Bar = () => {
-
-
-
+  const { selectedOption } = useContext(CartContext); // Получаем текущий режим (доставка/в ресторане)
   const navigate = useNavigate();
 
   const handleCardClick = (cardName) => {
-    if (cardName === 'Холодные напитки') {
-      navigate('/colddrinks');
+    const routes = {
+      'Холодные напитки': '/colddrinks',
+      'Лимонады': '/limonades',
+      'Кофе': '/coffee',
+      'Чай классический': '/tea',
+      'Фирменные чаи': '/comtea',
+      'Горячие напитки': '/hotdrinks',
+      'Пиво': '/beer',
+      'Пивные напитки': '/beerdrinks',
+    };
+
+    if (routes[cardName]) {
+      navigate(routes[cardName]);
     }
-    if (cardName === 'Лимонады') {
-      navigate('/limonades');
-    }
-    if (cardName === 'Кофе') {
-      navigate('/coffee');
-    }
-    if (cardName === 'Чай классический') {
-      navigate('/tea');
-    }
-    if (cardName === 'Фирменные чаи') {
-      navigate('/comtea');
-    }
-    if (cardName === 'Пиво') {
-      navigate('/beer');
-    }
-    if (cardName === 'Горячие напитки') {
-      navigate('/hotdrinks');
-    }
-    if (cardName === 'Пивные напитки') {
-      navigate('/beerdrinks');
-    }
-  }
+  };
+
+  // Фильтруем карточки в зависимости от режима
+  const excludedCards = ["Лимонады", "Фирменные чаи", "Горячие напитки", "Чай классический"];
+  const filteredCards = selectedOption === 'delivery'
+    ? cards.filter((card) => !excludedCards.includes(card))
+    : cards;
 
   return (
     <div className={s.bar}>
-        <TopBar text={"Барная карта"}/>
-        <div className={s.cardsContainer}>
-        {cards.map((text, index) => (
+      <TopBar text={"Барная карта"} />
+      <div className={s.cardsContainer}>
+        {filteredCards.map((text, index) => (
           <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
         ))}
       </div>
-      <CartButton/>
+      <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Bar
+export default Bar;

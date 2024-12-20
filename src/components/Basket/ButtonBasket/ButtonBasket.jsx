@@ -4,14 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../../Contextes/CartContext';
 
 const ButtonBasket = ({ isEmpty }) => {
-  const { selectedOption } = useContext(CartContext);
+  const { selectedOption, cartItems } = useContext(CartContext);
   const navigate = useNavigate();
 
+  // Вычисляем общую стоимость
+  const getTotalPrice = () =>
+    cartItems.reduce((total, item) => total + item.price * item.count, 0);
+
   const handleBasketClick = () => {
+    const totalPrice = getTotalPrice(); // Получаем текущую общую стоимость
+
     if (selectedOption === 'host') {
-      navigate('/regrest'); // Навигация для варианта "В ресторане"
+      navigate('/regrest', { state: { totalPrice } });
     } else if (selectedOption === 'delivery') {
-      navigate('/regdel'); // Навигация для варианта "Доставка"
+      navigate('/regdel', { state: { totalPrice } });
     }
   };
 

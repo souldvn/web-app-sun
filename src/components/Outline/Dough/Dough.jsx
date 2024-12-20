@@ -1,46 +1,78 @@
-import React from 'react'
-import s from './Dough.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Dough.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  {id:1, text: "Хачапури по аджарски", price: "500 ₽", weight: "390 г", description:"Хочу хачапури, да не простые, а по‑аджарски! Вот оно, тесто, которое превращается в маленький кораблик счастья, плывущий по морю растопленного сыра. А в центре — яркий желток, как солнце, которое освещает все вокруг. Разломи бортики, окуни в сырную начинку, и пусть это вкусное путешествие начнётся", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, масло сливочное, яйцо" },
-  {id:2, text: "Хачапури по мегрельски", price: "450 ₽", weight: "370 г", description:"Хачапури по мегрельски — это кулинарное средство от мигрени после долгих трудовых будней. Тесто, запечённое до золотистой корочки, скрывает в себе домашний сыр и сулугуни, словно тёплый компресс для усталого организма.", time:"30-60 минут" , compound:"Тесто, сыр домашний, сулугуни, масло сливочное" },
-  {id:3, text: "Пирог с сыром и зеленью", price: "400 ₽", weight: "310 г", description:"Словно уютные выходные, когда не нужно никуда торопиться. Хрустящее тесто обнимает нежный сливочный сыр и сулугуни, как тёплая пледовая ночь обнимает после насыщенного дня. Зелень добавляет свежести, создавая идеальный баланс вкусов. Вот такие пироги!", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, масло сливочное, зелень" },
-  {id:4, text: "Пирог с картофелем и сыром", price: "350 ₽", weight: "400 г", description:"В мире существует 1001 рецепт из теста, вот вам ещё один! Тесто, сливочное масло, картофель и сыр образуют идеальное сочетание, как если бы вы нашли ещё один замечательный рецепт из кулинарной сказки.", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, картофель, масло сливочное, специи" }, 
-  {id:5, text: "Пирог с бараниной", price: "650 ₽", weight: "440 г", description:"В одном старинном кулинарном королевстве, где тесто изготавливалось по сотням и одной волшебной рецептуре, наш пирог с бараниной стал звездой кулинарного бала. Внутри тонкое, хрустящее тесто скрывает нежную баранину, замаскированную под лукавого лука и чеснока, щедро приправленную специями и зеленью. С этим пирогом даже старинные рецепты кажутся детскими сказками!", time:"30-60 минут", compound:"Тесто, баранина, лук, чеснок, специи, зелень" },
-  {id:6, text: "Пирог с курицей", price: "450 ₽",  weight: "440 г", description:"«Слишком просто», — пожаловалось тесто. «Скучновато», — поддержал лук. «Обыденность», — добавил чеснок. «Просто попробуй», — с улыбкой подмигнул пирог с курицей, в каждом кусочке которого скрывается секрет нежного филе, душистых специй и свежей зелени.", time:"30-60 минут", compound:"Тесто, курица, лук, чеснок, специи, зелень" },
-  {id:7, text: "Хычин с сыром и зеленью", price: "400 ₽",  weight: "325/50 г", description:"Когда дело доходит до хычина с сыром и зеленью, тут без вариантов — нужно обострять аппетит! Тесто, наполненное домашним сыром и сулугуни, которое пропитывается сливочным маслом и щедрой порцией специй. ", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, масло сливочное, специи, сметана" }, 
-  {id:8, text: "Хычин с картофелем и сыром", price: "370 ₽",  weight: "400/50 г", description:"Кулинарная версия приключений Юрия Никулина из фильма «Бриллиантовая рука». Представьте, что вы отдыхаете в уютном ресторане, и вдруг обнаруживаете, что простое тесто скрывает в себе настоящие драгоценности: картофель, домашний сыр и сулугуни. Как и в фильме, каждое блюдо раскрывает свои секреты.", time:"30-60 минут", compound:"Тесто, сыр домашний, сулугуни, картофель, масло сливочное, специи, сметана" }, 
-  {id:9, text: "Хычин с мясом", price: "650 ₽",  weight: "395/50 г", description:"Много мяса не бывает! Этот хычин превратит любой обед в настоящий пир. Сочные кусочки говядины и золотистый лук в мягком тесте с сливочным маслом и специями создают гармонию, а сметана добавляет завершения. Каждое изделие — это идеальное сочетание, где мясо везде, как и должно быть.", time:"30-60 минут", compound:"Тесто, говядина, лук, масло сливочное, специи, сметана" },
-  {id:10, text: "Хлеб домашний", price: "200 ₽",  weight: "200 г" , description:"Простой, но незаменимый герой каждого стола. Хрустящая корочка скрывает мягкий, ароматный мякиш, пропитанный теплом и уютом домашней выпечки. Этот хлеб идеально дополнит любое блюдо, наполняя его вкусом и создавая атмосферу уюта и заботы.", time:"30-60 минут" }
-];
 const Dough = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDough = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "dough"));
+        if (snapshot.exists()) {
+          const doughData = snapshot.val();
+          const doughArray = Object.keys(doughData).map(key => ({
+            id: key,
+            ...doughData[key],
+          }));
+          console.log("Fetched dough data:", doughArray);
+          setCards(doughArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching dough:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDough();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/doughIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className={s.hot}>
+    <div className={s.dough}>
       <TopBar text={"Тесто"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDough}>No available dough</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Dough
+export default Dough;

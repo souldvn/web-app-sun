@@ -16,6 +16,7 @@ const CartButton = () => {
     return total + item.count;
   }, 0);
 
+
   const handleCardClick = () => {
     if (cartCount > 0) {
       navigate('/basket');

@@ -1,42 +1,79 @@
-import React from 'react'
-import s from './Fish.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Fish.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  { text: "Сёмга филе", price: "620 ₽", weight: "100 г", time:"30-60 минут", description:"Как‑то в наш ресторан пришла рыбка из семейства лососёвых. Сказала, что ей нужна работа и хочет попасть в наше меню. Представилась как Сёмга филе. Мы, конечно, не могли отказаться, и вот она готова удивить вас своим исключительным вкусом и стать звездой вашего обеда.", compound:"Сёмга филе, лимон-гриль, сумах, зелень" },
-  { text: "Форель", price: "420 ₽", weight: "100 г", time:"30-60 минут", description:"Форель на гриле — это как встреча с давним другом: лёгкость лимонных нот и ароматный сумах создают волшебное сочетание. Рыба обвивает вас свежестью зелени, а её сочное мясо раскрывается на гриле, как непередаваемый сюрприз. Ощущение лёгкости и удовольствия, без лишних хлопот!", compound:"Форель, лимон-гриль, сумах, зелень" },
-  { text: "Дорадо", price: "300 ₽", weight: "100 г", time:"30-60 минут", description:"Дорадо…дорадо…дорадостных ощущений от употребления этого блюда осталось совсем немного. С лимоном-гриль, сумахом и зеленью, это блюдо подарит вам ощущение настоящего гастрономического праздника!", compound:"Дорадо, лимон-гриль, сумах, зелень" },
-  { text: "Креветки на гриле", price: "600 ₽", weight: "100 г", time:"30-60 минут", description:"Эти морские обитатели случайно забрели в «неправильный» район и попались на мангал нашего шефа. Лимон-гриль и сумах привнесли в их вкус освежающую кислинку и нежный аромат, а зелень завершила эту пикантную встречу. Результат — идеальный баланс между лёгкой сладостью и пряным очарованием.", compound:"Креветки, лимон-гриль, сумах, зелень" },
-  { text: "Кальмар на гриле", price: "700 ₽", weight: "100 г", time:"30-60 минут", description:"Пришёл сюда по блату, через свою подружку сёмгу филе, устроился на работу и оправдал все вложения благодаря своему вкусу. Лимон-гриль и сумах лишь подчёркивают его характер, а свежая зелень добавляет финальный штрих.", compound:"Кальмар, лимон-гриль, сумах, зелень" },
-];
 const Fish = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFishData = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "fish"));
+        if (snapshot.exists()) {
+          const fishData = snapshot.val();
+          const fishArray = Object.keys(fishData).map(key => ({
+            id: key,
+            ...fishData[key],
+          }));
+          console.log("Fetched fish data:", fishArray);
+          setCards(fishArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching fish:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFishData();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/fishIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className={s.kebabs}>
       <TopBar text={"Рыба & морепродукты"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
+              compound={card.compound}
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noFish}>No available fish dishes</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Fish
+export default Fish;

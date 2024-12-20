@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TopBar from '../../../../Complite/TopBar/TopBar';
 import s from './FlatDel.module.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDeliveryContext } from '../../../../Contextes/RegContext';
 
 const FlatDel = () => {
@@ -10,8 +10,11 @@ const FlatDel = () => {
   const navigate = useNavigate();
   const { deliveryData, setDeliveryData } = useDeliveryContext();
 
+  const location = useLocation();
+  const { totalPrice } = location.state || { totalPrice: 0 };
+
   const flats = [
-    'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5', 'Standard № 7', 'Standard № 8'
+    'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5', 'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11'
   ];
 
   const handleCheckboxChange = (index) => {
@@ -22,13 +25,13 @@ const FlatDel = () => {
   const handleApplyClick = () => {
     if (activeIndex !== null) {
       setDeliveryData((prev) => ({ ...prev, flat: flats[activeIndex] }));
-      navigate('/regdel');
+      navigate('/regdel', { state: { flat: flats[activeIndex], totalPrice } });
     }
   };
 
   return (
     <div className={s.day}>
-      <TopBar text="Вечер" />
+      <TopBar text="Доставка в номер" />
       <div className={s.timecontainer}>
         {flats.map((flat, index) => (
           <label

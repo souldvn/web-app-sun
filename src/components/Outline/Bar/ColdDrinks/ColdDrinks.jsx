@@ -1,45 +1,77 @@
-import React from 'react'
-import s from './ColdDrinks.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Firebase imports
+import s from './ColdDrinks.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
-
-const cards = [
-  {id:1, text: "Вода газ стекло", price: "270 ₽", weight: "0,5 л", description:"Свежесть с игрой пузырьков, которые бодрят и освежают с первого глотка. Лёгкий газированный вкус для тех, кто ценит простое удовольствие с небольшим шипучим акцентом.", time:"10-15 минут" },
-  {id:2, text: "Вода б/г стекло", price: "230 ₽", weight: "0,5 л", description: "Вода без газа — чистый глоток природы, ничего лишнего, только свежесть и естественность. Идеальна, когда нужно простое, но настоящее утоление жажды.", time:"10-15 минут" },
-  {id:3, text: "Кола стекло", price: "300 ₽", weight: "0,25 л", description:"Легендарный вкус, который всегда к месту! Холодная, бодрящая и шипучая, она приносит мгновенное освежение с яркой ноткой сладости и лёгкой кислинкой. Этот напиток — больше, чем просто газировка, это настоящая классика, которая никогда не подведёт.", time:"10-15 минут" },
-  {id:4, text: "Спрайт стекло", price: "300 ₽", weight: "0,25 л", description:"Лимонно-лаймовый вкус и мягкие пузырьки создают взрыв бодрости в каждом глотке. Холодный и освежающий, он всегда приносит ощущение прохлады, особенно в стеклянной бутылке.", time:"10-15 минут" },
-  {id:5, text: "Фанта стекло", price: "300 ₽", weight: "0,25 л", description:"Солнечный заряд с ярким вкусом спелого апельсина. Лёгкая сладость и бодрящие пузырьки мгновенно освежают, оставляя за собой приятное цитрусовое послевкусие. В стеклянной бутылке она особенно освежающая и искрящаяся, как настоящий глоток лета.", time:"10-15 минут" },
-  {id:6, text: "Натахтари в ассортименте", price: "250 ₽", weight: "0,5 л", description:"Лёгкий, освежающий и насыщенный фруктовыми нотками, он идеально подходит для тех, кто ищет что‑то яркое и бодрящее. Независимо от вкуса, будь то тархун, барбарис, груша или экзотический фейхоа, Натахтари всегда удивляет своей свежестью и гармонией ароматов.", time:"10-15 минут" },
-  {id:7, text: "Сок в ассортименте", price: "660 ₽", weight: "1 л", description:"Соки для отличного настроения! В нашем ассортименте — только самое лучшее, чтобы утолить жажду и зарядить энергией.", time:"10-15 минут" },
-  {id:8, text: "Сок в ассортименте", price: "200 ₽", weight: "0,25 л", description:"Соки для отличного настроения! В нашем ассортименте — только самое лучшее, чтобы утолить жажду и зарядить энергией.", time:"10-15 минут" },
-];
+import { database } from '../../../../firebaseConfig'; // Firebase configuration import
 
 const ColdDrinks = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDrinks = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "colddrinks"));
+        if (snapshot.exists()) {
+          const drinksData = snapshot.val();
+          const drinksArray = Object.keys(drinksData).map(key => ({
+            id: key,
+            ...drinksData[key],
+          }));
+          setCards(drinksArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching cold drinks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDrinks();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/barin', { state: { dish: card, fromRecomendations: false } });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.drinks}>
       <TopBar text={"Холодные напитки"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDrinks}>Нет доступных напитков</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default ColdDrinks
+export default ColdDrinks;

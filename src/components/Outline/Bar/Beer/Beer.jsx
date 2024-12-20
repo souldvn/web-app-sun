@@ -1,41 +1,78 @@
-import React from 'react'
-import s from './Beer.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Beer.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  {id:1, text: "Paulaner Weissbier", price: "480 ₽", weight: "0,5 л", time:"10-15 минут", description:"Идеально сочетается с хрустящими луковыми колечками. Погрузитесь в мир баварского уюта, наслаждаясь каждым глотком!" },
-  {id:2, text: "Paulaner 0,5 Original", price: "480 ₽", weight: "0,5 л", time:"10-15 минут", description:"Классическое немецкое светлое пиво с насыщенным вкусом и хмелёвым ароматом. Прекрасно сочетается с лёгкими закусками. Каждое сочетание приносит удовольствие и создаёт атмосферу настоящего немецкого пивного праздника!" },
-  {id:3, text: "Будвайзер", price: "480 ₽", weight: "0,5 л", time:"10-15 минут", description:"Классическое светлое пиво с чистым и освежающим вкусом. Оно идеально сочетается с крылышками и бургерами, добавляя яркие эмоции к любому застолью." },
-  {id:4, text: "Гиннес", price: "650 ₽", weight: "0,5 л", time:"10-15 минут", description:"Это не просто пиво, а целый ирландский сюрприз. Его тёмный цвет и плотная кремовая пена создают атмосферу отдыха. С нотками кофе и шоколада, это пиво заставляет ваши вкусовые рецепторы играть в унисон." },
-  {id:5, text: "Corona Extra «0%»", price: "500 ₽", weight: "0,35 л", time:"10-15 минут", description:"Безалкогольная версия классического мексиканского пива, сохранившая свой освежающий и лёгкий вкус. С нотками цитрусовых и хмеля, этот напиток идеально подходит для дружеских встреч." },
-];
 const Beer = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBeers = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "beers"));
+        if (snapshot.exists()) {
+          const beersData = snapshot.val();
+          const beersArray = Object.keys(beersData).map(key => ({
+            id: key,
+            ...beersData[key],
+          }));
+          console.log("Fetched beers data:", beersArray);
+          setCards(beersArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching beers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBeers();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/barhot', { state: { dish: card, fromRecomendations: false } });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.drinks}>
       <TopBar text={"Пиво"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noDrinks}>No available beers</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Beer
+export default Beer;

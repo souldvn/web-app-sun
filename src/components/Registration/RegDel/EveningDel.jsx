@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './EveningDel.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useDeliveryContext } from '../../Contextes/RegContext';
 
 const EveningDel = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
+  const { deliveryData, setDeliveryData } = useDeliveryContext();
+
 
   const times = [
     '19:00', '19:15', '19:30', '19:45', '20:00', '20:15', '20:30', '20:45', '21:00'
@@ -18,8 +21,9 @@ const EveningDel = () => {
   };
 
   const handleApplyClick = () => {
-    if (isActive) {
-      navigate('/regdel', { state: { time: times[activeIndex] } });
+    if (activeIndex !== null) {
+      setDeliveryData((prev) => ({ ...prev, time: times[activeIndex] }));
+      navigate('/regdel');
     }
   };
 

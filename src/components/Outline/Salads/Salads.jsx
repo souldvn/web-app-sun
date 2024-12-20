@@ -1,47 +1,78 @@
-import React from 'react'
-import s from './Salads.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Salads.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  { text: "Цезарь с курицей", price: "500 ₽", weight: "230 г", time:"15-25 минут", description:"Приготовьтесь к гастрономическому спектаклю! В нашем цезаре с курицей кулинарные таланты вновь выходят на сцену. Хрустящие листья салата романо, сочное куриное филе, томаты черри и ароматный пармезан объединяются в идеальном тандеме.", compound:"Салат романо, филе куриное, помидоры черри, сыр пармезан, соус цезарь, гренки" },
-  { text: "Цезарь с креветками", price: "750 ₽", weight: "230 г", time:"15-25 минут", description:"Время открыть океан вкусов! Погружаемся в мир моря с нашим цезарем с креветками. Этот салат — морской брат классического Цезаря, в котором нежные креветки заменяют курицу, добавляя океанский шарм. Вкусный сыр пармезан, свежие помидоры черри и хрустящие гренки в компании с соусом цезарь создают идеальный ансамбль.", compound:"Салат романо, креветки, помидоры черри, сыр пармезан, соус цезарь, гренки" },
-  { text: "Цезарь с сёмгой", price: "850 ₽", weight: "230 г", time:"15-25 минут", description:"Сёмга, уставшая от жизни на гриле и бесконечных заплывов в сливочно-икорных соусах, отправилась в командировку на встречу с самим Цезарем. Там её встретили салат романо и хрустящие гренки, помидоры черри добавили немного цвета, а пармезан — щепотку изысканности. В итоге, этот союз оказался лёгким, но незабываемым приключением вкусов.", compound:"Салат романо, сёмга слабого посола, помидоры черри, сыр пармезан, соус цезарь, гренки" },
-  { text: "Салат из свежих овощей", price: "400 ₽", weight: "275 г", time:"15-25 минут", description:"Погружаемся в атмосферу дачного отдыха! Салат из свежих овощей — это как солнечное утро на огороде. Сочные помидоры, хрустящие огурцы и пикантный редис освежаются ароматным маслом и зеленью. Идеальный выбор для настоящих ценителей натурального вкуса и домашнего комфорта.", compound:"Помидор, огурец, редис, масло ароматное, зелень" },
-  { text: "Салат из томатов с сыром, луком и кинзой", price: "450 ₽", weight: "220 г", time:"15-25 минут", description:"Томаты и рассольный сыр встретились после долгого рабочего дня, решив устроить кулинарный эксперимент. Лук и кинза добавили немного остроты в эту дружескую беседу, а гранат привнёс лёгкую нотку неожиданности.", compound:"Томаты, рассольный сыр, лук, кинза, гранат, заправка на винном уксусе, зелень" },
-  { text: "Хоровац", price: "550 ₽",  weight: "280 г", time:"15-25 минут", description:"Британские учёные трудились над созданием лекарства от всех болезней, но пообедав в SUNVILL REST, решили создать идеальный рецепт салата. Помидоры, баклажан и болгарский перец, пройдя через жаркий гриль, объединились с красным луком и ароматным маслом, чтобы родился настоящий кулинарный шедевр.", compound:"Помидоры гриль, баклажан гриль, болгарский перец гриль, лук красный, масло ароматное, уксус винный, чеснок, специи, зелень" },
-  { text: "Тёплый салат с телятиной", price: "810 ₽",  weight: "350 г", time:"15-25 минут", description:"Словно вечер на террасе парк-отеля Sun Village Arkhyz: тепло, уютно и всё на своих местах. Телятина мягко сочетается с овощами, как мягкий свет заката с кронами деревьев, а терияки добавляет нотку сладкой пряности, как последние лучи солнца касаются гор.", compound:"Телятина, микс салата, помидоры черри, красный лук, шампиньоны, болгарский перец, кабачок, соус терияки, чеснок, специи, зелень" },
-  { text: "Де — руккола с креветками", price: "780 ₽",  weight: "250 г", time:"15-25 минут", description:"Де-ликатная руккола не смогла устоять перед тигровыми креветками — их роман под малиновым соусом был обречён. Черри томаты и хрустящие кедровые орешки подмигнули жареной моцарелле, которая тоже втянулась в эту историю.", compound:"Креветки тигровые, руккола, микс салата, гранатовый соус, помидоры черри, жаренная моцарелла, малиновый соус, обжаренные кедровые орешки" },
-  { text: "Салат с хрустящими баклажанами", price: "550 ₽",  weight: "310 г", time:"15-25 минут", description:"На ежегодном конкурсе салатов награду самого хрустящего получил… баклажан! В его компании микс свежих листьев, томаты черри и красный лук с болгарским перцем, которые словно болеют за него с трибун.", compound:"Баклажаны, микс салата, помидоры черри, красный лук, болгарский перец, чеснок, кинза, соус свит-чили" }
-
-];
 const Salads = () => {
-  
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSalads = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "salads"));
+        if (snapshot.exists()) {
+          const saladsData = snapshot.val();
+          const saladsArray = Object.keys(saladsData).map(key => ({
+            id: key,
+            ...saladsData[key],
+          }));
+          console.log("Fetched salads data:", saladsArray);
+          setCards(saladsArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching salads:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSalads();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/saladsIn', { state: { dish: card, fromRecomendations: false } });
   };
-  
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className={s.hotSnacks}>
+    <div className={s.salads}>
       <TopBar text={"Салаты"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noSalads}>No available salads</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Salads
+export default Salads;

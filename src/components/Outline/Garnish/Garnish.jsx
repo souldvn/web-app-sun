@@ -1,47 +1,78 @@
-import React from 'react'
-import s from './Garnish.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Garnish.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
 
-
-const cards = [
-  { text: "Картофель фри", price: "200 ₽", weight: "150 г", time:"10-15 минут", description:"О, это же картофель свобода! Кхм… то есть бесплатно… но не просто картофель, а хрустящий, золотистый картофель фри, который принесёт вам радость в ресторане Sun Баран. Самый вкусный, самый свободный, самый ваш!" },
-  { text: "Картофель дольки", price: "200 ₽", weight: "150 г", time:"10-15 минут", description:"Картофельные дольки решили пройти курсы по саморазвитию: нарастили хруст, подкачали золотистость и стали настолько аппетитными, что теперь их трудно не заметить на любом столе. Только попробуй — и не захочешь расставаться!" },
-  { text: "Гречка отварная", price: "350 ₽", weight: "250 г", time:"10-15 минут", description:"Гречка отварная — что может быть проще? Но не спеши недооценивать! Каждое зёрнышко сварено до совершенства, рассыпчатая и нежная, готовая дополнить любое блюдо — будь то соус, мясо или просто кусочек масла. Простая, но идеальная — настоящий классический гарнир на все времена!", compound:"Гречка, масло сливочное, зелень" },
-  { text: "Пюре картофельное", price: "250 ₽", weight: "200 г", time:"10-15 минут", description:"Говорят, муж попросил жену приготовить ужин, пока едет с работы. Жена задремала, забыла… Муж пришёл домой, разозлился, да как ударил сковородкой по картошке! Так и появилось это пюре — с нотками сливочного масла и молока, мягкое, но с характером. Зелень сверху напоминает о том, что даже в самой жаркой ситуации есть место для свежести!", compound:"Картофель, масло сливочное, молоко, зелень" },
-  { text: "Соте из овощей", price: "400 ₽", weight: "250 г", time:"10-15 минут", description:"Однажды французский королевский флот захватил флибустьеров, предложив им выбор: казнь или создание оригинального блюда из овощей. Флибустьеры выбрали второе и приготовили соте из картофеля, кабачков, перца, помидоров и шампиньонов с тимьяном и сумахом. Блюдо впечатлило флот и короля, а рецепт позже попал в ресторан SUNVILL REST, продолжая радовать гостей своим необычным вкусом.", compound:"Кабачок, картофель, перец болгарский, помидоры черри, шампиньоны, лук красный, чеснок, тимьян, специи, сумах" },
-  { text: "Рис отварной", price: "200 ₽", weight: "250 г", time:"10-15 минут", description:"Мало кто знает, но у ресторана SUNVILL REST есть особая история с одним владельцем рисовой плантации. Отдохнул как‑то у нас этот важный гость, вдохнул свежий горный воздух, полюбовался видами и настолько восхитился, что оставил нам в подарок пожизненный запас своего лучшего риса.", compound:"Рис Басмати, соль, зелень" },
-  { text: "Рис с овощами", price: "250 ₽", weight: "250 г", description: "У ресторана SUNVILL REST есть легенда о том, как один владелец рисовой плантации отдыхал у нас. Вдохнув горный воздух и полюбовавшись красотой природы, он был настолько впечатлен, что подарил нам пожизненный запас своего лучшего басмати.", time: "10-15 минут", compound:"Рис Басмати, соте из овощей (лук, морковь, болгарский перец, кабачок), чеснок, специи, зелень" },
-
-
-];
 const Garnish = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchGarnishes = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "garnish"));
+        if (snapshot.exists()) {
+          const garnishesData = snapshot.val();
+          const garnishesArray = Object.keys(garnishesData).map(key => ({
+            id: key,
+            ...garnishesData[key],
+          }));
+          console.log("Fetched garnishes data:", garnishesArray);
+          setCards(garnishesArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching garnishes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGarnishes();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/garnishIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.hot}>
       <TopBar text={"Гарниры"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noGarnishes}>No available garnishes</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Garnish
+export default Garnish;

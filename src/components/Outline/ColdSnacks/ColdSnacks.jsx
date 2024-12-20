@@ -1,47 +1,78 @@
-import React from 'react'
-import s from './ColdSnacks.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './ColdSnacks.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  { text: "Плато «Кавказ»", price: "950 ₽", weight: "530 г", time:"10-15 минут", description:"Плато «Кавказ» — это как путешествие по высокогорной равнине. Сулугуни, домашний сыр, Чеддер, Дор Блю и сыр Пармезан возвышаются, словно горные вершины, а колбасы казы из курицы и конины, суджук и бастурма напоминают о глубоких долинах вкуса.", compound:"Сыр сулугуни, сыр домашний, сыр Чеддер, сыр Дор Блю, сыр Пармезан, колбаса казы курица, колбаса казы конина, суджук, бастурма, мёд, грецкий орех, соус медово-горчичный, инжирное варенье, помидоры черри, зелень" },
-  { text: "Мясное ассорти", price: "550 ₽", weight: "225 г" , time:"10-15 минут", description:"Однажды курица и конь на ферме решили приготовить мясо казы и случайно оказались в тарелке. Их кулинарное начинание преобразилось в мясное ассорти: казы из конины и курицы, суджук и бастурма с медово-горчичным соусом, помидорами черри и зеленью. Старайся не старайся, а в ресторан SUNVILL REST попадёшь.", compound:"Колбаса казы конина, колбаса казы курица, суджук, бастурма, соус медово-горчичный, помидоры черри, зелень"},
-  { text: "Сырное ассорти", price: "500 ₽", weight: "250 г" , time:"10-15 минут", description:"Когда мышка-норушка решила сделать сырное ассорти для своих деток, она не ожидала, что уронит его рецепт в ресторане SUNVILL REST. Так на вашем столе оказалось множество сыров: сулугуни, копчёный, ароматный Чеддер, пикантный Дор Блю и Пармезан с грецкими орехами и зеленью.", compound:"Сыр сулугуни, сулугуни копчёный, сыр Чеддер, сыр Дор Блю, сыр Пармезан, грецкий орех, мёд, зелень"},
-  { text: "Ассорти солений", price: "450 ₽", weight: "350 г" , time:"10-15 минут", description:"Вот они, слева направо: квашеная капуста, бочковые огурцы, перец цицак, солёные помидоры и маринованный чеснок и зелень. Все они искупались в ароматах, замариновались в лучших специях и теперь собрались на тарелке, чтобы подарить вам настоящий взрыв вкусов.", compound:"Капуста квашеная, огурцы бочковые, перец цицак, помидор солёный, чеснок маринованный, зелень"},
-  { text: "Овощное ассорти", price: "450 ₽", weight: "395 г", time:"10-15 минут", description:"Помидор, огурец, редис, болгарский перец и зелень собрались вместе, чтобы придумать идеальный рецепт ассорти для ресторана SUNVILL REST. Думали, думали и просто развалились на тарелке от усталости. Так и выносят их с тех пор, после окончания собрания.", compound:"Помидор, огурец, редис, перец болгарский, зелень" },
-  { text: "Филе сельди с картофелем от шефа", price: "500 ₽", weight: "150/200 г", time:"10-15 минут", description:"Наш шеф знает, как порадовать посетителей ресторана SUNVILL REST: филе сельди — нежное, с лёгкой солоноватой ноткой — встречается с картофелем, обжаренным в пряном масле. Добавьте сюда аромат укропа и чеснока, и получится блюдо, которое сложно забыть. Это не просто сельдь с картофелем, это настоящий шедевр!", compound:"Филе сельди, картофель обжаренный в пряном масле, укроп, чеснок" },
-  { text: "Сёмга слабосоленая", price: "700 ₽", weight: "150/50 г", time:"10-15 минут", description:"Ох уж эта сёмга, работает в нашем ресторане сверхурочно, чтобы пленить вас своим утончённым вкусом. Лёгкий посол и нежная текстура, в сочетании с дольками лимона, создают идеальную гармонию.", compound:"Сёмга слабого посола, лимон" },
-  { text: "Лимон", price: "100 ₽", weight: "50 г", time:"10-15 минут", description:"Вечно кислый, не знаем что с ним делать — как только его не развлекали, даже зарплату поднимали, а он все такой же. Подарите ему место на обеденном столе, чтобы развеселить его, и он вознаградит вас своей пикантной ноткой. Не оставляйте его одного — он ждёт вашего внимания!" },
-  { text: "Королевские маслины & оливки", price: "220 ₽", weight: "90 г", time:"10-15 минут", description:"Одни короли да королевы, а гостей ресторана SUNVILL REST кто кормить будет? Только самые королевские маслины и оливки. Маринованные до совершенства, чтобы вы могли наслаждаться каждым укусом, как истинный аристократ."},
-  
-];
 const ColdSnacks = () => {
-
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchColdSnacks = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "coldsnaks"));
+        if (snapshot.exists()) {
+          const coldSnacksData = snapshot.val();
+          const coldSnacksArray = Object.keys(coldSnacksData).map(key => ({
+            id: key,
+            ...coldSnacksData[key],
+          }));
+          console.log("Fetched cold snacks data:", coldSnacksArray);
+          setCards(coldSnacksArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching cold snacks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchColdSnacks();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/coldsnacksIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className={s.hot}>
       <TopBar text={"Холодные закуски"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noColdSnacks}>No available cold snacks</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default ColdSnacks
+export default ColdSnacks;

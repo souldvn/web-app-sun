@@ -1,40 +1,78 @@
-import React from 'react'
-import s from './Steaks.module.css'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import s from './Steaks.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { useNavigate } from 'react-router-dom';
+import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
 
-const cards = [
-  {id:1, text: "Рибай", price: "750 ₽", weight: "100 г", time:"30-60 минут", description:"Если твой аппетит разгулялся на полную катушку, выбери Рибай и скажи гуд бай голоду! Сочный толстый край стейка, с гриль томатами и маринованным красным луком, в обрамлении свежей зелени — это тот самый ужин, который восстановит силы и заставит твоё сердце петь от счастья.", compound:"Толстый край б/к чойс, томат на гриле, лук красный маринованный, зелень" },
-  {id:2, text: "Стриплойн", price: "650 ₽", weight: "100 г", time:"30-60 минут", description:"Стриплойн — просто идеальное сочетание: толстый край б/к чойс с гриль-томатом, маринованным красным луком и свежей зеленью. Прямо к делу, без лишних слов.", compound:"Толстый край б/к чойс, томат на гриле, лук красный маринованный, зелень" },
-  {id:3, text: "Филе миньон", price: "610 ₽", weight: "100 г", time:"30-60 минут", description:"Филе миньон — как скульптура из мрамора, но вместо камня — сочнейшая говяжья вырезка, созданная нашим шефом. Каждое кусочек — это мастерски приготовленный шедевр, идеально сочетающийся с гриль-тематами томатами, маринованным красным луком и свежей зеленью.", compound:"Мраморная говяжья вырезка, томат на гриле, лук красный маринованный, зелень" },
-];
 const Steaks = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchSteaks = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "steaks"));
+        if (snapshot.exists()) {
+          const steaksData = snapshot.val();
+          const steaksArray = Object.keys(steaksData).map(key => ({
+            id: key,
+            ...steaksData[key],
+          }));
+          console.log("Fetched steaks data:", steaksArray);
+          setCards(steaksArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching steaks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSteaks();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/steaksIn', { state: { dish: card, fromRecomendations: false } });
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className={s.steaks}>
       <TopBar text={"Стейки"} />
       <div className={s.cardsContainer}>
-        {cards.map((card) => (
-          <div key={card.id} onClick={() => handleCardClick(card)}>
+        {cards.length > 0 ? cards.map((card) => (
+          <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              description={card.description} 
+              time={card.time} 
             />
           </div>
-        ))}
+        )) : (
+          <div className={s.noSteaks}>No available steaks</div>
+        )}
       </div>
       <CartButton />
     </div>
-  )
-}
+  );
+};
 
-export default Steaks
+export default Steaks;

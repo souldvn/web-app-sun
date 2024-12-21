@@ -70,6 +70,7 @@ const Dishes = () => {
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
               description={card.description} 
               time={card.time} 
               compound={card.compound} 

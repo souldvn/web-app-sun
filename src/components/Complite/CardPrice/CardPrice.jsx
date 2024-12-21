@@ -6,7 +6,7 @@ import s from './CardPrice.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 import { useNavigate } from 'react-router-dom';
 
-const CardPrice = ({ price, text, weight, description, time, compound }) => {
+const CardPrice = ({ price, text, weight, description, time, compound, img }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
 
@@ -19,22 +19,16 @@ const CardPrice = ({ price, text, weight, description, time, compound }) => {
     event.stopPropagation(); // Останавливаем всплытие события
 
     // Проверяем название карточки
-    if (text === 'Русский завтрак' || text === 'Английский завтрак') {
-      navigate('/inline', {
-        state: {
-          dish: { text, price, weight, description, time, compound },
-          fromRecomendations: false,
-        },
-      });
-    } else {
-      // Добавляем в корзину, если это не завтрак
+    
       addToCart({ price, text, weight });
-    }
+    
   };
 
   return (
     <div className={s.cardprice}>
-      <div className={s.foto}></div>
+      <div className={s.foto}>
+      <img src={img} alt={text} className={s.image} />
+      </div>
       <div className={s.infosmall}>
         <p className={s.price}>{price} ₽</p>
         <p className={s.text}>{text}</p>

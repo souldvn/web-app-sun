@@ -59,6 +59,7 @@ const ComTea = () => {
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
+              img={card.img}
               text={card.text} 
               price={card.price} 
               weight={card.weight} 

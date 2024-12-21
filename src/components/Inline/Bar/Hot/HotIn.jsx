@@ -37,7 +37,12 @@ const HotIn = () => {
 
   return (
     <div className={s.Inline}>
-      <div className={s.public}>
+      <div className={s.public}
+      style={{
+        backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
+        backgroundSize: 'cover', // растягиваем изображение на весь контейнер
+        backgroundPosition: 'center', // центрируем изображение
+      }}>
         <div className={s.buttons}>
           <button className={s.arrow} onClick={handleBackClick}>
             <img src={arrowback} alt="arrowback" />

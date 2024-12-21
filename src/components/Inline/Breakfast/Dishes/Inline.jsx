@@ -7,12 +7,9 @@ import BottomInfo from '../../BottomInfo/BottomInfo';
 import { CartContext } from '../../../Contextes/CartContext';
 import Recomendations from './Recomendations/Recomendations';
 
-
 const Inline = () => {
   const { cartItems, extraItemsTotalPrice, setExtraItemsTotalPrice, addExtraItems } = useContext(CartContext);
-
   const [extras, setExtras] = useState({});
-
 
   const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
   const location = useLocation();
@@ -38,7 +35,6 @@ const Inline = () => {
   };
 
   useEffect(() => {
-    // Загружаем данные для текущего блюда
     const savedData = localStorage.getItem(`extras-${dish.id}`);
     const savedTotalPrice = localStorage.getItem(`totalPrice-${dish.id}`);
     
@@ -49,9 +45,8 @@ const Inline = () => {
         [dish.id]: { selectedExtras: parsedData, totalPrice: Number(savedTotalPrice) },
       }));
     }
-  }, [dish.id]); // Загружаем данные при изменении dish.id
+  }, [dish.id]);
 
-  // Функция для обработки добавления дополнительных товаров
   const handleAddExtras = (extraData) => {
     const { extras: selectedExtras, totalPrice } = extraData;
     setExtras((prevExtras) => ({
@@ -59,17 +54,22 @@ const Inline = () => {
       [dish.id]: { selectedExtras, totalPrice },
     }));
     setExtraItemsTotalPrice(totalPrice);
-    addExtraItems(selectedExtras, totalPrice);  // Make sure this updates the cart context
+    addExtraItems(selectedExtras, totalPrice); // Update cart context
   
-    // Save to localStorage
     localStorage.setItem(`extras-${dish.id}`, JSON.stringify(selectedExtras));
     localStorage.setItem(`totalPrice-${dish.id}`, totalPrice);
   };
 
-
   return (
     <div className={s.Inline}>
-      <div className={s.public}>
+      <div
+        className={s.public}
+        style={{
+          backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
+          backgroundSize: 'cover', // растягиваем изображение на весь контейнер
+          backgroundPosition: 'center', // центрируем изображение
+        }}
+      >
         <div className={s.buttons}>
           <button className={s.arrow} onClick={handleBackClick}>
             <img src={arrowback} alt="arrowback" />
@@ -83,6 +83,7 @@ const Inline = () => {
           <p className={s.timeP}>Время приготовления {dish.time}</p>
         </div>
       </div>
+
       <div className={s.info}>
         <p className={s.title}>{dish.text}</p>
         <p className={s.text}>{dish.description}</p>
@@ -93,7 +94,6 @@ const Inline = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
-
 
       {!fromRecomendations && <Recomendations />}
 
@@ -106,7 +106,6 @@ const Inline = () => {
         extraPrice={extras[dish.id]?.totalPrice || 0}
         onExtrasChange={(newExtras) => handleAddExtras({ extras: newExtras, totalPrice: extras[dish.id]?.totalPrice })}
       />
-
     </div>
   );
 };

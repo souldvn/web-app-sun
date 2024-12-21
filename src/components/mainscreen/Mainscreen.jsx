@@ -41,24 +41,66 @@ const Mainscreen = () => {
     }
   };
 
+  // Массив объектов с текстом и изображениями
   const cards = [
-    "Завтраки",
-    "Барная карта",
-    "Гриль & Мангал",
-    "Бургеры",
-    "Горячие блюда",
-    "Горячие закуски",
-    "Супы",
-    "Салаты",
-    "Тесто",
-    "Холодные закуски",
-    "Гарниры",
-    "Мороженное",
-    "Соусы",
+    {
+      text: "Завтраки",
+      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Zavtraki.jpg?raw=true",
+    },
+    {
+      text: "Барная карта",
+      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Barnaya%20karta.jpg?raw=true",
+    },
+    {
+      text: "Гриль & Мангал",
+      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Gril%20i%20Mangal.jpg?raw=true",
+    },
+    {
+      text: "Бургеры",
+      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Burgeri.jpg?raw=true",
+    },
+    {
+      text:"Горячие блюда",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20bluda.jpg?raw=true"
+    },
+    {
+      text:"Горячие закуски",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20zakuski.jpg?raw=true"
+    },
+    {
+      text:"Супы",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Supi.jpg?raw=true"
+    },
+    {
+      text:"Салаты",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Salati.jpg?raw=true"
+    },
+    {
+      text:"Тесто",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Testo.jpg?raw=true"
+    },
+    {
+      text:"Холодные закуски",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20zakuski.jpg?raw=true"
+    },
+    {
+      text:"Гарниры",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Garniri.jpg?raw=true"
+    },
+    {
+      text:"Мороженое",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Morojenoe.jpg?raw=true"
+    },
+    {
+      text:"Соусы",
+      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Sousi.jpg?raw=true"
+    }
+    // Добавьте остальные блюда с соответствующими ссылками на изображения
   ];
 
+  // Фильтрация карточек
   const filteredCards = selectedOption === 'delivery'
-    ? cards.filter((card) => card !== "Завтраки")
+    ? cards.filter((card) => card.text !== "Завтраки")
     : cards;
 
   return (
@@ -84,8 +126,13 @@ const Mainscreen = () => {
       </div>
 
       <div className={s.cardsContainer}>
-        {filteredCards.map((text, index) => (
-          <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
+        {filteredCards.map((card, index) => (
+          <Carddeffault
+            key={index}
+            text={card.text}
+            img={card.img} // Передача изображения
+            onClick={() => handleCardClick(card.text)}
+          />
         ))}
       </div>
       <CartButton />

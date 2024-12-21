@@ -7,14 +7,38 @@ import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 
 const cards = [
-  "Холодные напитки", 
-  "Лимонады",
-  "Кофе",
-  "Чай классический",
-  "Фирменные чаи",
-  "Горячие напитки",
-  "Пиво",
-  "Пивные напитки"
+  {
+    text: "Холодные напитки",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20napitki.jpg?raw=true",
+  },
+  {
+    text: "Лимонады",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Limonadi.jpg?raw=true",
+  },
+  {
+    text: "Кофе",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Kofe.jpg?raw=true",
+  },
+  {
+    text: "Чай классический",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Chai%20klassicheskiy.jpg?raw=true",
+  },
+  {
+    text: "Фирменные чаи",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Firmennii%20chai.jpg?raw=true",
+  },
+  {
+    text: "Горячие напитки",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20napitki.jpg?raw=true",
+  },
+  {
+    text: "Пиво",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivo.jpg?raw=true",
+  },
+  {
+    text: "Пивные напитки",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivnie%20napitki.jpg?raw=true",
+  }
 ];
 
 const Bar = () => {
@@ -48,10 +72,11 @@ const Bar = () => {
     <div className={s.bar}>
       <TopBar text={"Барная карта"} />
       <div className={s.cardsContainer}>
-        {filteredCards.map((text, index) => (
-          <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
-        ))}
-      </div>
+  {filteredCards.map(({ text, img }, index) => (
+    <Carddeffault key={index} text={text} img={img} onClick={() => handleCardClick(text)} />
+  ))}
+</div>
+
       <CartButton />
     </div>
   );

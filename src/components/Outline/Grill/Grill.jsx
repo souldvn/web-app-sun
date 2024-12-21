@@ -8,10 +8,19 @@ import CartButton from '../../Complite/CartButton/CartButton'
 
 
 const cards = [
-    "Шашлыки", 
-    "Стейки",
-    "Рыба & морепродукты"
-  ];
+ {
+    text: "Шашлыки",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Shashliki.jpg?raw=true",
+  },
+  {
+    text: "Стейки",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Steiki.jpg?raw=true",
+  },
+  {
+    text: "Рыба & морепродукты",
+    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Riba%20i%20moreprodukti.jpg?raw=true",
+  }
+]
 
 
 const Grill = () => {
@@ -36,8 +45,8 @@ const Grill = () => {
     <div className={s.grill}>
         <TopBar text={"Гриль & Мангал"}/>
         <div className={s.cardsContainer}>
-        {cards.map((text, index) => (
-          <Carddeffault key={index} text={text} onClick={() => handleCardClick(text)} />
+        {cards.map(({text, img}, index ) => (
+          <Carddeffault key={index} img={img} text={text} onClick={() => handleCardClick(text)} />
         ))}
       </div>
       <CartButton/>

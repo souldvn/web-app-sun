@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import s from './Day.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Day = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const { totalPrice } = location.state || { totalPrice: 0 };
 
   const times = [
     '11:15', '11:30', '11:45', '12:00', '12:15', '12:30', '12:45',
@@ -22,7 +25,7 @@ const Day = () => {
 
   const handleApplyClick = () => {
     if (isActive) {
-      navigate('/regrest', { state: { time: times[activeIndex] } });
+      navigate('/regrest', { state: { time: times[activeIndex], totalPrice } });
     }
   };
 

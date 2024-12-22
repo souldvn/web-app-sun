@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import s from './Evening.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Evening = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Получение totalPrice из location.state
+  const { totalPrice } = location.state || { totalPrice: 0 };
 
   const times = [
-    '18:15', '18:30', '18:45', '19:00', '19:15', '19:30', '19:45', '20:00', '20:15', '20:30', '20:45', '21:00', '21:15', '21:30', '21:45', '22:00'
+    '18:15', '18:30', '18:45', '19:00', '19:15', '19:30', '19:45', '20:00',
+    '20:15', '20:30', '20:45', '21:00', '21:15', '21:30', '21:45', '22:00',
   ];
 
   const handleCheckboxChange = (index) => {
@@ -19,7 +24,7 @@ const Evening = () => {
 
   const handleApplyClick = () => {
     if (isActive) {
-      navigate('/regrest', { state: { time: times[activeIndex] } });
+      navigate('/regrest', { state: { time: times[activeIndex], totalPrice } });
     }
   };
 

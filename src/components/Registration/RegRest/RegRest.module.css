@@ -1,3 +1,36 @@
+.top {
+  margin-top: 7px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 500;
+  margin-bottom: 52px;
+  position: relative; /* Для псевдоэлемента */
+}
+
+.top::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100vw; /* Растянуть линию на всю ширину экрана */
+  height: 1px;
+  background-color: #E0E0E0;
+  bottom: -25px; /* Расположение под элементами */
+  transform: translateX(-50%); /* Смещаем линию влево на половину экрана */
+  left: 50%; /* Центрируем линию */
+}
+
+
+.arrowback{
+  background-color: white;
+  border: none;
+  
+}
+
+
 .rest {
   display: flex;
   flex-direction: column;

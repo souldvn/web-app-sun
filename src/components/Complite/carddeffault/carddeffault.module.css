@@ -13,11 +13,11 @@
 }
 
 .text {
-    color: black;
+    color: white; /* Белый цвет текста */
     text-align: center;
     width: 90%;
     font-size: 16px;
-    background: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон для читаемости текста */
+    background: rgba(0, 0, 0, 0.6); /* Полупрозрачный чёрный фон */
     border-radius: 5px;
     padding: 5px;
     margin-bottom: 10px;

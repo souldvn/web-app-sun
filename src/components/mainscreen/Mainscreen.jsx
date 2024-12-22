@@ -32,7 +32,7 @@ const Mainscreen = () => {
       "Тесто": "/dough",
       "Холодные закуски": "/coldSnacks",
       "Гарниры": "/garnishes",
-      "Мороженное": "/icecreams",
+      "Мороженое": "/icecreams",
       "Соусы": "/souses",
     };
 

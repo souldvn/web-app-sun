@@ -3,23 +3,56 @@ import { useNavigate } from 'react-router-dom';
 import s from './RecSouses.module.css';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
 import CartButton from '../../../Complite/CartButton/CartButton';
+import { ref, get, child } from "firebase/database";
+import{database} from '../../../../firebaseConfig'
+import { useState, useEffect } from 'react';
 
-const cards = [
-    { text: "Чизбургер", price: "600 ₽", weight: "350/150 г", time:"30-60 минут", description:"Чизбургер — это как приехать в отель Sun Village Arkhyz после долгой дороги. Мягкая булка — как тёплый номер, куда хочется вернуться. Говяжья котлета и Чеддер создают уют, как панорамный вид на горы. Свежий салат и томаты добавляют бодрости, как прогулка на свежем воздухе.", compound:"Булка, сыр Чеддер, котлета говяжья, соус «Бургер», салат айсберг, томат, солёный огурчик, маринованный красный лук, картофель фри" },
-    { text: "Чизбургер куринный", price: "550 ₽", weight: "350/150 г", time:"30-60 минут", description:"На Софийской поляне, где вкус всегда на высоте, появился герой — Чизбургер с курицей. Мягкая булка словно облако, поддерживает хрустящий айсберг и горячую куриную котлету, сыр Чеддер обнимает всё, как солнечный луч, а соус «Тар-тар» — как лёгкий ветерок, добавляет пикантности.", compound:"Булка, сыр Чеддер, котлета куриная, соус «Тар-тар», салат айсберг, томат, картофель фри" },
-    { text: "Люля-кебаб баранина", price: "450 ₽", weight: "100 г", time:"30-60 минут", description:"Если нужно по‑настоящему отдохнуть и насладиться, выбери Люля-кебаб из баранины. Нежная баранина с луком и специями, завёрнутая в лаваш, в компании с маринованным красным луком и зеленью. Сумах добавит изюминку и насыщенность вкуса. Погрузись в атмосферу полного удовольствия и кулинарного кайфа!", compound:"Мякоть баранина, лук, специи, лаваш, лук красный маринованный, зелень, сумах" },
-    { text: "Куриные крылья на мангале", price: "220 ₽", weight: "100 г", time:"30-60 минут", description:"Когда в министерстве вкусных блюд собралось экстренное совещание, чтобы создать идеальный рецепт курицы, они выбрали «Куриные крылья на мангале» как новинку года. Лаваш, красный маринованный лук и свежая зелень стали отличными союзниками, а сумах добавил завершающий штрих в этот кулинарный шедевр.", compond:"Маринованные куриные крылья, лаваш, лук красный маринованный, зелень, сумах" },
-    { text: "Дорадо", price: "300 ₽", weight: "100 г", time:"30-60 минут", description:"Дорадо…дорадо…дорадостных ощущений от употребления этого блюда осталось совсем немного. С лимоном-гриль, сумахом и зеленью, это блюдо подарит вам ощущение настоящего гастрономического праздника!", compound:"Дорадо, лимон-гриль, сумах, зелень" },
-    { text: "Креветки на гриле", price: "600 ₽", weight: "100 г", time:"30-60 минут", description:"Эти морские обитатели случайно забрели в «неправильный» район и попались на мангал нашего шефа. Лимон-гриль и сумах привнесли в их вкус освежающую кислинку и нежный аромат, а зелень завершила эту пикантную встречу. Результат — идеальный баланс между лёгкой сладостью и пряным очарованием.", compound:"Креветки, лимон-гриль, сумах, зелень" },
-    { text: "Кальмар на гриле", price: "700 ₽", weight: "100 г", time:"30-60 минут", description:"Пришёл сюда по блату, через свою подружку сёмгу филе, устроился на работу и оправдал все вложения благодаря своему вкусу. Лимон-гриль и сумах лишь подчёркивают его характер, а свежая зелень добавляет финальный штрих.", compound:"Кальмар, лимон-гриль, сумах, зелень" },
-  ];
+
 
 const RecSouses = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecomendations = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "recfsouses")); // Измените путь на "recomendations"
+        if (snapshot.exists()) {
+          const recomendationsData = snapshot.val();
+          const recomendationsArray = Object.keys(recomendationsData).map(key => ({
+            id: key,
+            ...recomendationsData[key],
+          }));
+          console.log("Fetched recomendations data:", recomendationsArray);
+          setCards(recomendationsArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Ошибка при получении рекомендаций:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecomendations();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/sousesIn', { state: { dish: card, fromRecomendations: true } });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Произошла ошибка: {error.message}</div>;
+  }
 
   return (
     <div className={s.drinks}>
@@ -32,6 +65,7 @@ const RecSouses = () => {
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
             />
           </div>
         ))}

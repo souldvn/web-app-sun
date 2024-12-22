@@ -3,27 +3,56 @@ import { useNavigate } from 'react-router-dom';
 import s from './RecSteaks.module.css';
 import CardPrice from '../../../../Complite/CardPrice/CardPrice';
 import CartButton from '../../../../Complite/CartButton/CartButton';
+import { ref, get, child } from "firebase/database";
+import { database } from '../../../../../firebaseConfig';
+import { useState, useEffect } from 'react';
 
-const cards = [
-    { id: 1, text: "Картофель фри", price: "200 ₽", weight: "150 г", description: "О, это же картофель свобода! Кхм… то есть бесплатно… но не просто картофель, а хрустящий, золотистый картофель фри, который принесёт вам радость в ресторане Sun Баран. Самый вкусный, самый свободный, самый ваш!", time: "15-25 минут"},
-    { id: 2, text: "Картофель дольки", price: "200 ₽", weight: "150 г", description: "Картофельные дольки решили пройти курсы по саморазвитию: нарастили хруст, подкачали золотистость и стали настолько аппетитными, что теперь их трудно не заметить на любом столе. Только попробуй — и не захочешь расставаться!", time: "15-25 минут", compound: "Каша овсяная, яичница глазунья, сосиски, огурец, помидор, хлеб тостовый, масло сливочное, панкейки, сгущёное молоко" },
-    { id: 3, text: "Кетчуп", price: "100 ₽", weight: "50 г", description: "Тот самый друг, которого все зовут за компанию, потому что он идеально подходит ко всему. Без него не обходится ни одно застолье: будь то картошка, бургер или просто макароны, он всегда рядом, чтобы сделать вкус лучше.", time: "5 минут"},
-    { id: 4, text: "Сырный", price: "100 ₽", weight: "50г", description: "Ох, каких только блюд не придумали с сыром! Сырные палочки, пицца, лазанья, макароны с сыром, сырные омлеты, фондю, сэндвичи, сырные пироги, запечённые овощи с сыром… Вот и до соуса добрались!", time: "5 минут" },
-    { id: 5, text: "Наршараб", price: "100 ₽", weight: "50 г", description: "Наршараб — это как имя восточной принцессы. Богатый и насыщенный вкус, с тонкой кисло-сладкой ноткой, словно воспоминание о тёплом закате среди гранатовых деревьев.", time: "5 минут" },
-    { id: 6, text: "BBQ", price: "100 ₽", weight: "50 г", description: "Однажды французский королевский флот захватил флибустьеров, предложив им выбор: казнь или создание оригинального блюда из овощей. Флибустьеры выбрали второе и приготовили соте из картофеля, кабачков, перца, помидоров и шампиньонов с тимьяном и сумахом. Блюдо впечатлило флот и короля, а рецепт позже попал в ресторан SUNVILL REST, продолжая радовать гостей своим необычным вкусом.", time: "10-15 минут" },
-    { id: 7,text: "Чатни из манго", price: "120 ₽", weight: "50 г", description:"Зачётный чатни из манго как домашка на пятёрку для ваших блюд! Сладкое манго и пряности делают его идеальным компаньоном для любого застолья. Этот соус добавит вашему столу вкусную изюминку и станет вашим кулинарным хитрым решением.", time:"5 минут" },
-    { id: 8,text: "Цахтон", price: "120 ₽", weight: "50 г", description:"Давай по чесноку, честно: это самый вкусный чесночный соус. Честное-пречестное, он богатый, насыщенный и просто идеален для всех ваших любимых блюд. Будь то мясо, овощи или картошка, этот соус добавит неповторимый чесночный вкус и аромат, который невозможно забыть!", time:"5 минут" },
-    { id: 9,text: "Шрирача", price: "150 ₽", weight: "50 г", description:"Тайский соус, созданный для тех, кто любит остроту и насыщенный вкус. Сочетание чили, чеснока и уксуса придаёт блюдам приятную остроту и богатый аромат, превращая каждое угощение в настоящее открытие.", time: "5 минут" },
-    { id: 10,text: "Сметана", price: "100 ₽", weight: "50 г", description:"Да-да, и не говори, как среди целого набора соусов могло затаиться такое сокровище. Эта сметанка — как изысканная жемчужина среди простых украшений.", time: "5 минут" },
-    { id: 11,text: "Горчица", price: "100 ₽", weight: "50 г", description:"Пробовали этот шедевр? Мы слегка огорчены, что до сих пор не все оценили его прелесть. Эта горчица — как волшебный штрих к любому блюду, её острота и насыщенный вкус придают исключительный характер и незабываемое послевкусие, делая каждую трапезу по‑настоящему особенной.", time: "5 минут" },
-  ];
+
 
 const RecSteaks = () => {
   const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecomendations = async () => {
+      try {
+        const dbRef = ref(database);
+        const snapshot = await get(child(dbRef, "recfsteaks")); // Измените путь на "recomendations"
+        if (snapshot.exists()) {
+          const recomendationsData = snapshot.val();
+          const recomendationsArray = Object.keys(recomendationsData).map(key => ({
+            id: key,
+            ...recomendationsData[key],
+          }));
+          console.log("Fetched recomendations data:", recomendationsArray);
+          setCards(recomendationsArray);
+        } else {
+          console.log("No data available");
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Ошибка при получении рекомендаций:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecomendations();
+  }, []);
 
   const handleCardClick = (card) => {
     navigate('/kebabIn', { state: { dish: card, fromRecomendations: true } });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Произошла ошибка: {error.message}</div>;
+  }
 
   return (
     <div className={s.drinks}>
@@ -36,6 +65,7 @@ const RecSteaks = () => {
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
             />
           </div>
         ))}

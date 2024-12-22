@@ -65,8 +65,9 @@ const Bar = () => {
   // Фильтруем карточки в зависимости от режима
   const excludedCards = ["Лимонады", "Фирменные чаи", "Горячие напитки", "Чай классический"];
   const filteredCards = selectedOption === 'delivery'
-    ? cards.filter((card) => !excludedCards.includes(card))
-    : cards;
+  ? cards.filter((card) => !excludedCards.includes(card.text)) // Используем card.text
+  : cards;
+
 
   return (
     <div className={s.bar}>

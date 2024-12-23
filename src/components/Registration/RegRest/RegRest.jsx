@@ -18,7 +18,7 @@ const RegRest = () => {
       console.log('Idempotence Key:', idempotenceKey); // Логируем сгенерированный ключ
     
       try {
-        const response = await fetch('https://web-app-gqncc2n6j-souldvns-projects.vercel.app//create-payment', {
+        const response = await fetch('http://localhost:5000/create-payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ const RegRest = () => {
       console.log('Idempotence Key:', idempotenceKey); // Логируем сгенерированный ключ
     
       try {
-        const response = await fetch('https://https://web-app-sun.vercel.app/create-payment', { // Обновите URL на URL, предоставленный Vercel
+        const response = await fetch('http://localhost:5000/create-payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -45,7 +45,6 @@ const RegRest = () => {
         alert('Произошла ошибка при создании платежа. Попробуйте снова.');
       }
     };
-    
     
     
     

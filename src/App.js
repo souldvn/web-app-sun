@@ -66,6 +66,7 @@ import FlatDel from './components/Registration/RegDel/Address/FlatDel/FlatDel';
 import { DeliveryProvider } from './components/Contextes/RegContext';
 import HouseDel from './components/Registration/RegDel/Address/HouseDel/HouseDel';
 import Hotels from './components/Registration/RegDel/Address/Hotels/Hotels';
+import Success from './components/succsess';
 
 
 
@@ -165,6 +166,8 @@ const App = () => {
             <Route path="/flatdel" element={<FlatDel />} />
             <Route path="/housedel" element={<HouseDel />} />
             <Route path="/hotels" element={<Hotels />} />
+            <Route path="/success" element={<Success />} />
+
           </Routes>
         )}
     

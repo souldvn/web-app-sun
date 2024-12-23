@@ -63,29 +63,31 @@ const Basket = () => {
         ) : (
           cartItems.map((item) => (
             <div className={s.basketPosition} key={`${item.price}-${item.text}-${item.weight}`}>
-              <div className={s.other}>
-                <div className={s.basImg}></div>
-                <div className={s.info}>
-                  {item.text ? item.text : 'Товар без названия'}
-                  <div className={s.priceweight}>
-                    <p className={s.price}>
-                      {(parseFloat(item.price) || 0) * (item.count || 0)} ₽
-                    </p>
-                    <p className={s.weight}>{item.weight}</p>
-                  </div>
-                  
-                </div>
-              </div>
-              <div className={s.lenght}>
-                <button className={s.button} onClick={() => removeFromCart(item)}>
-                  <img className={s.icon} src={minus} alt="minus" />
-                </button>
-                <p className={s.itemCount}>{item.count}</p>
-                <button className={s.button} onClick={() => addToCart(item)}>
-                  <img className={s.icon} src={plus} alt="plus" />
-                </button>
-              </div>
-            </div>
+  <div className={s.other}>
+    <div className={s.basImg}>
+      <img src={item.img} alt={item.text} className={s.image} />
+    </div>
+    <div className={s.info}>
+      {item.text ? item.text : 'Товар без названия'}
+      <div className={s.priceweight}>
+        <p className={s.price}>
+          {(parseFloat(item.price) || 0) * (item.count || 0)} ₽
+        </p>
+        <p className={s.weight}>{item.weight}</p>
+      </div>
+    </div>
+  </div>
+  <div className={s.lenght}>
+    <button className={s.button} onClick={() => removeFromCart(item)}>
+      <img className={s.icon} src={minus} alt="minus" />
+    </button>
+    <p className={s.itemCount}>{item.count}</p>
+    <button className={s.button} onClick={() => addToCart(item)}>
+      <img className={s.icon} src={plus} alt="plus" />
+    </button>
+  </div>
+</div>
+
           ))
         )}
       </div>

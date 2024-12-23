@@ -20,7 +20,7 @@ const CardPrice = ({ price, text, weight, description, time, compound, img }) =>
 
     // Проверяем название карточки
     
-      addToCart({ price, text, weight });
+      addToCart({ price, text, weight, img });
     
   };
 

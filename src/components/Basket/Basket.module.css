@@ -22,12 +22,24 @@
     gap: 8px;
 }
 
-.basImg{
-    min-width: 80px;
-    min-height: 80px;
+.basImg {
+    width: 80px;
+    height: 80px;
     background-color: #d9d9d9;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Увеличивает изображение до размеров контейнера, обрезая лишнее */
+}
+
+  
 
 .info{
     display: flex;

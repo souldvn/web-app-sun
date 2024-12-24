@@ -23,17 +23,20 @@ exports.handler = async (event, context) => {
       `;
 
       try {
-        await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
           parse_mode: 'HTML',
         });
+
+        console.log('Telegram response:', response.data);
 
         return {
           statusCode: 200,
           body: JSON.stringify({ message: 'Telegram notification sent' }),
         };
       } catch (error) {
+        console.error('Error sending message to Telegram:', error);
         return {
           statusCode: 500,
           body: JSON.stringify({ message: 'Error sending notification to Telegram', error: error.message }),

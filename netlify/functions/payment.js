@@ -40,49 +40,28 @@ exports.handler = async (event, context) => {
       description: `Оплата заказа (${orderType})`,
       confirmation: {
         type: 'redirect',
-        return_url: 'http://google.com',
+        return_url: 'https://yourdomain.com/confirmation', // URL для перенаправления после оплаты
       },
       metadata: {
         orderType,
         comment,
+        phoneNumber,
+        guestCount,
+        orderTime,
+        totalPrice,
       },
     }, {
       auth: {
-        username: '1003026',
-        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8',
+        username: '1003026', // Ваш логин
+        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш пароль
       },
       headers: {
         'Idempotence-Key': idempotenceKey,
       },
     });
 
-    // Отправка данных в Telegram
-    const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ'; // Ваш токен бота
-    const TELEGRAM_CHAT_ID = '-1002346852862'; // Ваш chat_id
-
-    const message = `
-    Новый заказ:
-    Телефон: ${phoneNumber || 'Не указан'}
-    Гости: ${guestCount || 'Не указано'}
-    Время: ${orderTime || 'Не указано'}
-    Комментарий: ${comment || 'Нет комментария'}
-    Сумма: ${totalPrice.toFixed(2)} ₽
-    `;
-    
-    await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      chat_id: TELEGRAM_CHAT_ID,
-      text: message,
-      parse_mode: 'HTML', // Опционально, если хотите использовать HTML форматирование
-    });
-    
-
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
-      },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,
       }),

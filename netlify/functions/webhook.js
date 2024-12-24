@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
     console.log('Received payment data:', paymentData);
 
     // Проверяем, что платеж был успешно завершен
-    if (paymentData.status === 'pending') {
+    if (paymentData.status === 'succeeded') {
       const { phoneNumber, guestCount, orderTime, comment, totalPrice } = paymentData.metadata;
 
       // Отправка данных в Telegram

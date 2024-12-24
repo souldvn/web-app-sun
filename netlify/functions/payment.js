@@ -8,6 +8,11 @@ exports.handler = async (event, context) => {
   if (!idempotenceKey) {
     return {
       statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Разрешает доступ с любого домена
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Разрешает эти методы
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key', // Разрешает заголовки
+      },
       body: JSON.stringify({ message: 'Idempotence key is missing.' }),
     };
   }
@@ -40,6 +45,11 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Разрешает доступ с любого домена
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Разрешает эти методы
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key', // Разрешает заголовки
+      },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,
       }),
@@ -47,6 +57,11 @@ exports.handler = async (event, context) => {
   } catch (error) {
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
+      },
       body: JSON.stringify({
         message: 'Не удалось создать платёж',
         error: error.response ? error.response.data : error.message,

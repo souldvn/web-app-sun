@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
 
     // Отправка данных в Telegram
     const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ'; // Ваш токен бота
-    const TELEGRAM_CHAT_ID = '1002346852862'; // Ваш chat_id
+    const TELEGRAM_CHAT_ID = '-1002346852862'; // Ваш chat_id
 
     const message = `
     Новый заказ:

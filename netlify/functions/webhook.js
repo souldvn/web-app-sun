@@ -9,7 +9,8 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment, totalPrice } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment } = paymentData.object.metadata;
+      const totalPrice = paymentData.object.amount.value; // Используем сумму из объекта оплаты
 
       // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
@@ -22,7 +23,7 @@ exports.handler = async (event, context) => {
       Гости: ${guestCount || 'Не указано'}
       Время: ${orderTime || 'Не указано'}
       Комментарий: ${comment || 'Нет комментария'}
-      Сумма: ${totalPrice.toFixed(2)} ₽
+      Сумма: ${totalPrice} ₽
       `;
 
       try {
@@ -42,7 +43,7 @@ exports.handler = async (event, context) => {
         };
       } catch (error) {
         // Логируем ошибку, если не удалось отправить сообщение
-        console.error('Error sending message to Telegram:', error);
+        console.error('Error sending message to Telegram:', error.response ? error.response.data : error.message);
         return {
           statusCode: 500,
           body: JSON.stringify({ message: 'Error sending notification to Telegram', error: error.message }),

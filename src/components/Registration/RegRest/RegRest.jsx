@@ -18,7 +18,7 @@ const RegRest = () => {
       console.log('Idempotence Key:', idempotenceKey); // Логируем сгенерированный ключ
     
       try {
-        const response = await fetch('https://sunvillrest.netlify.app/create-payment', {
+        const response = await fetch('https://sunvillrest.netlify.app/functions/create-payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -29,6 +29,8 @@ const RegRest = () => {
             orderType: 'delivery', // Тип заказа
             comment: 'Комментарий к заказу', // Если нужно
           }),
+          mode: 'cors', // Убедитесь, что режим CORS включен
+
         });
     
         const data = await response.json();

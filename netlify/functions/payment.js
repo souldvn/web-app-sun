@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов (для разработки)
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
@@ -40,20 +40,16 @@ exports.handler = async (event, context) => {
       description: `Оплата заказа (${orderType})`,
       confirmation: {
         type: 'redirect',
-        return_url: 'https://yourdomain.com/confirmation', // URL для перенаправления после оплаты
+        return_url: 'http://google.com',
       },
       metadata: {
         orderType,
         comment,
-        phoneNumber,
-        guestCount,
-        orderTime,
-        totalPrice,
       },
     }, {
       auth: {
-        username: '1003026', // Ваш логин
-        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш пароль
+        username: '1003026',
+        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8',
       },
       headers: {
         'Idempotence-Key': idempotenceKey,
@@ -62,6 +58,11 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
+      },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,
       }),
@@ -70,7 +71,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },

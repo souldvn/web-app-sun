@@ -2,6 +2,19 @@ const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 
 exports.handler = async (event, context) => {
+  // Обработка запроса OPTIONS для предварительного запроса CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Разрешает доступ с любого домена
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Разрешает эти методы
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key', // Разрешает заголовки
+      },
+      body: JSON.stringify({}),
+    };
+  }
+
   const { totalPrice, orderType, comment } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
@@ -9,9 +22,9 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешает доступ с любого домена
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Разрешает эти методы
-        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key', // Разрешает заголовки
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
       body: JSON.stringify({ message: 'Idempotence key is missing.' }),
     };
@@ -46,9 +59,9 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешает доступ с любого домена
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', // Разрешает эти методы
-        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key', // Разрешает заголовки
+        'Access-Control-Allow-Origin': '*', 
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,

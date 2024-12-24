@@ -18,7 +18,7 @@ const RegRest = () => {
       console.log('Idempotence Key:', idempotenceKey); // Логируем сгенерированный ключ
     
       try {
-        const response = await fetch('https://sunvillrest.netlify.app/netlify/functions/payment', {
+        const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

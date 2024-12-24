@@ -1,18 +1,21 @@
 const axios = require('axios');
 
 exports.handler = async (event, context) => {
+  // Проверяем, что это POST-запрос
   if (event.httpMethod === 'POST') {
     const paymentData = JSON.parse(event.body);
     console.log('Received payment data:', paymentData);
 
-    // Проверяем, что платеж был успешно завершен
-    if (paymentData.status === 'succeeded') {
-      const { phoneNumber, guestCount, orderTime, comment, totalPrice } = paymentData.metadata;
+    // Проверяем, что событие связано с успешным платежом
+    if (paymentData.event === 'payment.succeeded') {
+      // Извлекаем данные из metadata платежа
+      const { phoneNumber, guestCount, orderTime, comment, totalPrice } = paymentData.object.metadata;
 
-      // Отправка данных в Telegram
+      // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_CHAT_ID = '-1002346852862';
 
+      // Формируем сообщение для отправки
       const message = `
       Новый заказ:
       Телефон: ${phoneNumber || 'Не указан'}
@@ -23,6 +26,7 @@ exports.handler = async (event, context) => {
       `;
 
       try {
+        // Отправляем запрос в Telegram API для отправки сообщения
         const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
@@ -31,11 +35,13 @@ exports.handler = async (event, context) => {
 
         console.log('Telegram response:', response.data);
 
+        // Возвращаем успешный ответ
         return {
           statusCode: 200,
           body: JSON.stringify({ message: 'Telegram notification sent' }),
         };
       } catch (error) {
+        // Логируем ошибку, если не удалось отправить сообщение
         console.error('Error sending message to Telegram:', error);
         return {
           statusCode: 500,
@@ -43,6 +49,7 @@ exports.handler = async (event, context) => {
         };
       }
     } else {
+      // Если событие не является успешной оплатой
       return {
         statusCode: 200,
         body: JSON.stringify({ message: 'Payment not completed successfully' }),
@@ -50,6 +57,7 @@ exports.handler = async (event, context) => {
     }
   }
 
+  // Если метод запроса не POST
   return {
     statusCode: 405,
     body: JSON.stringify({ message: 'Method Not Allowed' }),

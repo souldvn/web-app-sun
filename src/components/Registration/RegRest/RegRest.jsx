@@ -9,7 +9,7 @@ const RegRest = () => {
   const { state } = location;
   const totalPrice = state?.totalPrice || 0;  // Проверяем наличие totalPrice
   const time = state?.time || '';
-  const cartItems = state?.cartItems || []; // Получаем массив товаров
+  const cartItems = state.cartItems; // Извлекаем товары из state
 
 
   const navigate = useNavigate();
@@ -30,11 +30,6 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems: cartItems.map(item => ({
-          text: item.text,
-          count: item.count,
-          price: item.price,
-        })),
       };
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
@@ -61,9 +56,8 @@ const RegRest = () => {
   };
 
   const handleClick = (path) => {
-    navigate(path, { state: { time, totalPrice, cartItems } }); // Передаем cartItems
+    navigate(path, { state: { time, totalPrice, cartItems } });
   };
-  
 
   return (
     <div className={s.rest}>

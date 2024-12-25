@@ -9,13 +9,8 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
-
-    //   const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
-    const parsedCartItems = typeof cartItems === 'string' ? JSON.parse(cartItems) : cartItems;
-
-      console.log('Received cart items:', parsedCartItems);
 
       // Проверяем, что totalPrice определено
       if (totalPrice === undefined || totalPrice === null) {
@@ -29,27 +24,15 @@ exports.handler = async (event, context) => {
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_CHAT_ID = '-1002346852862';
 
-      if (!Array.isArray(parsedCartItems) || parsedCartItems.length === 0) {
-        console.error('Parsed cart items are empty or invalid:', parsedCartItems);
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ message: 'Корзина пуста или содержит некорректные данные' }),
-        };
-      }
-      
-
       // Формируем сообщение для отправки
       const message = `
-      🛒 <b>Новый заказ!</b>
-      <b>Номер заказа:</b> ${orderId}
-      <b>Телефон:</b> ${phoneNumber || 'Не указан'}
-      <b>Количество гостей:</b> ${guestCount || 'Не указано'}
-      <b>Время:</b> ${orderTime || 'Не указано'}
-      <b>Комментарий:</b> ${comment || 'Нет комментария'}
-      <b>Сумма:</b> ${totalPrice} ₽
-      
-      <b>Содержимое корзины:</b>
-      ${cartItemsText}
+      Новый заказ:
+      Номер заказа: ${orderId}
+      Телефон: ${phoneNumber || 'Не указан'}
+      Гости: ${guestCount || 'Не указано'}
+      Время: ${orderTime || 'Не указано'}
+      Комментарий: ${comment || 'Нет комментария'}
+      Сумма: ${totalPrice} ₽
       `;
 
       try {

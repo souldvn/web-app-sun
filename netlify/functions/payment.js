@@ -1,4 +1,4 @@
-const axios = require ('axios');
+const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 
 exports.handler = async (event, context) => {
@@ -14,11 +14,11 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { cartItems,totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
+  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
   // Проверка обязательных данных
-  if (!phoneNumber || !guestCount) {
+  if (!phoneNumber || !guestCount || !orderTime) {
     return {
       statusCode: 400,
       headers: {
@@ -27,13 +27,6 @@ exports.handler = async (event, context) => {
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
       body: JSON.stringify({ message: 'Некоторые обязательные данные отсутствуют' }),
-    };
-  }
-
-  if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Корзина пуста или отсутствует' }),
     };
   }
 
@@ -59,7 +52,6 @@ exports.handler = async (event, context) => {
         comment: comment || 'Нет комментария',
         totalPrice: totalPrice.toFixed(2),
         orderType,
-        cartItems: JSON.stringify(cartItems), // Преобразуем массив в строку
       },
     }, {
       auth: {

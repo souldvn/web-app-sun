@@ -31,7 +31,9 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems, // Передаем массив товаров
+              cartItems:[
+                {text:item.text, count:item.count, price:item.price} 
+              ]
 
       };
 

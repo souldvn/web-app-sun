@@ -35,7 +35,7 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems: JSON.stringify(cartItemsShort), // Передаем только текст и количество
+        cartItems: cartItemsShort, // Передаем только текст и количество
 
 
       };

@@ -13,7 +13,7 @@ const Morning = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-  const { totalPrice } = location.state || { totalPrice: 0 };
+  const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
   const times = [
     '9:15', '9:30', '9:45', '10:00', '10:15', '10:30', '10:45', '11:00'
@@ -25,7 +25,7 @@ const Morning = () => {
 
   const handleApplyClick = () => {
     if (isActive) {
-      navigate('/regrest', { state: { time: times[activeIndex], totalPrice,  } });
+      navigate('/regrest', { state: { time: times[activeIndex], totalPrice, cartItems } }); // Передаем cartItems
     }
   };
   

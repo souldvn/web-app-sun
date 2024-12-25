@@ -57,8 +57,9 @@ const RegRest = () => {
   };
 
   const handleClick = (path) => {
-    navigate(path, { state: { time, totalPrice } });
+    navigate(path, { state: { time, totalPrice, cartItems } }); // Передаем cartItems
   };
+  
 
   return (
     <div className={s.rest}>

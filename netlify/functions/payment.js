@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
   const idempotenceKey = uuidv4();
 
   // Проверка обязательных данных
-  if (!phoneNumber || !guestCount || !orderTime) {
+  if (!phoneNumber || !guestCount) {
     return {
       statusCode: 400,
       headers: {

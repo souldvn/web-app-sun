@@ -30,7 +30,7 @@ const RegRest = () => {
       const requestData = {
         orderId,
         totalPrice: Number(totalPrice), // Убедитесь, что это число
-        orderType: 'delivery',
+        orderType: 'В ресторане',
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число

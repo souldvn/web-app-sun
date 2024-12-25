@@ -35,6 +35,7 @@ exports.handler = async (event, context) => {
       const message = `
       Новый заказ:
       Номер заказа: ${orderId}
+      Режим заказа: ${orderType}
       Телефон: ${phoneNumber || 'Не указан'}
       Гости: ${guestCount || 'Не указано'}
       Время: ${orderTime || 'Не указано'}

@@ -30,7 +30,7 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems: cartItems,  // Передаем cartItems
+        cartItems: cartItems || [],  // Передаем cartItems
       };
   
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {

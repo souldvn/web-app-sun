@@ -21,10 +21,8 @@ exports.handler = async (event, context) => {
       }
 
       // Формируем текст для cartItems
-      let cartText = '';
-      cartItems.forEach(item => {
-        cartText += `${item.text} - ${item.count} шт.\n`; // Для каждого товара добавляем его название и количество
-      });
+      const cartItemsText = paymentData.cartItems.map(item => `${item.text}: ${item.count}`).join(', ');
+
 
       // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
@@ -40,7 +38,7 @@ exports.handler = async (event, context) => {
       Комментарий: ${comment || 'Нет комментария'}
       Сумма: ${totalPrice} ₽
       Товары: 
-      ${cartText}
+      ${cartItemsText}
       `;
 
       try {

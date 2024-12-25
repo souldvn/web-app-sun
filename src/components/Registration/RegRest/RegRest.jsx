@@ -16,7 +16,7 @@ const RegRest = () => {
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
-    console.log('Request Data:', requestData);
+   
 
     
     try {

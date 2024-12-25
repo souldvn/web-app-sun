@@ -17,6 +17,7 @@ exports.handler = async (event, context) => {
   const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
+  // Проверка обязательных данных
   if (!phoneNumber || !guestCount || !orderTime) {
     return {
       statusCode: 400,
@@ -40,16 +41,20 @@ exports.handler = async (event, context) => {
       description: `Оплата заказа (${orderType})`,
       confirmation: {
         type: 'redirect',
-        return_url: 'http://google.com',
+        return_url: 'http://google.com', // Замените на реальный URL
       },
       metadata: {
+        phoneNumber: phoneNumber || 'Не указан',
+        guestCount: guestCount || 'Не указано',
+        orderTime: orderTime || 'Не указано',
+        comment: comment || 'Нет комментария',
+        totalPrice: totalPrice.toFixed(2),
         orderType,
-        comment,
       },
     }, {
       auth: {
-        username: '1003026',
-        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8',
+        username: '1003026', // Ваш Shop ID
+        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш секретный ключ
       },
       headers: {
         'Idempotence-Key': idempotenceKey,

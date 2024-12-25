@@ -7,46 +7,39 @@ import { v4 as uuidv4 } from 'uuid';
 const RegRest = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { cartItems, totalPrice } = state;
-  
+  const { time } = state;
+  const totalPrice = state.totalPrice;
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [comment, setComment] = useState('');
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
+    
     const orderId = uuidv4(); // Генерация уникального номера заказа
 
-    // Формирование данных для отправки на сервер
-    const orderData = cartItems.map(item => ({
-      productId: item.id,
-      name: item.text,
-      price: item.price,
-      count: item.count,
-      totalPrice: item.price * item.count,
-      weight: item.weight,
-    }));
     
-    const requestData = {
-      orderId,
-      totalPrice: Number(totalPrice),
-      orderType: 'В ресторане',
-      comment: comment || 'Комментарий к заказу',
-      phoneNumber,
-      guestCount: Number(guestCount),
-      orderTime: new Date().toISOString(),
-      items: orderData, // Передаем товары
+    try {
+      const requestData = {
+        orderId,
+        totalPrice: Number(totalPrice), // Убедитесь, что это число
+        orderType: 'delivery',
+        comment: comment || 'Комментарий к заказу',
+        phoneNumber,
+        guestCount: Number(guestCount), // Преобразуем в число
+        orderTime: time,
     };
     
+      
 
-    try {
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Idempotence-Key': idempotenceKey,
+          'Idempotence-Key': idempotenceKey, // Передаем ключ идемпотентности
         },
-        body: JSON.stringify(requestData), // Отправляем все данные, включая товары
+        body: JSON.stringify(requestData), // Передаем все необходимые данные
         mode: 'cors',
       });
 
@@ -63,10 +56,22 @@ const RegRest = () => {
     }
   };
 
+  const handleClick = (path) => {
+    navigate(path, { state: { time, totalPrice } });
+  };
+
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
       <div className={s.restform}>
+        <input
+          onClick={() => handleClick('/time')}
+          className={s.input}
+          type="text"
+          placeholder='Выберите время'
+          value={time || ''}
+          readOnly
+        />
         <input
           className={s.input}
           type="number"
@@ -89,6 +94,10 @@ const RegRest = () => {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
+      <div className={s.option}>
+        <p>Самовывоз</p>
+        <input type="checkbox" id="checkbox" />
+      </div>
       <div className={s.price}>
         <p>Итоговая цена</p>
         <p>{totalPrice || 0} ₽</p>
@@ -102,4 +111,3 @@ const RegRest = () => {
 };
 
 export default RegRest;
-

@@ -10,7 +10,15 @@ exports.handler = async (event, context) => {
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
       const { phoneNumber, guestCount, orderTime, comment } = paymentData.object.metadata;
-      const totalPrice = paymentData.object.amount.value; // Используем сумму из объекта оплаты
+      let totalPrice = paymentData.object.amount.value;
+
+      // Проверяем, что totalPrice определено
+      if (totalPrice === undefined || totalPrice === null) {
+        console.error('Total price is not defined');
+        totalPrice = 'Не указано';  // Если цена не указана, заменяем на строку
+      } else {
+        totalPrice = parseFloat(totalPrice).toFixed(2); // Форматируем с двумя знаками после запятой
+      }
 
       // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
@@ -27,7 +35,7 @@ exports.handler = async (event, context) => {
       `;
 
       try {
-        // Отправляем запрос в Telegram API для отправки сообщения
+
         const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
@@ -36,13 +44,13 @@ exports.handler = async (event, context) => {
 
         console.log('Telegram response:', response.data);
 
-        // Возвращаем успешный ответ
+        
         return {
           statusCode: 200,
           body: JSON.stringify({ message: 'Telegram notification sent' }),
         };
       } catch (error) {
-        // Логируем ошибку, если не удалось отправить сообщение
+
         console.error('Error sending message to Telegram:', error.response ? error.response.data : error.message);
         return {
           statusCode: 500,

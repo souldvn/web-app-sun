@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
       }
 
       // Формируем текст для cartItems
-      const cartItemsText = paymentData.cartItems.map(item => `${item.text}: ${item.count}`).join(', ');
+      const cartItemsText = paymentData.object.cartItems.map(item => `${item.text}: ${item.count}`).join(', ');
 
 
       // Данные для отправки в Telegram

@@ -12,7 +12,9 @@ exports.handler = async (event, context) => {
       const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
-      const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+    //   const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+    const parsedCartItems = typeof cartItems === 'string' ? JSON.parse(cartItems) : cartItems;
+
       console.log('Received cart items:', parsedCartItems);
 
       // Проверяем, что totalPrice определено

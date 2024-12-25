@@ -7,7 +7,6 @@ const ButtonBasket = ({ isEmpty }) => {
   const { selectedOption, cartItems } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // Вычисляем общую стоимость
   const getTotalPrice = () =>
     cartItems.reduce((total, item) => total + item.price * item.count, 0);
 
@@ -15,7 +14,12 @@ const ButtonBasket = ({ isEmpty }) => {
     const totalPrice = getTotalPrice(); // Получаем текущую общую стоимость
 
     if (selectedOption === 'host') {
-      navigate('/regrest', { state: { totalPrice } });
+      navigate('/regrest', { 
+        state: { 
+          totalPrice,
+          cartItems, // Передаем все товары из корзины
+        } 
+      });
     } else if (selectedOption === 'delivery') {
       navigate('/regdel', { state: { totalPrice } });
     }
@@ -32,5 +36,6 @@ const ButtonBasket = ({ isEmpty }) => {
     </div>
   );
 };
+
 
 export default ButtonBasket;

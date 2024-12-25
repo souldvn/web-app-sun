@@ -52,6 +52,7 @@ exports.handler = async (event, context) => {
         comment: comment || 'Нет комментария',
         totalPrice: totalPrice.toFixed(2),
         orderType,
+        items: orderData, // Добавляем товары сюда
       },
     }, {
       auth: {

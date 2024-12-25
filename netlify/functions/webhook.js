@@ -29,9 +29,14 @@ exports.handler = async (event, context) => {
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_CHAT_ID = '-1002346852862';
 
-      const cartItemsText = parsedCartItems
-      .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт. - ${item.price} ₽`)
-      .join('\n');
+      if (!Array.isArray(parsedCartItems) || parsedCartItems.length === 0) {
+        console.error('Parsed cart items are empty or invalid:', parsedCartItems);
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: 'Корзина пуста или содержит некорректные данные' }),
+        };
+      }
+      
 
       // Формируем сообщение для отправки
       const message = `

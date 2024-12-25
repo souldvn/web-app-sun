@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       // Проверяем, что totalPrice определено
@@ -27,6 +27,7 @@ exports.handler = async (event, context) => {
       // Формируем сообщение для отправки
       const message = `
       Новый заказ:
+      Номер заказа: ${orderId}
       Телефон: ${phoneNumber || 'Не указан'}
       Гости: ${guestCount || 'Не указано'}
       Время: ${orderTime || 'Не указано'}

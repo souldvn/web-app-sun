@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime } = JSON.parse(event.body);
+  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
   // Проверка обязательных данных
@@ -44,6 +44,7 @@ exports.handler = async (event, context) => {
         return_url: 'http://google.com', // Замените на реальный URL
       },
       metadata: {
+        orderId,
         phoneNumber: phoneNumber || 'Не указан',
         guestCount: guestCount || 'Не указано',
         orderTime: orderTime || 'Не указано',
@@ -70,6 +71,7 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,
+        orderId
       }),
     };
   } catch (error) {

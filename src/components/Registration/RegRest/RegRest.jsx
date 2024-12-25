@@ -17,19 +17,21 @@ const RegRest = () => {
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
     
+    const orderId = uuidv4(); // Генерация уникального номера заказа
 
     
     try {
       const requestData = {
-        totalPrice,
-        orderType: 'delivery', // Тип заказа
-        comment: comment || 'Комментарий к заказу', // Комментарий
-        phoneNumber: phoneNumber, // Номер телефона
-        guestCount: guestCount, // Количество гостей
-        orderTime: time, // Время
-      };
-
-      console.log('Request Data:', requestData);
+        orderId,
+        totalPrice: Number(totalPrice), // Убедитесь, что это число
+        orderType: 'delivery',
+        comment: comment || 'Комментарий к заказу',
+        phoneNumber,
+        guestCount: Number(guestCount), // Преобразуем в число
+        orderTime: time,
+    };
+    
+      
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',

@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems, orderType } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];

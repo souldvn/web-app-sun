@@ -21,6 +21,11 @@ const RegRest = () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
     const orderId = uuidv4(); // Генерация уникального номера заказа
 
+    const cartItemsShort = cartItems.map(item => ({
+      text: item.text, // Название товара
+      count: item.count, // Количество товара
+    }));
+
     try {
       const requestData = {
         orderId,
@@ -30,7 +35,8 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems, // Передаем массив товаров
+        cartItems: JSON.stringify(cartItemsShort), // Передаем только текст и количество
+
 
       };
 

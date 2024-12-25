@@ -25,7 +25,7 @@ const Morning = () => {
 
   const handleApplyClick = () => {
     if (isActive) {
-      navigate('/regrest', { state: { time: times[activeIndex], totalPrice } });
+      navigate('/regrest', { state: { time: times[activeIndex], totalPrice,  } });
     }
   };
   

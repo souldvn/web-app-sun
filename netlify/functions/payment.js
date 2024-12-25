@@ -13,9 +13,15 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({}),
     };
   }
-
-  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
+  const { cartItems, totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
+
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Корзина пуста или отсутствует' }),
+    };
+  }
 
   // Проверка обязательных данных
   if (!phoneNumber || !guestCount || !orderTime) {
@@ -52,6 +58,8 @@ exports.handler = async (event, context) => {
         comment: comment || 'Нет комментария',
         totalPrice: totalPrice.toFixed(2),
         orderType,
+        cartItems: JSON.stringify(cartItems), // Преобразуем массив в строку
+
       },
     }, {
       auth: {

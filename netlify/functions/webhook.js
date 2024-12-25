@@ -9,8 +9,11 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
+
+      const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+  console.log('Received cart items:', parsedCartItems);
 
       // Проверяем, что totalPrice определено
       if (totalPrice === undefined || totalPrice === null) {
@@ -23,6 +26,10 @@ exports.handler = async (event, context) => {
       // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_CHAT_ID = '-1002346852862';
+
+      const cartItemsText = parsedCartItems
+    .map((item, index) => `${index + 1}. ${item.name} - ${item.quantity} шт. - ${item.price} ₽`)
+    .join('\n');
 
       // Формируем сообщение для отправки
       const message = `

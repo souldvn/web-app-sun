@@ -20,7 +20,7 @@ const RegRest = () => {
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
     const orderId = uuidv4(); // Генерация уникального номера заказа
-  
+
     try {
       const requestData = {
         orderId,
@@ -30,9 +30,8 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-        cartItems: cartItems || [],  // Передаем cartItems
       };
-  
+
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',
         headers: {
@@ -42,9 +41,9 @@ const RegRest = () => {
         body: JSON.stringify(requestData), // Передаем все необходимые данные
         mode: 'cors',
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         const confirmationUrl = data.confirmationUrl;
         window.location.href = confirmationUrl; // Перенаправляем на страницу оплаты Юкассы
@@ -55,13 +54,10 @@ const RegRest = () => {
       alert('Произошла ошибка при создании платежа. Попробуйте снова.');
     }
   };
-  
 
   const handleClick = (path) => {
     navigate(path, { state: { time, totalPrice } });
   };
-
-  console.log('cartItems:', cartItems);
 
   return (
     <div className={s.rest}>

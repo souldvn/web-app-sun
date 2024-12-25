@@ -5,21 +5,22 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 const RegRest = () => {
-  const { state } = useLocation();
-  const navigate = useNavigate();
-  const { time } = state;
-  const totalPrice = state.totalPrice;
+  const location = useLocation();
+  const { state } = location;
+  const totalPrice = state?.totalPrice || 0;  // Проверяем наличие totalPrice
+  const time = state?.time || '';
+  const cartItems = state.cartItems; // Извлекаем товары из state
 
+
+  const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [comment, setComment] = useState('');
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
-    
     const orderId = uuidv4(); // Генерация уникального номера заказа
-
-    
+  
     try {
       const requestData = {
         orderId,
@@ -29,10 +30,9 @@ const RegRest = () => {
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
-    };
-    
-      
-
+        cartItems: cartItems,  // Передаем cartItems
+      };
+  
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',
         headers: {
@@ -42,9 +42,9 @@ const RegRest = () => {
         body: JSON.stringify(requestData), // Передаем все необходимые данные
         mode: 'cors',
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         const confirmationUrl = data.confirmationUrl;
         window.location.href = confirmationUrl; // Перенаправляем на страницу оплаты Юкассы
@@ -55,6 +55,7 @@ const RegRest = () => {
       alert('Произошла ошибка при создании платежа. Попробуйте снова.');
     }
   };
+  
 
   const handleClick = (path) => {
     navigate(path, { state: { time, totalPrice } });
@@ -63,13 +64,14 @@ const RegRest = () => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
+        
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}
           className={s.input}
           type="text"
           placeholder='Выберите время'
-          value={time || ''}
+          value={time || ''} // Обновляем значение времени
           readOnly
         />
         <input

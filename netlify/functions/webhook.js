@@ -1,7 +1,7 @@
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
 
 exports.handler = async (event, context) => {
-  // Проверяем, что это POST-запрос
   if (event.httpMethod === 'POST') {
     const paymentData = JSON.parse(event.body);
     console.log('Received payment data:', paymentData);
@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const { phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       // Проверяем, что totalPrice определено
@@ -19,6 +19,12 @@ exports.handler = async (event, context) => {
       } else {
         totalPrice = parseFloat(totalPrice).toFixed(2); // Форматируем с двумя знаками после запятой
       }
+
+      // Формируем текст для cartItems
+      let cartText = '';
+      cartItems.forEach(item => {
+        cartText += `${item.text} - ${item.count} шт.\n`; // Для каждого товара добавляем его название и количество
+      });
 
       // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
@@ -33,10 +39,11 @@ exports.handler = async (event, context) => {
       Время: ${orderTime || 'Не указано'}
       Комментарий: ${comment || 'Нет комментария'}
       Сумма: ${totalPrice} ₽
+      Товары: 
+      ${cartText}
       `;
 
       try {
-
         const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
@@ -44,14 +51,12 @@ exports.handler = async (event, context) => {
         });
 
         console.log('Telegram response:', response.data);
-
         
         return {
           statusCode: 200,
           body: JSON.stringify({ message: 'Telegram notification sent' }),
         };
       } catch (error) {
-
         console.error('Error sending message to Telegram:', error.response ? error.response.data : error.message);
         return {
           statusCode: 500,

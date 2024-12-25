@@ -28,7 +28,7 @@ exports.handler = async (event, context) => {
       const TELEGRAM_CHAT_ID = '-1002346852862';
 
       const cartItemsText = parsedCartItems
-    .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт. - ${item.price} ₽`)
+    .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)
     .join('\n');
 
       // Формируем сообщение для отправки

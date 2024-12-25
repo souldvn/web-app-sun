@@ -1,4 +1,4 @@
-const axios = require ('axios');
+const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 
 exports.handler = async (event, context) => {
@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId, cartItems } = JSON.parse(event.body);
+  const { totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
   // Проверка обязательных данных
@@ -52,7 +52,6 @@ exports.handler = async (event, context) => {
         comment: comment || 'Нет комментария',
         totalPrice: totalPrice.toFixed(2),
         orderType,
-        cartItems: cartItems || []
       },
     }, {
       auth: {

@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
     // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
       // Извлекаем данные из metadata платежа
-      const {items, phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
+      const { phoneNumber, guestCount, orderTime, comment, orderId } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       // Проверяем, что totalPrice определено
@@ -26,16 +26,14 @@ exports.handler = async (event, context) => {
 
       // Формируем сообщение для отправки
       const message = `
-  Новый заказ:
-  Номер заказа: ${orderId}
-  Телефон: ${phoneNumber || 'Не указан'}
-  Гости: ${guestCount || 'Не указано'}
-  Время: ${orderTime || 'Не указано'}
-  Комментарий: ${comment || 'Нет комментария'}
-  Сумма: ${totalPrice} ₽
-  Товары:
-  ${items.map(item => `${item.name} x${item.count} (${item.price * item.count} ₽)`).join('\n')}
-`;
+      Новый заказ:
+      Номер заказа: ${orderId}
+      Телефон: ${phoneNumber || 'Не указан'}
+      Гости: ${guestCount || 'Не указано'}
+      Время: ${orderTime || 'Не указано'}
+      Комментарий: ${comment || 'Нет комментария'}
+      Сумма: ${totalPrice} ₽
+      `;
 
       try {
 

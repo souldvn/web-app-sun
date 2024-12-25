@@ -61,6 +61,8 @@ const RegRest = () => {
     navigate(path, { state: { time, totalPrice, cartItems } });
   };
 
+  console.log(cartItems);
+
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />

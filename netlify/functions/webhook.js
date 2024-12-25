@@ -40,6 +40,8 @@ exports.handler = async (event, context) => {
       Время: ${orderTime || 'Не указано'}
       Комментарий: ${comment || 'Нет комментария'}
       Сумма: ${totalPrice} ₽
+      <b>Содержимое корзины:</b>
+${cartItemsText}
       `;
 
       try {

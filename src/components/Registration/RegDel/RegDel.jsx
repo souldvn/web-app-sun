@@ -36,7 +36,7 @@ const RegDel = () => {
         totalPrice: Number(totalPrice),
         orderType: 'Самовывоз',
 
-        comment: comment || 'Комментарий к заказу',
+        comment: comment,
         phoneNumber,
         guestCount: Number(guestCount),
         orderTime: time,

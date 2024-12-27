@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
     console.log('Received payment data:', paymentData);
 
     if (paymentData.event === 'payment.succeeded') {
-      const { flat = 'Не указано', phoneNumber, guestCount, orderTime, comment, orderId, cartItems, orderType } = paymentData.object.metadata;
+      const { flat = 'Не указано', phoneNumber, guestCount, orderTime, comment, orderId, cartItems } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
@@ -36,7 +36,7 @@ exports.handler = async (event, context) => {
 ⏰ Время: ${orderTime || 'Не указано'}
 💬 Комментарий: ${comment || 'Нет комментария'}
 💰 Сумма: ${totalPrice} ₽
-🍴 <b>Содержимое корзины:</b>
+🍴 <b>Позиции:</b>
 ${cartItemsText}
 `;
 

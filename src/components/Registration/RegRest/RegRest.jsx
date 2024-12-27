@@ -26,7 +26,7 @@ const RegRest = () => {
       count: item.count, // Количество товара
     }));
 
-    const flat = 'не'
+    const flat = 'В ресторане';
 
     try {
       const requestData = {

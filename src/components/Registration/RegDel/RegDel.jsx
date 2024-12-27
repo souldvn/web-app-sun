@@ -21,6 +21,7 @@ const RegDel = () => {
   const [comment, setComment] = useState('');
 
   const handlePayment = async () => {
+    
     const idempotenceKey = uuidv4();
     const orderId = uuidv4();
 
@@ -33,6 +34,8 @@ const RegDel = () => {
       const requestData = {
         orderId,
         totalPrice: Number(totalPrice),
+        orderType: 'Самовывоз',
+
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
         guestCount: Number(guestCount),
@@ -40,6 +43,8 @@ const RegDel = () => {
         cartItems: cartItemsShort,
         flat: deliveryData.flat 
       };
+      console.log(requestData); // Логирование данных перед отправкой
+
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',

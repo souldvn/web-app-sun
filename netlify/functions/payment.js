@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { flat, cartItems, totalPrice, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
+  const { flat, cartItems, totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
   if (!Array.isArray(cartItems) || cartItems.length === 0) {
@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
           currency: 'RUB',
         },
         capture: true,
-        description: `Оплата заказа (${flat}), Номер заказа: ${orderId}`,
+        description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`,
         confirmation: {
           type: 'redirect',
           return_url: 'http://google.com', // Замените на реальный URL
@@ -46,7 +46,7 @@ exports.handler = async (event, context) => {
           orderTime: orderTime || 'Не указано',
           comment: comment || 'Нет комментария',
           totalPrice: totalPrice.toFixed(2),
-          // orderType,
+          orderType,
           cartItems: JSON.stringify(cartItems),
         },
         

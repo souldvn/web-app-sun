@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  const { cartItems, totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
+  const { flat, cartItems, totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
   if (!Array.isArray(cartItems) || cartItems.length === 0) {

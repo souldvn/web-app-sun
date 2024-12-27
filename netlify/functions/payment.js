@@ -41,6 +41,7 @@ exports.handler = async (event, context) => {
         metadata: {
           orderId,
           phoneNumber: phoneNumber || 'Не указан',
+          flat: flat || 'Не указано',
           guestCount: orderType === 'В ресторане' ? guestCount || 'Не указано' : 'Не требуется',
           orderTime: orderTime || 'Не указано',
           comment: comment || 'Нет комментария',
@@ -48,6 +49,7 @@ exports.handler = async (event, context) => {
           orderType,
           cartItems: JSON.stringify(cartItems),
         },
+        
       },
       {
         auth: {

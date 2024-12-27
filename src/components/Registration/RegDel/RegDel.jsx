@@ -40,6 +40,7 @@ const RegDel = () => {
         guestCount: Number(guestCount),
         orderTime: time,
         cartItems: cartItemsShort,
+        flat
       };
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {

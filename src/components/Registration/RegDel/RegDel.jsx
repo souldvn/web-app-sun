@@ -19,7 +19,6 @@ const RegDel = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [comment, setComment] = useState('');
-  const [isPickup, setIsPickup] = useState(false);
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4();
@@ -34,7 +33,6 @@ const RegDel = () => {
       const requestData = {
         orderId,
         totalPrice: Number(totalPrice),
-        orderType: isPickup ? 'Самовывоз' : 'Доставка',
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
         guestCount: Number(guestCount),
@@ -113,15 +111,7 @@ const RegDel = () => {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <div className={s.option}>
-        <p>Самовывоз</p>
-        <input
-          type="checkbox"
-          id="checkbox"
-          checked={isPickup}
-          onChange={(e) => setIsPickup(e.target.checked)}
-        />
-      </div>
+      
       <div className={s.price}>
         <p>Итоговая цена</p>
         <p>{totalPrice || 0} ₽</p>

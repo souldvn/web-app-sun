@@ -26,11 +26,13 @@ const RegRest = () => {
       count: item.count, // Количество товара
     }));
 
+    const flat = 'В ресторане';
+
     try {
       const requestData = {
         orderId,
         totalPrice: Number(totalPrice), // Убедитесь, что это число
-        orderType: 'В ресторане',
+        // orderType: 'В ресторане',
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
         guestCount: Number(guestCount), // Преобразуем в число

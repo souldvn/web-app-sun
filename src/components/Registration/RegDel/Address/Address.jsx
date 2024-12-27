@@ -6,11 +6,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Address = () => {
   const location = useLocation();
-  const { totalPrice } = location.state || { totalPrice: 0 }; // Получаем totalPrice
+  const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
   const navigate = useNavigate();
 
   const handleClick = (path) => {
-    navigate(path, { state: { totalPrice } }); // Передаем totalPrice дальше
+    navigate(path, { state: { totalPrice, cartItems } }); // Передаем totalPrice дальше
   };
 
   return (

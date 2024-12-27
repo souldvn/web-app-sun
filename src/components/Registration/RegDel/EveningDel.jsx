@@ -11,7 +11,7 @@ const EveningDel = () => {
   const { deliveryData, setDeliveryData } = useDeliveryContext();
 
     const location = useLocation();
-    const { totalPrice } = location.state || { totalPrice: 0 };
+    const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
   const times = [
     '19:00', '19:15', '19:30', '19:45', '20:00', '20:15', '20:30', '20:45', '21:00'
@@ -25,7 +25,7 @@ const EveningDel = () => {
   const handleApplyClick = () => {
     if (activeIndex !== null) {
       setDeliveryData((prev) => ({ ...prev, time: times[activeIndex] }));
-      navigate('/regdel', { state: { time: times[activeIndex], totalPrice } });
+      navigate('/regdel', { state: { time: times[activeIndex], totalPrice, cartItems } });
     }
   };
 

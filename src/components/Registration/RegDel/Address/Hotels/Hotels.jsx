@@ -11,7 +11,7 @@ const Hotels = () => {
   const { deliveryData, setDeliveryData } = useDeliveryContext();
 
   const location = useLocation();
-  const { totalPrice } = location.state || { totalPrice: 0 };
+  const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
   const flats = [
     'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet', 'Daut Resort', 'Leopard Hotel', 'La Vida',  'Горная Жемчужина', 'Гостевой дом Шишка'
@@ -26,7 +26,7 @@ const Hotels = () => {
   const handleApplyClick = () => {
     if (activeIndex !== null) {
       setDeliveryData((prev) => ({ ...prev, flat: flats[activeIndex] }));
-      navigate('/regdel', { state: { flat: flats[activeIndex], totalPrice } });
+      navigate('/regdel', { state: { flat: flats[activeIndex], totalPrice, cartItems } });
     }
   };
 

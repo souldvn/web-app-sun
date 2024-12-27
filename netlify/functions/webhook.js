@@ -1,43 +1,37 @@
 const axios = require('axios');
 
 exports.handler = async (event, context) => {
-  // Проверяем, что это POST-запрос
   if (event.httpMethod === 'POST') {
     const paymentData = JSON.parse(event.body);
     console.log('Received payment data:', paymentData);
 
-    // Проверяем, что событие связано с успешным платежом
     if (paymentData.event === 'payment.succeeded') {
-      // Извлекаем данные из metadata платежа
       const { phoneNumber, guestCount, orderTime, comment, orderId, cartItems, orderType } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
-  console.log('Received cart items:', parsedCartItems);
+      console.log('Received cart items:', parsedCartItems);
 
-      // Проверяем, что totalPrice определено
       if (totalPrice === undefined || totalPrice === null) {
         console.error('Total price is not defined');
-        totalPrice = 'Не указано';  // Если цена не указана, заменяем на строку
+        totalPrice = 'Не указано';
       } else {
-        totalPrice = parseFloat(totalPrice).toFixed(2); // Форматируем с двумя знаками после запятой
+        totalPrice = parseFloat(totalPrice).toFixed(2);
       }
 
-      // Данные для отправки в Telegram
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_CHAT_ID = '-1002346852862';
 
       const cartItemsText = parsedCartItems
-    .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)
-    .join('\n');
+        .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)
+        .join('\n');
 
-      // Формируем сообщение для отправки
       const message = `
 📦 <b>Новый заказ:</b>
 🆔 Номер заказа: ${orderId}
-📋 Режим заказа: ${orderType === 'delivery' ? '🚚 Доставка' : '🏠 Самовывоз'}
+📋 Режим заказа: ${orderType === 'delivery' ? '🚚 Доставка' : '🏠 В ресторане'}
 📞 Телефон: ${phoneNumber || 'Не указан'}
-👥 Гости: ${guestCount || 'Не указано'}
+👥 Гости: ${orderType === 'В ресторане' ? guestCount || 'Не указано' : 'Не требуется'}
 ⏰ Время: ${orderTime || 'Не указано'}
 💬 Комментарий: ${comment || 'Нет комментария'}
 💰 Сумма: ${totalPrice} ₽
@@ -46,7 +40,6 @@ ${cartItemsText}
 `;
 
       try {
-
         const response = await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
@@ -55,13 +48,11 @@ ${cartItemsText}
 
         console.log('Telegram response:', response.data);
 
-        
         return {
           statusCode: 200,
           body: JSON.stringify({ message: 'Telegram notification sent' }),
         };
       } catch (error) {
-
         console.error('Error sending message to Telegram:', error.response ? error.response.data : error.message);
         return {
           statusCode: 500,
@@ -69,7 +60,6 @@ ${cartItemsText}
         };
       }
     } else {
-      // Если событие не является успешной оплатой
       return {
         statusCode: 200,
         body: JSON.stringify({ message: 'Payment not completed successfully' }),
@@ -77,7 +67,6 @@ ${cartItemsText}
     }
   }
 
-  // Если метод запроса не POST
   return {
     statusCode: 405,
     body: JSON.stringify({ message: 'Method Not Allowed' }),

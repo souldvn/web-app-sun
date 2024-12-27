@@ -17,7 +17,7 @@ const ButtonBasket = ({ isEmpty }) => {
     if (selectedOption === 'host') {
       navigate('/regrest', { state: { totalPrice, cartItems } }); // Передаем товары и цену
     } else if (selectedOption === 'delivery') {
-      navigate('/regdel', { state: { totalPrice } });
+      navigate('/regdel', { state: { totalPrice, cartItems } });
     }
   };
 

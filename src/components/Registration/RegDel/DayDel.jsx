@@ -11,7 +11,7 @@ const Day = () => {
   const { deliveryData, setDeliveryData } = useDeliveryContext();
 
   const location = useLocation();
-  const { totalPrice } = location.state || { totalPrice: 0 };
+  const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
 
   const times = [
@@ -28,7 +28,7 @@ const Day = () => {
   const handleApplyClick = () => {
     if (activeIndex !== null) {
       setDeliveryData((prev) => ({ ...prev, time: times[activeIndex] }));
-      navigate('/regdel', { state: { time: times[activeIndex], totalPrice } });
+      navigate('/regdel', { state: { time: times[activeIndex], totalPrice, cartItems } });
     }
   };
 

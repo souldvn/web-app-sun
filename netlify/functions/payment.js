@@ -6,13 +6,14 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов (для разработки)
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
       body: JSON.stringify({}),
     };
   }
+
   const { cartItems, totalPrice, orderType, comment, phoneNumber, guestCount, orderTime, orderId } = JSON.parse(event.body);
   const idempotenceKey = uuidv4();
 
@@ -23,71 +24,59 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Проверка обязательных данных
-  if (!phoneNumber || !guestCount || !orderTime) {
-    return {
-      statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
-      },
-      body: JSON.stringify({ message: 'Некоторые обязательные данные отсутствуют' }),
-    };
-  }
-
   try {
-    // Создаем запрос к API Юкассы
-    const response = await axios.post('https://api.yookassa.ru/v3/payments', {
-      amount: {
-        value: totalPrice.toFixed(2),
-        currency: 'RUB',
+    const response = await axios.post(
+      'https://api.yookassa.ru/v3/payments',
+      {
+        amount: {
+          value: totalPrice.toFixed(2),
+          currency: 'RUB',
+        },
+        capture: true,
+        description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`,
+        confirmation: {
+          type: 'redirect',
+          return_url: 'http://google.com', // Замените на реальный URL
+        },
+        metadata: {
+          orderId,
+          phoneNumber: phoneNumber || 'Не указан',
+          guestCount: orderType === 'В ресторане' ? guestCount || 'Не указано' : 'Не требуется',
+          orderTime: orderTime || 'Не указано',
+          comment: comment || 'Нет комментария',
+          totalPrice: totalPrice.toFixed(2),
+          orderType,
+          cartItems: JSON.stringify(cartItems),
+        },
       },
-      capture: true,
-      description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`, // Добавляем номер заказа в описание
-
-      confirmation: {
-        type: 'redirect',
-        return_url: 'http://google.com', // Замените на реальный URL
-      },
-      metadata: {
-        orderId,
-        phoneNumber: phoneNumber || 'Не указан',
-        guestCount: guestCount || 'Не указано',
-        orderTime: orderTime || 'Не указано',
-        comment: comment || 'Нет комментария',
-        totalPrice: totalPrice.toFixed(2),
-        orderType,
-        cartItems: JSON.stringify(cartItems), // Преобразуем массив в строку
-
-      },
-    }, {
-      auth: {
-        username: '1003026', // Ваш Shop ID
-        password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш секретный ключ
-      },
-      headers: {
-        'Idempotence-Key': idempotenceKey,
-      },
-    });
+      {
+        auth: {
+          username: '1003026', // Ваш Shop ID
+          password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш секретный ключ
+        },
+        headers: {
+          'Idempotence-Key': idempotenceKey,
+        },
+      }
+    );
 
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },
       body: JSON.stringify({
         confirmationUrl: response.data.confirmation.confirmation_url,
-        orderId
+        orderId,
       }),
     };
   } catch (error) {
     return {
       statusCode: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Разрешаем запросы с любых доменов
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Idempotence-Key',
       },

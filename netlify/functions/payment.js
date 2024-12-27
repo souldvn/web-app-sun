@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
           currency: 'RUB',
         },
         capture: true,
-        description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`,
+        description: `Оплата заказа (${flat}), Номер заказа: ${orderId}`,
         confirmation: {
           type: 'redirect',
           return_url: 'http://google.com', // Замените на реальный URL

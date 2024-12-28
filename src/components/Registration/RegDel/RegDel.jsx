@@ -39,7 +39,7 @@ const RegDel = () => {
         comment: comment,
         phoneNumber,
         guestCount: Number(guestCount),
-        orderTime: time,
+        orderTime: deliveryData.time,
         cartItems: cartItemsShort,
         flat: deliveryData.flat 
       };

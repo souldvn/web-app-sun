@@ -6,7 +6,7 @@ exports.handler = async (event, context) => {
     console.log('Received payment data:', paymentData);
 
     if (paymentData.event === 'payment.succeeded') {
-      const { flat = 'Не указано', phoneNumber, guestCount, orderTime, comment, orderId, cartItems, orderType } = paymentData.object.metadata;
+      const { flat = 'Не указано', phoneNumber, guestCount, orderTime, comment, orderId, cartItems, orderType, telegramChatId } = paymentData.object.metadata;
       let totalPrice = paymentData.object.amount.value;
 
       const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
@@ -20,8 +20,10 @@ exports.handler = async (event, context) => {
       }
 
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
+      const TELEGRAM_BOT_TOKEN_USER = '7515370853:AAEikh7iTegPcr8vhxpYsBNNJOuB30M3oaQ';
+
       const TELEGRAM_CHAT_ID_KITCHEN = '-1002346852862';  // ID чата для кухни
-      const TELEGRAM_CHAT_ID_USER = paymentData.object.metadata.telegramChatId; // ID чата пользователя, получаем из метаданных
+      const TELEGRAM_CHAT_ID_USER = telegramChatId; // ID чата пользователя, получаем из метаданных
 
       const cartItemsText = parsedCartItems
         .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)
@@ -71,7 +73,7 @@ ${cartItemsText}
       // Отправка сообщения пользователю
       if (TELEGRAM_CHAT_ID_USER) {
         try {
-          await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN_USER}/sendMessage`, {
             chat_id: TELEGRAM_CHAT_ID_USER,
             text: messageForUser,
             parse_mode: 'HTML',

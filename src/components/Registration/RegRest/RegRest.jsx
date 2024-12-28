@@ -102,6 +102,7 @@ const RegRest = () => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
+      <p>Chat ID: {chatId}</p>
 
       <div className={s.restform}>
         <input

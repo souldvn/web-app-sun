@@ -67,7 +67,7 @@ import { DeliveryProvider } from './components/Contextes/RegContext';
 import HouseDel from './components/Registration/RegDel/Address/HouseDel/HouseDel';
 import Hotels from './components/Registration/RegDel/Address/Hotels/Hotels';
 import Success from './components/succsess';
-import {useQuery} from '../utils/util'
+import {useQuery} from '../src/components/utils/util';
 
 
 

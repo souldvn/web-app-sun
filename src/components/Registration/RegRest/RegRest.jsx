@@ -8,7 +8,9 @@ import { useQuery } from '../../utils/util';
 const RegRest = () => {
 
   const query = useQuery();
-  const chatId = query.get('chatId');
+  // const chatId = query.get('chatId');
+  const chatId = 547936158;
+
 
   const location = useLocation();
   const { state } = location;

@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
       const messageForKitchen = `
 📦 <b>Новый заказ:</b>
 🆔 Номер заказа: ${orderId}
-
+      орилри ${TELEGRAM_CHAT_ID_USER}
 📍 Адрес: ${flat}
 📞 Телефон: ${phoneNumber}
 👥 Гости: ${guestCount}

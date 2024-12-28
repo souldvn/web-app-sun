@@ -12,16 +12,33 @@ const RegRest = () => {
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [guestCount, setGuestCount] = useState('');
-  const [comment, setComment] = useState('');
+
+  const [phoneNumber, setPhoneNumber] = useState(() => {
+    return localStorage.getItem('phoneNumber') || '';
+  });
+  const [guestCount, setGuestCount] = useState(() => {
+    return localStorage.getItem('guestCount') || '';
+  });
+  const [comment, setComment] = useState(() => {
+    return localStorage.getItem('comment') || '';
+  });
   const [isPickup, setIsPickup] = useState(() => {
-    // Загружаем состояние из localStorage при инициализации
     return localStorage.getItem('isPickup') === 'true';
   });
 
   useEffect(() => {
-    // Сохраняем состояние в localStorage при изменении
+    localStorage.setItem('phoneNumber', phoneNumber);
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    localStorage.setItem('guestCount', guestCount);
+  }, [guestCount]);
+
+  useEffect(() => {
+    localStorage.setItem('comment', comment);
+  }, [comment]);
+
+  useEffect(() => {
     localStorage.setItem('isPickup', isPickup);
   }, [isPickup]);
 

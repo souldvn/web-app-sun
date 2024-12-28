@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegDel.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
-
 
 const RegDel = () => {
   const { deliveryData } = useDeliveryContext();
@@ -16,12 +15,32 @@ const RegDel = () => {
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [guestCount, setGuestCount] = useState('');
-  const [comment, setComment] = useState('');
+
+  // Инициализация из localStorage
+  const [phoneNumber, setPhoneNumber] = useState(() => {
+    return localStorage.getItem('phoneNumber') || '';
+  });
+  const [guestCount, setGuestCount] = useState(() => {
+    return localStorage.getItem('guestCount') || '';
+  });
+  const [comment, setComment] = useState(() => {
+    return localStorage.getItem('comment') || '';
+  });
+
+  // Сохранение данных в localStorage
+  useEffect(() => {
+    localStorage.setItem('phoneNumber', phoneNumber);
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    localStorage.setItem('guestCount', guestCount);
+  }, [guestCount]);
+
+  useEffect(() => {
+    localStorage.setItem('comment', comment);
+  }, [comment]);
 
   const handlePayment = async () => {
-    
     const idempotenceKey = uuidv4();
     const orderId = uuidv4();
 
@@ -41,10 +60,9 @@ const RegDel = () => {
         guestCount: Number(guestCount),
         orderTime: deliveryData.time,
         cartItems: cartItemsShort,
-        flat: deliveryData.flat 
+        flat: deliveryData.flat,
       };
       console.log(requestData); // Логирование данных перед отправкой
-
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
         method: 'POST',
@@ -116,22 +134,22 @@ const RegDel = () => {
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      
+
       <div className={s.price}>
         <p>Итоговая цена</p>
         <p>{totalPrice || 0} ₽</p>
       </div>
 
       <div className={s.cartItems}>
-  <h3>Содержимое корзины:</h3>
-  <ul>
-    {cartItems.map((item, index) => (
-      <li key={index}>
-        {item.text} - {item.count} шт.
-      </li>
-    ))}
-  </ul>
-</div>
+        <h3>Содержимое корзины:</h3>
+        <ul>
+          {cartItems.map((item, index) => (
+            <li key={index}>
+              {item.text} - {item.count} шт.
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>

@@ -9,7 +9,7 @@ const RegRest = () => {
 
   const query = useQuery();
   // const chatId = query.get('chatId');
-  const chatId = 547936158;
+  const chatId = '547936158';
 
 
   const location = useLocation();

@@ -3,9 +3,12 @@ import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useQuery } from '../../utils/util';
 
 
-const RegRest = ({chatId}) => {
+const RegRest = () => {
+  const query = useQuery();
+      const chatId = query.get('chatId');
 
   // const chatId = '547936158';
 

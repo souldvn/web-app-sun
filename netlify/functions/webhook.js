@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
 
       const chefMessage = `📦 <b>Новый заказ:</b>
 🆔 Номер заказа: ${orderId}
-
+      чат айди: ${chatId}
 📍 Адрес: ${flat}
 📞 Телефон: ${phoneNumber}
 👥 Гости: ${guestCount}

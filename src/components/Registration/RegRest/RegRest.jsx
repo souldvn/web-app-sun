@@ -3,8 +3,13 @@ import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useQuery } from '../../utils/util';
 
 const RegRest = () => {
+
+  const query = useQuery();
+  const chatId = query.get('chatId');
+
   const location = useLocation();
   const { state } = location;
   const totalPrice = state?.totalPrice || 0;
@@ -62,6 +67,7 @@ const RegRest = () => {
         orderTime: time,
         cartItems: cartItemsShort,
         flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
+        chatId
       };
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {

@@ -3,6 +3,7 @@ import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useDeliveryContext } from '../../context/DeliveryContext';
 
 const RegRest = () => {
   const location = useLocation();
@@ -10,14 +11,14 @@ const RegRest = () => {
   const totalPrice = state?.totalPrice || 0;  // Проверяем наличие totalPrice
   const time = state?.time || '';
   const cartItems = state?.cartItems || []; // Получаем массив товаров
-  const [isPickup, setIsPickup] = useState(false);
-
-
 
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [comment, setComment] = useState('');
+
+  const { deliveryData, setDeliveryData, togglePickup } = useDeliveryContext();
+  const { isPickup } = deliveryData; // Получаем состояние самовывоза из контекста
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
@@ -28,18 +29,16 @@ const RegRest = () => {
       count: item.count, // Количество товара
     }));
 
-    // const flat = 'В ресторане';
-
     try {
       const requestData = {
         orderId,
-        totalPrice: Number(totalPrice), // Убедитесь, что это число
-        orderType: 'В ресторане',
+        totalPrice: Number(totalPrice),
+        orderType: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
-        guestCount: Number(guestCount), // Преобразуем в число
+        guestCount: Number(guestCount),
         orderTime: time,
-        cartItems: cartItemsShort, // Передаем только текст и количество
+        cartItems: cartItemsShort,
         flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
       };
 
@@ -49,7 +48,7 @@ const RegRest = () => {
           'Content-Type': 'application/json',
           'Idempotence-Key': idempotenceKey, // Передаем ключ идемпотентности
         },
-        body: JSON.stringify(requestData), // Передаем все необходимые данные
+        body: JSON.stringify(requestData),
         mode: 'cors',
       });
 
@@ -70,8 +69,6 @@ const RegRest = () => {
     navigate(path, { state: { time, totalPrice, cartItems } });
   };
 
-  console.log(cartItems);
-
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
@@ -82,7 +79,7 @@ const RegRest = () => {
           className={s.input}
           type="text"
           placeholder='Выберите время'
-          value={time || ''} // Обновляем значение времени
+          value={time || ''}
           readOnly
         />
         <input
@@ -110,11 +107,11 @@ const RegRest = () => {
       <div className={s.option}>
         <p>Самовывоз</p>
         <input
-    type="checkbox"
-    id="checkbox"
-    checked={isPickup}
-    onChange={(e) => setIsPickup(e.target.checked)}
-  />
+          type="checkbox"
+          id="checkbox"
+          checked={isPickup}
+          onChange={togglePickup}
+        />
       </div>
       <div className={s.price}>
         <p>Итоговая цена</p>

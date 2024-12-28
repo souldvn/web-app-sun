@@ -8,10 +8,18 @@ export const DeliveryProvider = ({ children }) => {
   const [deliveryData, setDeliveryData] = useState({
     time: null,
     flat: null,
+    isPickup: false, // Добавляем состояние самовывоза
   });
 
+  const togglePickup = () => {
+    setDeliveryData((prev) => ({
+      ...prev,
+      isPickup: !prev.isPickup,
+    }));
+  };
+
   return (
-    <DeliveryContext.Provider value={{ deliveryData, setDeliveryData }}>
+    <DeliveryContext.Provider value={{ deliveryData, setDeliveryData, togglePickup }}>
       {children}
     </DeliveryContext.Provider>
   );

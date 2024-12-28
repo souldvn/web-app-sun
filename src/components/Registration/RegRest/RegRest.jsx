@@ -10,6 +10,8 @@ const RegRest = () => {
   const totalPrice = state?.totalPrice || 0;  // Проверяем наличие totalPrice
   const time = state?.time || '';
   const cartItems = state?.cartItems || []; // Получаем массив товаров
+  const [isPickup, setIsPickup] = useState(false);
+
 
 
   const navigate = useNavigate();
@@ -26,7 +28,7 @@ const RegRest = () => {
       count: item.count, // Количество товара
     }));
 
-    const flat = 'В ресторане';
+    // const flat = 'В ресторане';
 
     try {
       const requestData = {
@@ -38,7 +40,7 @@ const RegRest = () => {
         guestCount: Number(guestCount), // Преобразуем в число
         orderTime: time,
         cartItems: cartItemsShort, // Передаем только текст и количество
-        flat: flat
+        flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
       };
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
@@ -107,7 +109,12 @@ const RegRest = () => {
       </div>
       <div className={s.option}>
         <p>Самовывоз</p>
-        <input type="checkbox" id="checkbox" />
+        <input
+    type="checkbox"
+    id="checkbox"
+    checked={isPickup}
+    onChange={(e) => setIsPickup(e.target.checked)}
+  />
       </div>
       <div className={s.price}>
         <p>Итоговая цена</p>

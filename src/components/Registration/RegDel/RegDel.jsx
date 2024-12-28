@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
 
 
-const RegDel = () => {
+const RegDel = ({chatId}) => {
 
   const { deliveryData } = useDeliveryContext();
 
@@ -56,7 +56,7 @@ const RegDel = () => {
         orderId,
         totalPrice: Number(totalPrice),
         orderType: 'Самовывоз',
-
+        telegramChatId: chatId,
         comment: comment,
         phoneNumber,
         guestCount: Number(guestCount),

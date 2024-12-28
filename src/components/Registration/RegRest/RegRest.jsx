@@ -3,14 +3,11 @@ import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-// import { useQuery } from '../../utils/util';
+
 
 
 const RegRest = ({chatId}) => {
-  // const query = useQuery();
-  //     const chatId = query.get('chatId');
 
-  // const chatId = '547936158';
 
 
   const location = useLocation();
@@ -105,8 +102,6 @@ const RegRest = ({chatId}) => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
-      <p>Chat ID: {chatId}</p>
-
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}

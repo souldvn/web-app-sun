@@ -159,7 +159,7 @@ const App = () => {
             <Route path="/day" element={<Day />} />
             <Route path="/morning" element={<Morning />} />
             <Route path="/evening" element={<Evening />} />
-            <Route path="/regdel" element={<RegDel />} />
+            <Route path="/regdel" element={<RegDel chatId={chatId} />} />
             <Route path="/timedel" element={<TimeDel />} />
             <Route path="/daydel" element={<DayDel />} />
             <Route path="/eveningdel" element={<EveningDel />} />

@@ -67,6 +67,7 @@ import { DeliveryProvider } from './components/Contextes/RegContext';
 import HouseDel from './components/Registration/RegDel/Address/HouseDel/HouseDel';
 import Hotels from './components/Registration/RegDel/Address/Hotels/Hotels';
 import Success from './components/succsess';
+import {useQuery} from '../utils/util'
 
 
 
@@ -74,7 +75,8 @@ import Success from './components/succsess';
 
 const App = () => {
 
-
+  const query = useQuery();
+    const chatId = query.get('chatId');
 
 
   const [loading, setLoading] = useState(true);
@@ -147,7 +149,7 @@ const App = () => {
             <Route path="/garnishIn" element={<GarnishIn />} />
             <Route path="/iceIn" element={<IceIn />} />
             <Route path="/sousesIn" element={<SousesIn />} />   
-            <Route path="/regrest" element={<RegRest />} />
+            <Route path="/regrest" element={<RegRest chatId={chatId} />} />
             <Route path="/time" element={<Time />} />
             <Route path="/day" element={<Day />} />
             <Route path="/morning" element={<Morning />} />

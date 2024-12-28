@@ -18,26 +18,26 @@ const RegDel = () => {
 
   // Инициализация из localStorage
   const [phoneNumber, setPhoneNumber] = useState(() => {
-    return localStorage.getItem('phoneNumber') || '';
+    return localStorage.getItem('phoneNumberDel') || '';
   });
   const [guestCount, setGuestCount] = useState(() => {
-    return localStorage.getItem('guestCount') || '';
+    return localStorage.getItem('guestCountDel') || '';
   });
   const [comment, setComment] = useState(() => {
-    return localStorage.getItem('comment') || '';
+    return localStorage.getItem('commentDel') || '';
   });
 
   // Сохранение данных в localStorage
   useEffect(() => {
-    localStorage.setItem('phoneNumber', phoneNumber);
+    localStorage.setItem('phoneNumberDel', phoneNumber);
   }, [phoneNumber]);
 
   useEffect(() => {
-    localStorage.setItem('guestCount', guestCount);
+    localStorage.setItem('guestCountDel', guestCount);
   }, [guestCount]);
 
   useEffect(() => {
-    localStorage.setItem('comment', comment);
+    localStorage.setItem('commentDel', comment);
   }, [comment]);
 
   const handlePayment = async () => {

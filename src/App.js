@@ -87,6 +87,8 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const [chatId, setChatId] = useState(null);
+
   return (
 
     
@@ -102,7 +104,7 @@ const App = () => {
           <Splash />
         ) : (
           <Routes>
-            <Route path="/" element={<Mainscreen />} />
+            <Route path="/" element={<Mainscreen setChatId={setChatId} />} />
             <Route path="/breakfast" element={<Breakfast />} />
             <Route path="bar" element={<Bar />} />
             <Route path="grill" element={<Grill />} />
@@ -147,7 +149,7 @@ const App = () => {
             <Route path="/garnishIn" element={<GarnishIn />} />
             <Route path="/iceIn" element={<IceIn />} />
             <Route path="/sousesIn" element={<SousesIn />} />   
-            <Route path="/regrest" element={<RegRest />} />
+            <Route path="/regrest" element={<RegRest chatId={chatId} />} />
             <Route path="/time" element={<Time />} />
             <Route path="/day" element={<Day />} />
             <Route path="/morning" element={<Morning />} />

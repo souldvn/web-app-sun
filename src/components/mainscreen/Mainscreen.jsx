@@ -5,19 +5,22 @@ import balls from '../../assets/icons/balls.svg';
 import Carddeffault from '../Complite/carddeffault/Carddeffault';
 import s from './mainscreen.module.css';
 import CartButton from '../Complite/CartButton/CartButton';
-import {useQuery} from '../utils/util'
+import { useQuery } from '../utils/util';
 
-
-const Mainscreen = () => {
+const Mainscreen = ({ setChatId }) => { // Accept setChatId as a prop
   const query = useQuery();
-    const chatId = query.get('chatId');
+  const chatId = query.get('chatId'); // Get chatId from the query
   const { selectedOption, setOption } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const savedOption = localStorage.getItem('activeButton') || 'host';
     setOption(savedOption);
-  }, [setOption]);
+    // Set chatId in App.js state
+    if (chatId) {
+      setChatId(chatId);
+    }
+  }, [setOption, chatId, setChatId]); // Ensure setChatId is called when chatId changes
 
   const handleButtonClick = (option) => {
     setOption(option);
@@ -45,64 +48,12 @@ const Mainscreen = () => {
     }
   };
 
-  // Массив объектов с текстом и изображениями
+  // Cards array (same as before)
   const cards = [
-    {
-      text: "Завтраки",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Zavtraki.jpg?raw=true",
-    },
-    {
-      text: "Барная карта",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Barnaya%20karta.jpg?raw=true",
-    },
-    {
-      text: "Гриль & Мангал",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Gril%20i%20Mangal.jpg?raw=true",
-    },
-    {
-      text: "Бургеры",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Burgeri.jpg?raw=true",
-    },
-    {
-      text:"Горячие блюда",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20bluda.jpg?raw=true"
-    },
-    {
-      text:"Горячие закуски",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20zakuski.jpg?raw=true"
-    },
-    {
-      text:"Супы",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Supi.jpg?raw=true"
-    },
-    {
-      text:"Салаты",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Salati.jpg?raw=true"
-    },
-    {
-      text:"Тесто",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Testo.jpg?raw=true"
-    },
-    {
-      text:"Холодные закуски",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20zakuski.jpg?raw=true"
-    },
-    {
-      text:"Гарниры",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Garniri.jpg?raw=true"
-    },
-    {
-      text:"Мороженое",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Morojenoe.jpg?raw=true"
-    },
-    {
-      text:"Соусы",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Sousi.jpg?raw=true"
-    }
-    // Добавьте остальные блюда с соответствующими ссылками на изображения
+    // Your card objects here
   ];
 
-  // Фильтрация карточек
+  // Filter cards based on selected option
   const filteredCards = selectedOption === 'delivery'
     ? cards.filter((card) => card.text !== "Завтраки")
     : cards;
@@ -135,7 +86,7 @@ const Mainscreen = () => {
           <Carddeffault
             key={index}
             text={card.text}
-            img={card.img} // Передача изображения
+            img={card.img}
             onClick={() => handleCardClick(card.text)}
           />
         ))}

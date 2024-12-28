@@ -67,7 +67,7 @@ const RegRest = () => {
         orderTime: time,
         cartItems: cartItemsShort,
         flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
-        chatId
+        telegramChatId: chatId
       };
 
       const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {

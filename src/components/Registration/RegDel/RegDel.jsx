@@ -4,8 +4,11 @@ import s from './RegDel.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
+import {useQuery} from '../../utils/util';
 
 const RegDel = () => {
+  const query = useQuery();
+  const chatId = query.get('chatId');
   const { deliveryData } = useDeliveryContext();
 
   const location = useLocation();
@@ -94,7 +97,7 @@ const RegDel = () => {
   return (
     <div className={s.del}>
       <TopBar text="Оформление" />
-
+        <p>{chatId}</p>
       <div className={s.delform}>
         <input
           onClick={() => handleClick('/timedel')}
@@ -139,18 +142,6 @@ const RegDel = () => {
         <p>Итоговая цена</p>
         <p>{totalPrice || 0} ₽</p>
       </div>
-
-      <div className={s.cartItems}>
-        <h3>Содержимое корзины:</h3>
-        <ul>
-          {cartItems.map((item, index) => (
-            <li key={index}>
-              {item.text} - {item.count} шт.
-            </li>
-          ))}
-        </ul>
-      </div>
-
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
         <button className={s.pay} onClick={handlePayment}>

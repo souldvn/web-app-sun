@@ -5,8 +5,12 @@ import balls from '../../assets/icons/balls.svg';
 import Carddeffault from '../Complite/carddeffault/Carddeffault';
 import s from './mainscreen.module.css';
 import CartButton from '../Complite/CartButton/CartButton';
+import {useQuery} from '../utils/util'
+
 
 const Mainscreen = () => {
+  const query = useQuery();
+    const chatId = query.get('chatId');
   const { selectedOption, setOption } = useContext(CartContext);
   const navigate = useNavigate();
 
@@ -105,6 +109,7 @@ const Mainscreen = () => {
 
   return (
     <div className={s.mainscreen}>
+      <p>Chat ID: {chatId}</p>
       <div className={s.functionpanel}>
         <button className={s.balls}>
           <img src={balls} alt="balls" />

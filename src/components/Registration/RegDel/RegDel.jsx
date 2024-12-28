@@ -4,11 +4,10 @@ import s from './RegDel.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
-import {useQuery} from '../../utils/util';
+
 
 const RegDel = () => {
-  const query = useQuery();
-  const chatId = query.get('chatId');
+
   const { deliveryData } = useDeliveryContext();
 
   const location = useLocation();
@@ -97,7 +96,7 @@ const RegDel = () => {
   return (
     <div className={s.del}>
       <TopBar text="Оформление" />
-      <p>Chat ID: {chatId}</p>
+      
       <div className={s.delform}>
         <input
           onClick={() => handleClick('/timedel')}

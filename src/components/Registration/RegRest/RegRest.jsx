@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -7,39 +7,43 @@ import { v4 as uuidv4 } from 'uuid';
 const RegRest = () => {
   const location = useLocation();
   const { state } = location;
-  const totalPrice = state?.totalPrice || 0;  // Проверяем наличие totalPrice
+  const totalPrice = state?.totalPrice || 0;
   const time = state?.time || '';
-  const cartItems = state?.cartItems || []; // Получаем массив товаров
-  const [isPickup, setIsPickup] = useState(false);
-
-
+  const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [guestCount, setGuestCount] = useState('');
   const [comment, setComment] = useState('');
+  const [isPickup, setIsPickup] = useState(() => {
+    // Загружаем состояние из localStorage при инициализации
+    return localStorage.getItem('isPickup') === 'true';
+  });
+
+  useEffect(() => {
+    // Сохраняем состояние в localStorage при изменении
+    localStorage.setItem('isPickup', isPickup);
+  }, [isPickup]);
 
   const handlePayment = async () => {
-    const idempotenceKey = uuidv4(); // Генерация уникального Idempotence Key
-    const orderId = uuidv4(); // Генерация уникального номера заказа
+    const idempotenceKey = uuidv4();
+    const orderId = uuidv4();
 
     const cartItemsShort = cartItems.map(item => ({
-      text: item.text, // Название товара
-      count: item.count, // Количество товара
+      text: item.text,
+      count: item.count,
     }));
-
-    // const flat = 'В ресторане';
 
     try {
       const requestData = {
         orderId,
-        totalPrice: Number(totalPrice), // Убедитесь, что это число
+        totalPrice: Number(totalPrice),
         orderType: 'В ресторане',
         comment: comment || 'Комментарий к заказу',
         phoneNumber,
-        guestCount: Number(guestCount), // Преобразуем в число
+        guestCount: Number(guestCount),
         orderTime: time,
-        cartItems: cartItemsShort, // Передаем только текст и количество
+        cartItems: cartItemsShort,
         flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
       };
 
@@ -47,9 +51,9 @@ const RegRest = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Idempotence-Key': idempotenceKey, // Передаем ключ идемпотентности
+          'Idempotence-Key': idempotenceKey,
         },
-        body: JSON.stringify(requestData), // Передаем все необходимые данные
+        body: JSON.stringify(requestData),
         mode: 'cors',
       });
 
@@ -57,7 +61,7 @@ const RegRest = () => {
 
       if (response.ok) {
         const confirmationUrl = data.confirmationUrl;
-        window.location.href = confirmationUrl; // Перенаправляем на страницу оплаты Юкассы
+        window.location.href = confirmationUrl;
       } else {
         alert(`Ошибка: ${data.message}`);
       }
@@ -75,34 +79,34 @@ const RegRest = () => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
-        
+
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}
           className={s.input}
           type="text"
-          placeholder='Выберите время'
-          value={time || ''} // Обновляем значение времени
+          placeholder="Выберите время"
+          value={time || ''}
           readOnly
         />
         <input
           className={s.input}
           type="number"
-          placeholder='Укажите количество гостей'
+          placeholder="Укажите количество гостей"
           value={guestCount}
           onChange={(e) => setGuestCount(e.target.value)}
         />
         <input
           className={s.input}
           type="tel"
-          placeholder='Номер телефона для связи'
+          placeholder="Номер телефона для связи"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
         <input
           className={s.input}
           type="text"
-          placeholder='Комментарий к заказу'
+          placeholder="Комментарий к заказу"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
@@ -110,11 +114,11 @@ const RegRest = () => {
       <div className={s.option}>
         <p>Самовывоз</p>
         <input
-    type="checkbox"
-    id="checkbox"
-    checked={isPickup}
-    onChange={(e) => setIsPickup(e.target.checked)}
-  />
+          type="checkbox"
+          id="checkbox"
+          checked={isPickup}
+          onChange={(e) => setIsPickup(e.target.checked)}
+        />
       </div>
       <div className={s.price}>
         <p>Итоговая цена</p>
@@ -122,7 +126,9 @@ const RegRest = () => {
       </div>
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
-        <button className={s.pay} onClick={handlePayment}>Оплатить</button>
+        <button className={s.pay} onClick={handlePayment}>
+          Оплатить
+        </button>
       </div>
     </div>
   );

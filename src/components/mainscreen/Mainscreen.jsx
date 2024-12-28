@@ -109,7 +109,7 @@ const Mainscreen = () => {
 
   return (
     <div className={s.mainscreen}>
-      <p>Chat ID: {chatId}</p>
+      {/* <p>Chat ID: {chatId}</p> */}
       <div className={s.functionpanel}>
         <button className={s.balls}>
           <img src={balls} alt="balls" />

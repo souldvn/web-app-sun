@@ -1,47 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import { ref, get, child } from "firebase/database";
 import s from './Beer.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
+import { database } from '../../../../firebaseConfig';
+
 
 const Beer = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
+  const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
 
   useEffect(() => {
-    const fetchBeers = async () => {
+    const fetchDishes = async () => {
       try {
         const dbRef = ref(database);
         const snapshot = await get(child(dbRef, "beers"));
         if (snapshot.exists()) {
-          const beersData = snapshot.val();
-          const beersArray = Object.keys(beersData).map(key => ({
+          const dishesData = snapshot.val();
+          const dishesArray = Object.keys(dishesData).map(key => ({
             id: key,
-            ...beersData[key],
+            ...dishesData[key],
           }));
-          console.log("Fetched beers data:", beersArray);
-          setCards(beersArray);
+          console.log("Fetched dishes data:", dishesArray);
+          setCards(dishesArray);
         } else {
           console.log("No data available");
         }
       } catch (error) {
         setError(error);
-        console.error("Error fetching beers:", error);
+        console.error("Ошибка при получении блюд:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBeers();
+    fetchDishes();
   }, []);
 
+  const handleDisableStatusChange = (id, isDisabled) => {
+    setDisabledStatuses((prevStatuses) => {
+      if (prevStatuses[id] === isDisabled) {
+        return prevStatuses; // Не обновляем, если статус не изменился
+      }
+      return {
+        ...prevStatuses,
+        [id]: isDisabled,
+      };
+    });
+  };
+
   const handleCardClick = (card) => {
-    navigate('/barhot', { state: { dish: card, fromRecomendations: false } });
+    navigate('/barhot', {
+      state: {
+        dish: card,
+        fromRecomendations: false,
+        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
+      }
+    });
   };
 
   if (loading) {
@@ -49,26 +70,26 @@ const Beer = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Произошла ошибка: {error.message}</div>;
   }
 
   return (
-    <div className={s.drinks}>
+    <div className={s.dishes}>
       <TopBar text={"Пиво"} />
       <div className={s.cardsContainer}>
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
             <CardPrice 
-              img={card.img}
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
               description={card.description} 
-              time={card.time} 
+              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
             />
           </div>
         )) : (
-          <div className={s.noDrinks}>No available beers</div>
+          <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
       <CartButton />

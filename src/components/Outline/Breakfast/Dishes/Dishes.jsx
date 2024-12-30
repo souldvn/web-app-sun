@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref, get, child } from "firebase/database"; // Импорт ref, get, и child
+import { ref, get, child } from "firebase/database";
 import s from './Dishes.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { database } from '../../../../firebaseConfig'; // Импорт database из firebaseConfig
+import { database } from '../../../../firebaseConfig';
 
 const Dishes = () => {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ const Dishes = () => {
   const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -41,15 +42,26 @@ const Dishes = () => {
     fetchDishes();
   }, []);
 
-  const handleExtrasChange = (id, newExtras) => {
-    setExtras((prevExtras) => ({
-      ...prevExtras,
-      [id]: newExtras,
-    }));
+  const handleDisableStatusChange = (id, isDisabled) => {
+    setDisabledStatuses((prevStatuses) => {
+      if (prevStatuses[id] === isDisabled) {
+        return prevStatuses; // Не обновляем, если статус не изменился
+      }
+      return {
+        ...prevStatuses,
+        [id]: isDisabled,
+      };
+    });
   };
 
   const handleCardClick = (card) => {
-    navigate('/inline', { state: { dish: card, fromRecomendations: false } });
+    navigate('/inline', {
+      state: {
+        dish: card,
+        fromRecomendations: false,
+        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
+      }
+    });
   };
 
   if (loading) {
@@ -72,10 +84,7 @@ const Dishes = () => {
               weight={card.weight} 
               img={card.img}
               description={card.description} 
-              time={card.time} 
-              compound={card.compound} 
-              extraPrice={extras[card.id]?.totalPrice || 0}
-              onExtrasChange={(newExtras) => handleExtrasChange(card.id, newExtras)}
+              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
             />
           </div>
         )) : (

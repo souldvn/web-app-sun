@@ -1,47 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import { ref, get, child } from "firebase/database";
 import s from './IceCream.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { database } from '../../../firebaseConfig'; // Import database from firebaseConfig
+import { database } from '../../../firebaseConfig';
+
 
 const IceCream = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
+  const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
 
   useEffect(() => {
-    const fetchIceCreams = async () => {
+    const fetchDishes = async () => {
       try {
         const dbRef = ref(database);
         const snapshot = await get(child(dbRef, "icecreams"));
         if (snapshot.exists()) {
-          const iceCreamsData = snapshot.val();
-          const iceCreamsArray = Object.keys(iceCreamsData).map(key => ({
+          const dishesData = snapshot.val();
+          const dishesArray = Object.keys(dishesData).map(key => ({
             id: key,
-            ...iceCreamsData[key],
+            ...dishesData[key],
           }));
-          console.log("Fetched ice creams data:", iceCreamsArray);
-          setCards(iceCreamsArray);
+          console.log("Fetched dishes data:", dishesArray);
+          setCards(dishesArray);
         } else {
           console.log("No data available");
         }
       } catch (error) {
         setError(error);
-        console.error("Error fetching ice creams:", error);
+        console.error("Ошибка при получении блюд:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchIceCreams();
+    fetchDishes();
   }, []);
 
+  const handleDisableStatusChange = (id, isDisabled) => {
+    setDisabledStatuses((prevStatuses) => {
+      if (prevStatuses[id] === isDisabled) {
+        return prevStatuses; // Не обновляем, если статус не изменился
+      }
+      return {
+        ...prevStatuses,
+        [id]: isDisabled,
+      };
+    });
+  };
+
   const handleCardClick = (card) => {
-    navigate('/iceIn', { state: { dish: card, fromRecomendations: false } });
+    navigate('/iceIn', {
+      state: {
+        dish: card,
+        fromRecomendations: false,
+        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
+      }
+    });
   };
 
   if (loading) {
@@ -49,26 +70,26 @@ const IceCream = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Произошла ошибка: {error.message}</div>;
   }
 
   return (
-    <div className={s.iceCreams}>
+    <div className={s.dishes}>
       <TopBar text={"Мороженое"} />
       <div className={s.cardsContainer}>
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
-            <CardPrice
-              img={card.img} 
+            <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
               description={card.description} 
-              time={card.time} 
+              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
             />
           </div>
         )) : (
-          <div className={s.noIceCreams}>No available ice creams</div>
+          <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
       <CartButton />

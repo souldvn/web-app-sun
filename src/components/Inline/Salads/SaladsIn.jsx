@@ -20,7 +20,11 @@ const SaladsIn = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedDish } = useContext(CartContext);
-  const { dish, fromRecomendations } = location.state || { dish: selectedDish, fromRecomendations: false };
+  const { dish, fromRecomendations, isAddButtonDisabled } = location.state || {
+    dish: null,
+    fromRecomendations: false,
+    isAddButtonDisabled: false,
+  };
 
     if (!dish) {
       return <div>Блюдо не найдено</div>;
@@ -66,8 +70,8 @@ const SaladsIn = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
-      {!fromRecomendations && <RecSalads />}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} />
+      {!fromRecomendations && <RecSalads isAddButtonDisabled={isAddButtonDisabled} />}
+      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} disabled={isAddButtonDisabled} />
     </div>
   );
   

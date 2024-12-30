@@ -5,43 +5,64 @@ import s from './Souses.module.css';
 import TopBar from '../../Complite/TopBar/TopBar';
 import CartButton from '../../Complite/CartButton/CartButton';
 import CardPrice from '../../Complite/CardPrice/CardPrice';
-import { database } from '../../../firebaseConfig'; // Adjust path if necessary
+import { database } from '../../../firebaseConfig';
+
 
 const Souses = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
+  const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
 
   useEffect(() => {
-    const fetchSouses = async () => {
+    const fetchDishes = async () => {
       try {
         const dbRef = ref(database);
         const snapshot = await get(child(dbRef, "souses"));
         if (snapshot.exists()) {
-          const sousesData = snapshot.val();
-          const sousesArray = Object.keys(sousesData).map(key => ({
+          const dishesData = snapshot.val();
+          const dishesArray = Object.keys(dishesData).map(key => ({
             id: key,
-            ...sousesData[key],
+            ...dishesData[key],
           }));
-          console.log("Fetched souses data:", sousesArray);
-          setCards(sousesArray);
+          console.log("Fetched dishes data:", dishesArray);
+          setCards(dishesArray);
         } else {
           console.log("No data available");
         }
       } catch (error) {
         setError(error);
-        console.error("Error fetching souses:", error);
+        console.error("Ошибка при получении блюд:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSouses();
+    fetchDishes();
   }, []);
 
+  const handleDisableStatusChange = (id, isDisabled) => {
+    setDisabledStatuses((prevStatuses) => {
+      if (prevStatuses[id] === isDisabled) {
+        return prevStatuses; // Не обновляем, если статус не изменился
+      }
+      return {
+        ...prevStatuses,
+        [id]: isDisabled,
+      };
+    });
+  };
+
   const handleCardClick = (card) => {
-    navigate('/sousesIn', { state: { dish: card, fromRecomendations: false } });
+    navigate('/sousesIn', {
+      state: {
+        dish: card,
+        fromRecomendations: false,
+        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
+      }
+    });
   };
 
   if (loading) {
@@ -49,26 +70,26 @@ const Souses = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Произошла ошибка: {error.message}</div>;
   }
 
   return (
-    <div className={s.steaks}>
+    <div className={s.dishes}>
       <TopBar text={"Соусы"} />
       <div className={s.cardsContainer}>
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
-            <CardPrice
-              img={card.img}  
+            <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
               description={card.description} 
-              time={card.time} 
+              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
             />
           </div>
         )) : (
-          <div className={s.noSouses}>No available souses</div>
+          <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
       <CartButton />

@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 
 
 
-const RecHotSnacks = () => {
+const RecHotSnacks = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ const RecHotSnacks = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/hotsnaksIn', { state: { dish: card, fromRecomendations: true } });
+    navigate('/hotsnacksIn', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

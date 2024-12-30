@@ -22,8 +22,8 @@ exports.handler = async (event, context) => {
       const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
       const TELEGRAM_BOT_TOKEN_USER = '7515370853:AAEikh7iTegPcr8vhxpYsBNNJOuB30M3oaQ';
 
-      const TELEGRAM_CHAT_ID_KITCHEN = '-1002346852862';  // ID чата для кухни
-      const TELEGRAM_CHAT_ID_USER = telegramChatId; // ID чата пользователя, получаем из метаданных
+      const TELEGRAM_CHAT_ID_KITCHEN = '-1002346852862'; 
+      const TELEGRAM_CHAT_ID_USER = telegramChatId; 
 
       const cartItemsText = parsedCartItems
         .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)

@@ -6,7 +6,7 @@ import CartButton from '../../../../Complite/CartButton/CartButton';
 import { ref, get, child } from "firebase/database";
 import { database } from '../../../../../firebaseConfig';
 
-const RecomBar = () => {
+const RecomBar = ({ isAddButtonDisabled }) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,9 +38,10 @@ const RecomBar = () => {
 
     fetchRecommendations();
   }, []);
+  
 
   const handleCardClick = (card) => {
-    navigate('/barin', { state: { dish: card, fromRecomendations: true } });
+    navigate('/barin', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

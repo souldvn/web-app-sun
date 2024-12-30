@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 
 
 
-const RecKebab = () => {
+const RecKebab = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +44,7 @@ const RecKebab = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/kebabIn', { state: { dish: card, fromRecomendations: true } });
+    navigate('/kebabIn', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

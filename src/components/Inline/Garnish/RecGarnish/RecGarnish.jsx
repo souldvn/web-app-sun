@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 
 
 
-const RecGarnish = () => {
+const RecGarnish = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ const RecGarnish = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/garnishIn', { state: { dish: card, fromRecomendations: true } });
+    navigate('/garnishIn', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

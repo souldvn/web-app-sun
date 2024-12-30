@@ -30,7 +30,6 @@ const CartButton = () => {
       <button 
         className={`${s.cartbutton} ${cartCount > 0 ? s.filled : ''}`} 
         onClick={handleCardClick}
-        // disabled={selectedOption === 'delivery'}
       >
         Перейти в корзину
         {cartCount > 0 && (

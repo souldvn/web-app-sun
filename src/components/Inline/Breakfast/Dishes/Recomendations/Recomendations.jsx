@@ -6,7 +6,7 @@ import CardPrice from '../../../../Complite/CardPrice/CardPrice';
 import CartButton from '../../../../Complite/CartButton/CartButton';
 import {database} from '../../../../../firebaseConfig'
 
-const Recomendations = () => {
+const Recomendations = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ const Recomendations = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/inline', { state: { dish: card, fromRecomendations: true } });
+    navigate('/inline', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

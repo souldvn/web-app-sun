@@ -16,7 +16,12 @@ const Inline = () => {
   const navigate = useNavigate();
   const { selectedDish } = useContext(CartContext);
 
-  const { dish, fromRecomendations } = location.state || { dish: selectedDish, fromRecomendations: false };
+  const { dish, fromRecomendations, isAddButtonDisabled } = location.state || {
+    dish: null,
+    fromRecomendations: false,
+    isAddButtonDisabled: false,
+  };
+
 
   if (!dish) {
     return <div>Блюдо не найдено</div>;
@@ -95,7 +100,7 @@ const Inline = () => {
         </div>
       )}
 
-      {!fromRecomendations && <Recomendations />}
+      {!fromRecomendations && <Recomendations isAddButtonDisabled={isAddButtonDisabled} />}
 
       <BottomInfo
         itemId={dish.id}
@@ -105,6 +110,8 @@ const Inline = () => {
         specialButton={dish.text === "Русский завтрак" || dish.text === "Английский завтрак"}
         extraPrice={extras[dish.id]?.totalPrice || 0}
         onExtrasChange={(newExtras) => handleAddExtras({ extras: newExtras, totalPrice: extras[dish.id]?.totalPrice })}
+        disabled={isAddButtonDisabled} // Передаем состояние disabled
+
       />
     </div>
   );

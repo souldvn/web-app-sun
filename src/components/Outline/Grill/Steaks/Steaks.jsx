@@ -1,74 +1,95 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ref, get, child } from "firebase/database"; // Import ref, get, and child
+import { ref, get, child } from "firebase/database";
 import s from './Steaks.module.css';
 import TopBar from '../../../Complite/TopBar/TopBar';
 import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
-import { database } from '../../../../firebaseConfig'; // Import database from firebaseConfig
+import { database } from '../../../../firebaseConfig';
+
 
 const Steaks = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
+  const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
 
   useEffect(() => {
-    const fetchSteaks = async () => {
+    const fetchDishes = async () => {
       try {
         const dbRef = ref(database);
         const snapshot = await get(child(dbRef, "steaks"));
         if (snapshot.exists()) {
-          const steaksData = snapshot.val();
-          const steaksArray = Object.keys(steaksData).map(key => ({
+          const dishesData = snapshot.val();
+          const dishesArray = Object.keys(dishesData).map(key => ({
             id: key,
-            ...steaksData[key],
+            ...dishesData[key],
           }));
-          console.log("Fetched steaks data:", steaksArray);
-          setCards(steaksArray);
+          console.log("Fetched dishes data:", dishesArray);
+          setCards(dishesArray);
         } else {
           console.log("No data available");
         }
       } catch (error) {
         setError(error);
-        console.error("Error fetching steaks:", error);
+        console.error("Ошибка при получении блюд:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSteaks();
+    fetchDishes();
   }, []);
 
+  const handleDisableStatusChange = (id, isDisabled) => {
+    setDisabledStatuses((prevStatuses) => {
+      if (prevStatuses[id] === isDisabled) {
+        return prevStatuses; // Не обновляем, если статус не изменился
+      }
+      return {
+        ...prevStatuses,
+        [id]: isDisabled,
+      };
+    });
+  };
+
   const handleCardClick = (card) => {
-    navigate('/steaksIn', { state: { dish: card, fromRecomendations: false } });
+    navigate('/steaksIn', {
+      state: {
+        dish: card,
+        fromRecomendations: false,
+        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
+      }
+    });
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Загрузка...</div>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Произошла ошибка: {error.message}</div>;
   }
 
   return (
-    <div className={s.steaks}>
+    <div className={s.dishes}>
       <TopBar text={"Стейки"} />
       <div className={s.cardsContainer}>
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>
-            <CardPrice
-              img={card.img}  
+            <CardPrice 
               text={card.text} 
               price={card.price} 
               weight={card.weight} 
+              img={card.img}
               description={card.description} 
-              time={card.time} 
+              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
             />
           </div>
         )) : (
-          <div className={s.noSteaks}>No available steaks</div>
+          <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
       <CartButton />

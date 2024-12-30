@@ -67,6 +67,11 @@
     align-items: center;
     margin-top: auto; /* Позволяет кнопке "приклеиться" к низу карточки */
 }
+.button:disabled {
+    background-color: #d3d3d3; /* Серый цвет фона */
+    color: #a9a9a9; /* Светло-серый цвет текста */
+    cursor: not-allowed; /* Иконка запрета */
+}
 
 .buttonModified {
     justify-content: space-between; /* Добавленное свойство */

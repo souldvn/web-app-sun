@@ -8,7 +8,7 @@ import{database} from '../../../../firebaseConfig'
 import { useState, useEffect } from 'react';
 
 
-const RecSoups = () => {
+const RecSoups = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ const RecSoups = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/soupsIn', { state: { dish: card, fromRecomendations: true } });
+    navigate('/soupsIn', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {

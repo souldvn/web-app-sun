@@ -10,11 +10,14 @@ import { useState, useEffect } from 'react';
 
 
 
-const RecBurgers = () => {
+const RecBurgers = ({isAddButtonDisabled}) => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+
+
 
   useEffect(() => {
     const fetchRecomendations = async () => {
@@ -44,7 +47,7 @@ const RecBurgers = () => {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate('/burgersIn', { state: { dish: card, fromRecomendations: true } });
+    navigate('/burgersIn', { state: { dish: card, fromRecomendations: true, isAddButtonDisabled } });
   };
 
   if (loading) {
@@ -67,6 +70,8 @@ const RecBurgers = () => {
               price={card.price} 
               weight={card.weight} 
               img={card.img}
+
+
             />
           </div>
         ))}

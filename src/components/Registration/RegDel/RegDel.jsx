@@ -119,7 +119,9 @@ const RegDel = ({ chatId }) => {
   return (
     <div className={s.del}>
       <TopBar text="Оформление" />
-      <p> чаи айди :{chatId}</p>
+      <div className={s.chatId}>
+  <p>Чат ID: {chatId}</p>
+</div>
       <div className={s.delform}>
         <input
           onClick={() => handleClick('/timedel')}

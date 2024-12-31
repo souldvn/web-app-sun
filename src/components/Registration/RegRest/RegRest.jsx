@@ -114,6 +114,9 @@ const RegRest = ({ chatId }) => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
+      <div className={s.chatId}>
+  <p>Чат ID: {chatId}</p>
+</div>
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}

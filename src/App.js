@@ -68,6 +68,8 @@ import HouseDel from './components/Registration/RegDel/Address/HouseDel/HouseDel
 import Hotels from './components/Registration/RegDel/Address/Hotels/Hotels';
 import Success from './components/succsess';
 import {useQuery} from '../src/components/utils/util';
+import { TimeProvider } from './components/Contextes/TimeContext';
+import DeliveryInfo from './components/delivery/DeliveryInfo';
 
 
 
@@ -95,6 +97,7 @@ const App = () => {
 
     <CartProvider>
       <DeliveryProvider>
+        <TimeProvider>
     <Router>
       <ScrollToTop/>
       <div className="App">
@@ -169,12 +172,14 @@ const App = () => {
             <Route path="/housedel" element={<HouseDel />} />
             <Route path="/hotels" element={<Hotels />} />
             <Route path="/success" element={<Success />} />
+            <Route path="/deliveryinfo" element={<DeliveryInfo/>} />
 
           </Routes>
         )}
     
       </div>
     </Router>
+    </TimeProvider>
     </DeliveryProvider>
     </CartProvider>
   );

@@ -1,9 +1,14 @@
+/* Style for the container with checkboxes */
+.day{
+  margin-bottom: 90px;
+}
 .timecontainer {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
+/* Style for each time option */
 .time {
   display: flex;
   justify-content: space-between;
@@ -13,10 +18,38 @@
   cursor: pointer;
 }
 
+/* Hide the default checkbox */
 .time input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #262737;
+  position: relative;
   cursor: pointer;
+  margin-right: 8px;
 }
 
+/* Custom black dot when checkbox is checked */
+.time input:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+/* Убираем подсветку для активной опции */
+.time.active {
+  background-color: transparent; /* Убираем подсветку */
+}
+
+/* Button container */
 .buttonarea {
   text-align: center;
   background-color: white;
@@ -31,8 +64,10 @@
   align-items: center;
   justify-content: center;
   border: none;
+  
 }
 
+/* Button style */
 .button {
   display: flex;
   justify-content: center;
@@ -47,10 +82,12 @@
   color: #93949c;
 }
 
+/* Active button style */
 .buttonActive {
   background-color: #262737;
 }
 
+/* Button text color */
 .button span {
-  color: inherit; /* Поддержка изменения цвета текста */
+  color: inherit;
 }

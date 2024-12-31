@@ -71,7 +71,9 @@ const HotIn = () => {
         </div>
       )}
       {!fromRecomendations && <RecomHot isAddButtonDisabled={isAddButtonDisabled} />}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight}         disabled={isAddButtonDisabled} // Передаем состояние disabled
+      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight}         disabled={isAddButtonDisabled} 
+              img={dish.img}
+
  />
     </div>
   );

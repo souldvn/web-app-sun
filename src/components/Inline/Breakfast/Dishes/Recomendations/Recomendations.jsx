@@ -62,6 +62,7 @@ const Recomendations = ({isAddButtonDisabled}) => {
               price={card.price} 
               weight={card.weight} 
               img={card.img}
+              type="drinks"
             />
           </div>
         ))}

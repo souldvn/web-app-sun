@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { TimeContext } from '../../Contextes/TimeContext'; // Импорт контекста времени
 import plus from '../../../assets/icons/plus.svg';
 import plusdark from '../../../assets/icons/plusdark.svg';
 import minus from '../../../assets/icons/minus.svg';
 import s from './CardPrice.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 
-const CardPrice = ({ price, text, weight, img, onDisableStatusChange }) => {
+const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) => {
   const { cartItems, addToCart, removeFromCart, selectedOption } = useContext(CartContext);
+  const moscowTime = useContext(TimeContext);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const item = cartItems.find(
@@ -14,44 +16,40 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange }) => {
   );
   const itemCount = item ? item.count : 0;
 
-  // Функция получения текущего часа по московскому времени
-  const getMoscowHour = () => {
-    const now = new Date();
-    const utcHour = now.getUTCHours();
-    const moscowHour = (utcHour + 3) % 24; // UTC+3 для Москвы
-    return moscowHour;
-  };
-
-  // Функция проверки доступности кнопки
   const checkButtonStatus = () => {
-    const currentHour = getMoscowHour();
-
+    const currentHour = moscowTime.getHours();
+  
+    // Общие условия
     const isRestaurantClosed =
-      selectedOption === 'host' && (currentHour >= 21 || currentHour < 9);
-
+      selectedOption === 'host' && (currentHour >= 21 || currentHour < 11);
+  
     const isDeliveryUnavailable =
       selectedOption === 'delivery' &&
       !(currentHour >= 9 && currentHour < 15 || currentHour >= 19 && currentHour < 21);
-
-    const buttonDisabled = selectedOption === 'delivery'
-      ? isDeliveryUnavailable
-      : isRestaurantClosed;
-
+  
+    let buttonDisabled;
+  
+    if (type === 'dish' || type === 'drinks') {
+      // Специальное условие для блюд
+      buttonDisabled = !(currentHour >= 10 && currentHour < 11);
+    } else {
+      // Обычные условия
+      buttonDisabled = selectedOption === 'delivery'
+        ? isDeliveryUnavailable
+        : isRestaurantClosed;
+    }
+  
     setIsButtonDisabled(buttonDisabled);
-
-    // Уведомляем родительский компонент, если нужно
+  
     if (typeof onDisableStatusChange === 'function') {
       onDisableStatusChange(buttonDisabled);
     }
   };
+  
 
-  // Устанавливаем интервал для проверки времени
   useEffect(() => {
-    checkButtonStatus(); // Проверяем сразу при загрузке
-    const interval = setInterval(checkButtonStatus, 1000 * 60); // Проверяем каждую минуту
-
-    return () => clearInterval(interval); // Убираем интервал при размонтировании
-  }, [selectedOption]);
+    checkButtonStatus();
+  }, [moscowTime, selectedOption]);
 
   const handleAddClick = (event) => {
     event.stopPropagation();
@@ -76,11 +74,7 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange }) => {
               removeFromCart({ price, text, weight });
             }}
           >
-            <img
-              className={s.icon}
-              src={minus}
-              alt="minus"
-            />
+            <img className={s.icon} src={minus} alt="minus" />
             <p className={s.itemCount}>{itemCount}</p>
             <img
               className={s.icon}

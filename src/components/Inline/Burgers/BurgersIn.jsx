@@ -1,22 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import s from './BurgersIn.module.css'
+import { CartContext } from '../../Contextes/CartContext';
+import s from './BurgersIn.module.css';
 import arrowback from '../../../assets/icons/arrowback.svg';
 import basket from '../../../assets/icons/basketbig.svg';
 import BottomInfo from '../BottomInfo/BottomInfo';
-import { CartContext } from '../../Contextes/CartContext';
-
 import RecBurgers from './RecBurgers/RecBurgers';
 
-
-
 const BurgersIn = () => {
-  
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, addToCart } = useContext(CartContext);
 
-  // Вычисление общего количества товаров в корзине
-  const cartCount = cartItems.reduce((total, item) => total + item.count, 0);
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedDish } = useContext(CartContext);
@@ -26,34 +19,50 @@ const BurgersIn = () => {
     isAddButtonDisabled: false,
   };
 
-    if (!dish) {
-      return <div>Блюдо не найдено</div>;
-    }
+  if (!dish) {
+    return <div>Блюдо не найдено</div>;
+  }
 
-    const handleBackClick = () => {
-      navigate(-1); // Вернуться на предыдущую страницу
-    };
+  const handleBackClick = () => {
+    navigate(-1); // Вернуться на предыдущую страницу
+  };
+
   const handleCardClick = () => {
-    if (cartCount > 0) {
+    if (cartItems.length > 0) {
       navigate('/basket');
     }
   };
 
+  // const handleAddClick = () => {
+  //   if (dish) {
+  //     addToCart({
+  //       price: dish.price,
+  //       text: dish.text,
+  //       weight: dish.weight,
+  //       img: dish.img,  // Add the image property here
+  //     });
+  //   }
+  // };
+
   return (
     <div className={s.Inline}>
-      <div className={s.public}
-      style={{
-        backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
-        backgroundSize: 'cover', // растягиваем изображение на весь контейнер
-        backgroundPosition: 'center', // центрируем изображение
-      }}>
+      <div
+        className={s.public}
+        style={{
+          backgroundImage: `url(${dish.img})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className={s.buttons}>
           <button className={s.arrow} onClick={handleBackClick}>
             <img src={arrowback} alt="arrowback" />
           </button>
           <button onClick={handleCardClick} className={s.basket}>
             <img src={basket} alt="basket" />
-            {cartCount > 0 && <div className={s.number}>{cartCount}</div>}
+            {cartItems.length > 0 && (
+              <div className={s.number}>{cartItems.reduce((total, item) => total + item.count, 0)}</div>
+            )}
           </button>
         </div>
         <div className={s.time}>
@@ -70,11 +79,17 @@ const BurgersIn = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
-      {!fromRecomendations && <RecBurgers isAddButtonDisabled={isAddButtonDisabled}/>}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} disabled={isAddButtonDisabled} />
+      {!fromRecomendations && <RecBurgers isAddButtonDisabled={isAddButtonDisabled} />}
+      <BottomInfo
+        price={dish.price}
+        text={dish.text}
+        weight={dish.weight}
+        disabled={isAddButtonDisabled}
+        img={dish.img}
+        // onAddClick={handleAddClick}
+      />
     </div>
   );
-  
 };
 
 export default BurgersIn;

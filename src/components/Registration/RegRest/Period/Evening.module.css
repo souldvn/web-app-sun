@@ -1,57 +1,93 @@
+/* Style for the container with checkboxes */
+.day{
+  margin-bottom: 90px;
+}
 .timecontainer {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Style for each time option */
+.time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #d3d3d3;
+  cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.time input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #262737;
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+/* Custom black dot when checkbox is checked */
+.time input:checked::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+}
+
+/* Убираем подсветку для активной опции */
+.time.active {
+  background-color: transparent; /* Убираем подсветку */
+}
+
+/* Button container */
+.buttonarea {
+  text-align: center;
+  background-color: white;
+  height: 56px;
+  padding: 45px 0px;
+  position: fixed;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   
-  .time {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid #d3d3d3;
-    cursor: pointer;
-  }
-  
-  .time input {
-    cursor: pointer;
-  }
-  
-  .buttonarea {
-    text-align: center;
-    background-color: white;
-    height: 56px;
-    padding: 45px 0px;
-    position: fixed;
-    bottom: 0;
-    left: 16px;
-    right: 16px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-  }
-  
-  .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    padding: 10px;
-    width: 100%;
-    height: 56px;
-    border-radius: 10px;
-    border: none;
-    background-color: #f0f0f1;
-    color: #93949c;
-  }
-  
-  .buttonActive {
-    background-color: #262737;
-  }
-  
-  .button span {
-    color: inherit; /* Поддержка изменения цвета текста */
-  }
-  
+}
+
+/* Button style */
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  width: 100%;
+  height: 56px;
+  border-radius: 10px;
+  border: none;
+  background-color: #f0f0f1;
+  color: #93949c;
+}
+
+/* Active button style */
+.buttonActive {
+  background-color: #262737;
+}
+
+/* Button text color */
+.button span {
+  color: inherit;
+}

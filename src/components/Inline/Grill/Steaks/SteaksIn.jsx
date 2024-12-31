@@ -70,7 +70,9 @@ const SteaksIn = () => {
         </div>
       )}
       {!fromRecomendations && <RecSteaks isAddButtonDisabled={isAddButtonDisabled} />}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} disabled={isAddButtonDisabled} />
+      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} disabled={isAddButtonDisabled}
+              img={dish.img}
+              />
     </div>
   );
   

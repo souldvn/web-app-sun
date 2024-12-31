@@ -4,12 +4,7 @@ import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-
-
-const RegRest = ({chatId}) => {
-
-
-
+const RegRest = ({ chatId }) => {
   const location = useLocation();
   const { state } = location;
   const totalPrice = state?.totalPrice || 0;
@@ -30,6 +25,25 @@ const RegRest = ({chatId}) => {
   const [isPickup, setIsPickup] = useState(() => {
     return localStorage.getItem('isPickup') === 'true';
   });
+
+  const [phoneError, setPhoneError] = useState(false);
+  const [guestCountError, setGuestCountError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  const handleValidation = () => {
+    const phoneValid = phoneNumber && /^\+?\d{10,15}$/.test(phoneNumber); // Подача телефона с 10-15 цифрами
+    const guestCountValid = guestCount && guestCount > 0;
+
+    setPhoneError(!phoneValid);
+    setGuestCountError(!guestCountValid);
+
+    // Убедитесь, что все поля валидны
+    setIsValid(phoneValid && guestCountValid && time);
+  };
+
+  useEffect(() => {
+    handleValidation(); // Валидация при каждом изменении
+  }, [phoneNumber, guestCount, time]);
 
   useEffect(() => {
     localStorage.setItem('phoneNumber', phoneNumber);
@@ -97,29 +111,27 @@ const RegRest = ({chatId}) => {
     navigate(path, { state: { time, totalPrice, cartItems } });
   };
 
-  console.log(cartItems);
-
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}
-          className={s.input}
+          className={`${s.input} ${time ? '' : s.errorInput}`}
           type="text"
           placeholder="Выберите время"
           value={time || ''}
           readOnly
         />
         <input
-          className={s.input}
+          className={`${s.input} ${guestCountError ? s.errorInput : ''}`}
           type="number"
           placeholder="Укажите количество гостей"
           value={guestCount}
           onChange={(e) => setGuestCount(e.target.value)}
         />
         <input
-          className={s.input}
+          className={`${s.input} ${phoneError ? s.errorInput : ''}`}
           type="tel"
           placeholder="Номер телефона для связи"
           value={phoneNumber}
@@ -148,7 +160,11 @@ const RegRest = ({chatId}) => {
       </div>
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
-        <button className={s.pay} onClick={handlePayment}>
+        <button
+          className={`${s.pay} ${isValid ? s.payValid : ''}`}
+          onClick={handlePayment}
+          disabled={!isValid}
+        >
           Оплатить
         </button>
       </div>

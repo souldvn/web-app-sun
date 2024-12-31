@@ -125,3 +125,23 @@
   border: none;
   border-radius: 10px;
 }
+
+
+.errorInput {
+  border-color: red !important;
+}
+
+.payValid {
+  background-color: #4CAF50; /* Зеленая кнопка */
+  color: white;
+}
+
+.pay {
+  background-color: #f0f0f1; /* Серая кнопка по умолчанию */
+  color: #000;
+}
+
+input:disabled {
+  background-color: #dcdcdc;
+}
+

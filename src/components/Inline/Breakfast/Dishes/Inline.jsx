@@ -111,6 +111,7 @@ const Inline = () => {
         extraPrice={extras[dish.id]?.totalPrice || 0}
         onExtrasChange={(newExtras) => handleAddExtras({ extras: newExtras, totalPrice: extras[dish.id]?.totalPrice })}
         disabled={isAddButtonDisabled} // Передаем состояние disabled
+        img={dish.img}
 
       />
     </div>

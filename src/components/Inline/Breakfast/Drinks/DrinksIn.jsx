@@ -78,6 +78,7 @@ const DrinksIn = () => {
       text={dish.text} 
       weight={dish.weight}  
       disabled={isAddButtonDisabled} // Передаем состояние disabled
+      img={dish.img}
 
  />
     </div>

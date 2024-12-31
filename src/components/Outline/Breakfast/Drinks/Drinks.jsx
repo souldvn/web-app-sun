@@ -85,6 +85,8 @@ const Drinks = () => {
               img={card.img}
               description={card.description} 
               onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
+              type="drinks"
+
             />
           </div>
         )) : (

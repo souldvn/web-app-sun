@@ -26,12 +26,12 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item, gift = null) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
-        (cartItem) => cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight && cartItem.img===item.img
+        (cartItem) => cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight 
       );
 
       if (existingItem) {
         return prevItems.map((cartItem) =>
-          cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight && cartItem.img===item.img
+          cartItem.price === item.price && cartItem.text === item.text && cartItem.weight === item.weight 
             ? { ...cartItem, count: cartItem.count + 1 }
             : cartItem
         );

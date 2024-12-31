@@ -5,13 +5,15 @@ import minus from '../../../assets/icons/minus.svg';
 import plusdark from '../../../assets/icons/plusdark.svg';
 import plus from '../../../assets/icons/plus.svg';
 
-const BottomInfo = ({ price, text, weight, disabled }) => {
+const BottomInfo = ({ price, text, weight, disabled, img }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
 
   const item = cartItems.find(
     (item) => item.price === price && item.text === text && item.weight === weight
   );
   const itemCount = item ? item.count : 0;
+
+  
 
   return (
     <div className={s.buttonarea}>
@@ -25,7 +27,7 @@ const BottomInfo = ({ price, text, weight, disabled }) => {
           onClick={(event) => {
             if (disabled) return; // Блокируем клик
             event.stopPropagation();
-            removeFromCart({ price, text, weight });
+            removeFromCart({ price, text, weight, img });
           }}
           disabled={disabled} // Добавляем состояние disabled
         >
@@ -48,7 +50,7 @@ const BottomInfo = ({ price, text, weight, disabled }) => {
           onClick={(event) => {
             if (disabled) return; // Блокируем клик
             event.stopPropagation();
-            addToCart({ price, text, weight });
+            addToCart({ price, text, weight, img });
           }}
           disabled={disabled} // Добавляем состояние disabled
         >

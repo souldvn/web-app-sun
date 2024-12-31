@@ -25,7 +25,7 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     const isDeliveryUnavailable =
       selectedOption === 'delivery' &&
-      !(currentHour >= 9 && currentHour < 15 || currentHour >= 16 && currentHour < 21);
+      !(currentHour >= 9 && currentHour < 15 || currentHour >= 15 && currentHour < 23);
   
     let buttonDisabled;
   

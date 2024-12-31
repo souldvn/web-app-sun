@@ -85,6 +85,7 @@ const RegDel = ({ chatId }) => {
         orderTime: deliveryData.time,
         cartItems: cartItemsShort,
         flat: deliveryData.flat,
+        telegramChatId: chatId
       };
       console.log(requestData); // Логирование данных перед отправкой
 

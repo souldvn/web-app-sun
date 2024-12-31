@@ -5,7 +5,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
 
-const RegDel = ({ chatId }) => {
+
+const RegDel = ({chatId}) => {
+
   const { deliveryData } = useDeliveryContext();
 
   const location = useLocation();
@@ -26,30 +28,6 @@ const RegDel = ({ chatId }) => {
   const [comment, setComment] = useState(() => {
     return localStorage.getItem('commentDel') || '';
   });
-
-  // Ошибки для полей
-  const [phoneError, setPhoneError] = useState(false);
-  const [guestCountError, setGuestCountError] = useState(false);
-  const [flatError, setFlatError] = useState(false);  // Добавлена ошибка для места доставки
-  const [isValid, setIsValid] = useState(false);
-
-  // Валидация полей
-  const handleValidation = () => {
-    const phoneValid = phoneNumber && /^\+?\d{10,15}$/.test(phoneNumber); // Подача телефона с 10-15 цифрами
-    const guestCountValid = guestCount && guestCount > 0;
-    const flatValid = deliveryData.flat && deliveryData.flat.trim() !== ''; // Место доставки не пустое
-
-    setPhoneError(!phoneValid);
-    setGuestCountError(!guestCountValid);
-    setFlatError(!flatValid); // Ошибка для поля место доставки
-
-    // Убедитесь, что все поля валидны
-    setIsValid(phoneValid && guestCountValid && flatValid && time);
-  };
-
-  useEffect(() => {
-    handleValidation(); // Валидация при каждом изменении
-  }, [phoneNumber, guestCount, time, deliveryData.flat]);
 
   // Сохранение данных в localStorage
   useEffect(() => {
@@ -85,7 +63,6 @@ const RegDel = ({ chatId }) => {
         orderTime: deliveryData.time,
         cartItems: cartItemsShort,
         flat: deliveryData.flat,
-        telegramChatId: chatId
       };
       console.log(requestData); // Логирование данных перед отправкой
 
@@ -119,13 +96,11 @@ const RegDel = ({ chatId }) => {
   return (
     <div className={s.del}>
       <TopBar text="Оформление" />
-      <div className={s.chatId}>
-  <p>Чат ID: {chatId}</p>
-</div>
+      
       <div className={s.delform}>
         <input
           onClick={() => handleClick('/timedel')}
-          className={`${s.input} ${time ? '' : s.errorInput}`}
+          className={s.input}
           type="text"
           placeholder="Выберите время"
           value={deliveryData.time || ''}
@@ -133,21 +108,21 @@ const RegDel = ({ chatId }) => {
         />
         <input
           onClick={() => handleClick('/address')}
-          className={`${s.input} ${flatError ? s.errorInput : ''}`} // Добавление ошибки для места доставки
+          className={s.input}
           type="text"
           placeholder="Выберите место доставки"
           value={deliveryData.flat || ''}
           readOnly
         />
         <input
-          className={`${s.input} ${guestCountError ? s.errorInput : ''}`}
+          className={s.input}
           type="number"
           placeholder="Укажите количество гостей"
           value={guestCount}
           onChange={(e) => setGuestCount(e.target.value)}
         />
         <input
-          className={`${s.input} ${phoneError ? s.errorInput : ''}`}
+          className={s.input}
           type="tel"
           placeholder="Номер телефона для связи"
           value={phoneNumber}
@@ -168,11 +143,7 @@ const RegDel = ({ chatId }) => {
       </div>
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
-        <button
-          className={`${s.pay} ${isValid ? s.payValid : ''}`}
-          onClick={handlePayment}
-          disabled={!isValid}
-        >
+        <button className={s.pay} onClick={handlePayment}>
           Оплатить
         </button>
       </div>

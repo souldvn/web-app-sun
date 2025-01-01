@@ -36,6 +36,7 @@ const RegDel = ({ chatId }) => {
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('phoneNumberDel') || '');
   const [guestCount, setGuestCount] = useState(() => localStorage.getItem('guestCountDel') || '');
   const [comment, setComment] = useState(() => localStorage.getItem('commentDel') || '');
+
   const [deliveryCost, setDeliveryCost] = useState(DELIVERY_COST);
   const [minimumOrderError, setMinimumOrderError] = useState(false);
 
@@ -177,6 +178,7 @@ const RegDel = ({ chatId }) => {
           placeholder="Выберите место доставки"
           value={deliveryData.flat || ''}
           readOnly
+          
         />
         <input
           className={`${s.input} ${guestCountError ? s.errorInput : ''}`}

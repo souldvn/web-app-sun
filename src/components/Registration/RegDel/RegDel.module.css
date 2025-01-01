@@ -93,21 +93,36 @@
     border-radius: 10px;
   }
 
+  .result .payValid {
+    margin-left: 16px; /* Отступ слева для кнопки */
+    flex-shrink: 0; /* Не уменьшается */
+    width: 136px;
+    height: 48px;
+    background-color: #262737;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+  }
+
 
 
   .errorInput {
     border-color: red !important;
   }
   
+  
   .payValid {
-    background-color: #4CAF50; /* Зеленая кнопка */
+    background-color: #1a1a1a; /* Темный фон для активной кнопки */
     color: white;
+    cursor: pointer;
   }
   
-  .pay {
-    background-color: #f0f0f1; /* Серая кнопка по умолчанию */
-    color: #000;
-  }
+  /* .pay {
+    background-color: #f0f0f1; 
+    color: #9c9da4; 
+    cursor: not-allowed; 
+  } */
+  
   
   input:disabled {
     background-color: #dcdcdc;
@@ -115,8 +130,10 @@
 
 
   .pricing{
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
+    gap: 5px;
   }
 
   .order{
@@ -127,6 +144,19 @@
   .delivery{
     display: flex;
     justify-content: space-between;
+  }
+
+  .errorText{
+    display: flex;
+    border: 1px solid #e53e3e;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 9px;
+  }
+
+  .warninginfo{
+    font-size: 12px;
+    color: #e53e3e;
   }
   
   

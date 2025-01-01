@@ -4,6 +4,23 @@ import s from './RegDel.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
+import infored from '../../../assets/icons/infored.svg';
+
+const DELIVERY_LOCATIONS = [
+  'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5',
+  'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11',
+  'Дом Suite № 1', 'Дом Suite № 2', 'Дом Suite № 3', 'Дом Suite № 4',
+  'Дом Duplex № 5', 'Дом Duplex № 6', 'Дом Duplex № 7', 'Дом Duplex № 8', 'Дом Duplex № 9', 'Дом Duplex № 10',
+  'Сруб № 1', 'Сруб № 2', 'Баня по белому', 'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet'
+];
+
+const HIGH_MINIMUM_LOCATIONS = [
+  'Daut Resort', 'Leopard Hotel', 'La Vida', 'Горная Жемчужина', 'Гостевой дом Шишка'
+];
+
+const DELIVERY_COST = 700;
+const MINIMUM_ORDER_STANDARD = 1500;
+const MINIMUM_ORDER_HIGH = 3500;
 
 const RegDel = ({ chatId }) => {
   const { deliveryData, setDeliveryData } = useDeliveryContext();
@@ -19,6 +36,8 @@ const RegDel = ({ chatId }) => {
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('phoneNumberDel') || '');
   const [guestCount, setGuestCount] = useState(() => localStorage.getItem('guestCountDel') || '');
   const [comment, setComment] = useState(() => localStorage.getItem('commentDel') || '');
+  const [deliveryCost, setDeliveryCost] = useState(DELIVERY_COST);
+  const [minimumOrderError, setMinimumOrderError] = useState(false);
 
   // Sync deliveryData.flat with localStorage
   useEffect(() => {
@@ -27,6 +46,22 @@ const RegDel = ({ chatId }) => {
       setDeliveryData((prev) => ({ ...prev, flat: savedFlat }));
     }
   }, [setDeliveryData]);
+
+  useEffect(() => {
+    if (!deliveryData.flat) return;
+
+    const isStandardLocation = DELIVERY_LOCATIONS.includes(deliveryData.flat);
+    const isHighMinimumLocation = HIGH_MINIMUM_LOCATIONS.includes(deliveryData.flat);
+
+    if (isStandardLocation || isHighMinimumLocation) {
+      setDeliveryCost(DELIVERY_COST);
+    } else {
+      setDeliveryCost(0);
+    }
+
+    const minimumOrder = isHighMinimumLocation ? MINIMUM_ORDER_HIGH : MINIMUM_ORDER_STANDARD;
+    setMinimumOrderError(totalPrice < minimumOrder);
+  }, [deliveryData.flat, totalPrice]);
 
   const [phoneError, setPhoneError] = useState(false);
   const [guestCountError, setGuestCountError] = useState(false);
@@ -43,12 +78,12 @@ const RegDel = ({ chatId }) => {
     setPhoneError(!phoneValid);
     setGuestCountError(!guestCountValid);
     setFlatError(!flatValid);
-    setIsValid(phoneValid && guestCountValid && flatValid && timeValid);
+    setIsValid(phoneValid && guestCountValid && flatValid && timeValid && !minimumOrderError);
   };
 
   useEffect(() => {
     handleValidation();
-  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time]);
+  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time, minimumOrderError]);
 
   // Save data to localStorage
   useEffect(() => {
@@ -80,7 +115,7 @@ const RegDel = ({ chatId }) => {
 
     const requestData = {
       orderId,
-      totalPrice: Number(totalPrice),
+      totalPrice: Number(totalPrice + deliveryCost),
       orderType: 'Самовывоз',
       telegramChatId: chatId,
       comment,
@@ -125,7 +160,6 @@ const RegDel = ({ chatId }) => {
     <div className={s.del}>
       <TopBar text="Оформление" />
       <div className={s.chatId}>
-        <p>Чат ID: {chatId}</p>
       </div>
       <div className={s.delform}>
         <input
@@ -165,33 +199,41 @@ const RegDel = ({ chatId }) => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
+        {minimumOrderError && (
+          <div className={s.errorText}>
+            <img src={infored} alt="info" />
+            <p className={s.warninginfo}>Минимальная сумма доставки {DELIVERY_LOCATIONS.includes(deliveryData.flat) ? MINIMUM_ORDER_STANDARD : MINIMUM_ORDER_HIGH} ₽ Дополните заказ дляя продолжения</p>
+          </div>
+        )}
       </div>
 
       <div className={s.price}>
         <p>Итоговая цена</p>
-        <p>{totalPrice || 0} ₽</p>
+        <p>{totalPrice + deliveryCost} ₽</p>
       </div>
-      
+
       <div className={s.pricing}>
         <div className={s.order}>
-            <p>Заказ</p>
-            <p>{totalPrice || 0} ₽</p>
+          <p>Заказ</p>
+          <p>{totalPrice} ₽</p>
         </div>
         <div className={s.delivery}>
-            <p>Доставка</p>
-            <p>{totalPrice || 0} ₽</p>
+          <p>Доставка</p>
+          <p>{deliveryCost} ₽</p>
         </div>
       </div>
 
       <div className={s.result}>
-        <p>{totalPrice || 0} ₽</p>
+        <p>{totalPrice + deliveryCost} ₽</p>
         <button
-          className={`${s.pay} ${isValid ? s.payValid : ''}`}
-          onClick={handlePayment}
-          disabled={!isValid}
-        >
-          Оплатить
-        </button>
+  className={isValid ? s.payValid : s.pay}
+  onClick={handlePayment}
+  disabled={!isValid}
+>
+  Оплатить
+</button>
+
+
       </div>
     </div>
   );

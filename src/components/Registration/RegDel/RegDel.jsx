@@ -99,11 +99,11 @@ const RegDel = ({ chatId }) => {
     localStorage.setItem('commentDel', comment);
   }, [comment]);
 
-  useEffect(() => {
-    if (deliveryData.flat) {
-      localStorage.setItem('flatDel', deliveryData.flat);
-    }
-  }, [deliveryData.flat]);
+  // useEffect(() => {
+  //   if (deliveryData.flat) {
+  //     localStorage.setItem('flatDel', deliveryData.flat);
+  //   }
+  // }, [deliveryData.flat]);
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4();

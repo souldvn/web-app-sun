@@ -112,5 +112,21 @@
   input:disabled {
     background-color: #dcdcdc;
   }
+
+
+  .pricing{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .order{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .delivery{
+    display: flex;
+    justify-content: space-between;
+  }
   
   

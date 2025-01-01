@@ -22,9 +22,7 @@ const RegRest = ({ chatId }) => {
   const [comment, setComment] = useState(() => {
     return localStorage.getItem('comment') || '';
   });
-  const [isPickup, setIsPickup] = useState(() => {
-    return localStorage.getItem('isPickup') === 'true';
-  });
+  const [isPickup, setIsPickup] = useState(false); // Убираем связь с localStorage для isPickup
 
   const [phoneError, setPhoneError] = useState(false);
   const [guestCountError, setGuestCountError] = useState(false);
@@ -56,10 +54,6 @@ const RegRest = ({ chatId }) => {
   useEffect(() => {
     localStorage.setItem('comment', comment);
   }, [comment]);
-
-  useEffect(() => {
-    localStorage.setItem('isPickup', isPickup);
-  }, [isPickup]);
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4();
@@ -114,9 +108,7 @@ const RegRest = ({ chatId }) => {
   return (
     <div className={s.rest}>
       <TopBar text="Оформление" />
-      <div className={s.chatId}>
-
-</div>
+      <div className={s.chatId} />
       <div className={s.restform}>
         <input
           onClick={() => handleClick('/time')}

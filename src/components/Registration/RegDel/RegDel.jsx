@@ -174,6 +174,8 @@ const RegDel = ({ chatId }) => {
         <input
   className={`${s.input} ${flatError ? s.errorInput : ''}`}
   type="text"
+  onClick={() => handleClick('/address')}
+
   placeholder="Выберите место доставки"
   value={deliveryData.flat || ''}
   onChange={(e) =>

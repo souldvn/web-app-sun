@@ -36,7 +36,7 @@ exports.handler = async (event, context) => {
         description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`,
         confirmation: {
           type: 'redirect',
-          return_url: 'http://google.com', // Замените на реальный URL
+          return_url: 'https://t.me/sunbaranbot', // Замените на реальный URL
         },
         metadata: {
           orderId,

@@ -172,17 +172,14 @@ const RegDel = ({ chatId }) => {
           readOnly
         />
         <input
-  className={`${s.input} ${flatError ? s.errorInput : ''}`}
-  type="text"
-  onClick={() => handleClick('/address')}
-
-  placeholder="Выберите место доставки"
-  value={deliveryData.flat || ''}
-  onChange={(e) =>
-    setDeliveryData((prev) => ({ ...prev, flat: e.target.value }))
-  }
-/>
-
+          onClick={() => handleClick('/address')}
+          className={`${s.input} ${flatError ? s.errorInput : ''}`}
+          type="text"
+          placeholder="Выберите место доставки"
+          value={deliveryData.flat || ''}
+          readOnly
+          
+        />
         <input
           className={`${s.input} ${guestCountError ? s.errorInput : ''}`}
           type="number"

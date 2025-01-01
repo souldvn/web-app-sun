@@ -25,10 +25,16 @@ const Hotels = () => {
 
   const handleApplyClick = () => {
     if (activeIndex !== null) {
+      // Обновляем контекст
       setDeliveryData((prev) => ({ ...prev, flat: flats[activeIndex] }));
-      navigate('/regdel', { state: { flat: flats[activeIndex], totalPrice, cartItems } });
+  
+      // Задержка перед навигацией
+      setTimeout(() => {
+        navigate('/regdel', { state: { flat: flats[activeIndex], totalPrice, cartItems } });
+      }, 0); // Задержка на 0 миллисекунд
     }
   };
+  
 
   return (
     <div className={s.day}>

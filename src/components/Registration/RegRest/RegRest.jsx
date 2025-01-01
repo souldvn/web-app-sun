@@ -156,12 +156,12 @@ const RegRest = ({ chatId }) => {
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
         <button
-          className={`${s.pay} ${isValid ? s.payValid : ''}`}
-          onClick={handlePayment}
-          disabled={!isValid}
-        >
-          Оплатить
-        </button>
+  className={isValid ? s.payValid : s.pay}
+  onClick={handlePayment}
+  disabled={!isValid}
+>
+  Оплатить
+</button>
       </div>
     </div>
   );

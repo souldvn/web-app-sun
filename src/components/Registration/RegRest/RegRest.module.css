@@ -126,6 +126,17 @@
   border-radius: 10px;
 }
 
+.result .payValid {
+  margin-left: 16px; /* Отступ слева для кнопки */
+  flex-shrink: 0; /* Не уменьшается */
+  width: 136px;
+  height: 48px;
+  background-color: #262737;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+}
+
 
 .errorInput {
   border-color: red !important;

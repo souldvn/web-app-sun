@@ -23,6 +23,11 @@ const MINIMUM_ORDER_STANDARD = 1500;
 const MINIMUM_ORDER_HIGH = 3500;
 
 const RegDel = ({ chatId }) => {
+  useEffect(() => {
+    // Очистить данные о доставке при запуске компонента
+    localStorage.removeItem('flatDel');
+    // Или при других нужных условиях
+  }, []);
   const { deliveryData, setDeliveryData } = useDeliveryContext();
 
   const location = useLocation();
@@ -36,7 +41,7 @@ const RegDel = ({ chatId }) => {
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('phoneNumberDel') || '');
   const [guestCount, setGuestCount] = useState(() => localStorage.getItem('guestCountDel') || '');
   const [comment, setComment] = useState(() => localStorage.getItem('commentDel') || '');
-  
+
   const [deliveryCost, setDeliveryCost] = useState(DELIVERY_COST);
   const [minimumOrderError, setMinimumOrderError] = useState(false);
 

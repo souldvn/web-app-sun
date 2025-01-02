@@ -4,6 +4,7 @@ import s from './BottomInfo.module.css';
 import minus from '../../../assets/icons/minus.svg';
 import plusdark from '../../../assets/icons/plusdark.svg';
 import plus from '../../../assets/icons/plus.svg';
+import plusdis from '../../../assets/icons/plusdis.svg';
 
 const BottomInfo = ({ price, text, weight, disabled, img }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
@@ -54,7 +55,8 @@ const BottomInfo = ({ price, text, weight, disabled, img }) => {
           }}
           disabled={disabled} // Добавляем состояние disabled
         >
-          <img src={plus} alt="plus" />
+                        <img src={disabled ? plusdis : plus} alt={disabled ? "plusdis" : "plus"} />
+
           <p>Добавить</p>
         </button>
       )}

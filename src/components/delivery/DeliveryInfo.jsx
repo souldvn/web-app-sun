@@ -5,6 +5,7 @@ import location from '../../assets/icons/location.svg'
 import hotels from '../../assets/icons/hotels.svg'
 import breakfast from '../../assets/icons/breakfast.svg'
 import deldrinks from '../../assets/icons/deldrinks.svg'
+import timedel from '../../assets/icons/timedel.svg'
 import TopBar from '../Complite/TopBar/TopBar'
 
 const DeliveryInfo = () => {
@@ -32,6 +33,15 @@ const DeliveryInfo = () => {
             <p className={s.title}>Отели с доставкой</p>
             <p className={s.remark}>От 1 500 ₽</p>
             <p className={s.text}>При минимальной сумме заказа из ресторана от 1 500 ₽ в отелях Sun Village Arkhyz, Таулу, Solu Chalet, Шервуд, Azimuth House и Eco Shalet доставка — 700 ₽. Заказы на сумму до 1 500 ₽ можно забрать самостоятельно через самовывоз или забронировав столик в ресторане</p>
+            <p className={s.remark}>От 3 000 ₽</p>
+            <p className={s.text}>При минимальной сумме заказа из ресторана от 3 500 ₽ в отелях Daut Resort, Leopard Hotel, La Vida, Горная Жемчужина и Шишка доставка — 700 ₽. Заказы на сумму до 3 500 ₽ можно забрать самостоятельно через самовывоз или забронировав столик в ресторане.</p>
+          </div>
+        </div>
+        <div className={s.card}>
+          <img className={s.img} src={timedel} alt="time" />
+          <div className={s.content}>
+          <p className={s.title}>Время доставки</p>
+
             <p className={s.remark}>На территории Sun Village Arkhyz</p>
             <p className={s.text}>10 минут + время приготовления</p>
             <p className={s.remark}>За пределами Sun Village Arkhyz</p>

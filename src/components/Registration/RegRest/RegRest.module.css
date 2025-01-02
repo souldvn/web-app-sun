@@ -62,20 +62,30 @@
 }
 
 .option input[type="checkbox"] {
-  -webkit-appearance: none; /* Убирает стандартный стиль */
-  -moz-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
+  appearance: none; /* Убираем стандартный стиль чекбокса */
+  width: 20px;
+  height: 20px;
   border: 2px solid #9c9da4;
-  border-radius: 4px; /* Квадрат с небольшими скруглениями */
-  background-color: white;
+  border-radius: 4px; /* Закругленные углы */
+  background-color: transparent;
+  position: relative;
   cursor: pointer;
 }
 
 .option input[type="checkbox"]:checked {
-  background-color: #4caf50; /* Зеленый цвет при выборе */
-  border-color: #4caf50;
+  background-color: #333333; /* Тёмный фон */
+  border-color: #333333;
+}
+
+.option input[type="checkbox"]:checked::before {
+  content: "✔"; /* Галочка */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* Белый цвет галочки */
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .price {
@@ -88,7 +98,7 @@
 
 .result {
   position: fixed;
-  bottom: 16px;
+  bottom: 0px;
   right: 16px;
   left: 16px;
   margin-top: auto;
@@ -96,6 +106,8 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  background-color: white;
+  padding-bottom: 16px;
 }
 
 .pay {
@@ -154,5 +166,17 @@
 
 input:disabled {
   background-color: #dcdcdc;
+}
+
+.remark{
+  border: 1px solid #e9e9eb;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin: 16px 0;
+}
+
+.remarktext{
+  font-size: 12px;
+  color: #9c9da4;
 }
 

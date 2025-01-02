@@ -3,6 +3,7 @@ import { TimeContext } from '../../Contextes/TimeContext'; // Импорт ко�
 import plus from '../../../assets/icons/plus.svg';
 import plusdark from '../../../assets/icons/plusdark.svg';
 import minus from '../../../assets/icons/minus.svg';
+import plusdis from '../../../assets/icons/plusdis.svg';
 import s from './CardPrice.module.css';
 import { CartContext } from '../../Contextes/CartContext';
 
@@ -92,7 +93,8 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
             onClick={handleAddClick}
             disabled={isButtonDisabled}
           >
-            <img src={plus} alt="plus" />
+              <img src={isButtonDisabled ? plusdis : plus} alt={isButtonDisabled ? "plusdis" : "plus"} />
+
             <p>Добавить</p>
           </button>
         )}

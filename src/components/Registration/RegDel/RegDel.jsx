@@ -229,6 +229,10 @@ const RegDel = ({ chatId }) => {
           <p>{deliveryCost} ₽</p>
         </div>
       </div>
+      
+      <div className={s.remark}>
+        <p className={s.remarktext}>Уважаемые гости! Пожалуйста, обращайте внимание на время приготовления, указанное на карточках блюд. Учитывайте его при бронировании столика или заказе доставки.</p>
+      </div>
 
       <div className={s.result}>
         <p>{totalPrice + deliveryCost} ₽</p>

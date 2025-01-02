@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegRest.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { TimeContext } from '../../Contextes/TimeContext';
 
 const RegRest = ({ chatId }) => {
+  useEffect(() => {
+      // Очистить данные о доставке при запуске компонента
+      localStorage.removeItem('guestCount');
+      // Или при других нужных условиях
+    }, []);
   const location = useLocation();
   const { state } = location;
   const totalPrice = state?.totalPrice || 0;
@@ -12,6 +18,7 @@ const RegRest = ({ chatId }) => {
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
+  const moscowTime = useContext(TimeContext); // Используем контекст времени
 
   const [phoneNumber, setPhoneNumber] = useState(() => {
     return localStorage.getItem('phoneNumber') || '';
@@ -22,26 +29,31 @@ const RegRest = ({ chatId }) => {
   const [comment, setComment] = useState(() => {
     return localStorage.getItem('comment') || '';
   });
-  const [isPickup, setIsPickup] = useState(false); // Убираем связь с localStorage для isPickup
+  const [isPickup, setIsPickup] = useState(false);
 
   const [phoneError, setPhoneError] = useState(false);
   const [guestCountError, setGuestCountError] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
   const handleValidation = () => {
-    const phoneValid = phoneNumber && /^\+?\d{10,15}$/.test(phoneNumber); // Подача телефона с 10-15 цифрами
+    const phoneValid = phoneNumber && /^\+?\d{10,15}$/.test(phoneNumber);
     const guestCountValid = guestCount && guestCount > 0;
 
     setPhoneError(!phoneValid);
     setGuestCountError(!guestCountValid);
 
     // Убедитесь, что все поля валидны
-    setIsValid(phoneValid && guestCountValid && time);
+    setIsValid(phoneValid && guestCountValid && time && !isTimeRestricted());
+  };
+
+  const isTimeRestricted = () => {
+    const currentHour = moscowTime.getHours();
+    return currentHour >= 21 || currentHour < 9;
   };
 
   useEffect(() => {
-    handleValidation(); // Валидация при каждом изменении
-  }, [phoneNumber, guestCount, time]);
+    handleValidation();
+  }, [phoneNumber, guestCount, time, moscowTime]);
 
   useEffect(() => {
     localStorage.setItem('phoneNumber', phoneNumber);
@@ -59,7 +71,7 @@ const RegRest = ({ chatId }) => {
     const idempotenceKey = uuidv4();
     const orderId = uuidv4();
 
-    const cartItemsShort = cartItems.map(item => ({
+    const cartItemsShort = cartItems.map((item) => ({
       text: item.text,
       count: item.count,
     }));
@@ -75,18 +87,21 @@ const RegRest = ({ chatId }) => {
         orderTime: time,
         cartItems: cartItemsShort,
         flat: isPickup ? 'Самовывоз из ресторана' : 'В ресторане',
-        telegramChatId: chatId
+        telegramChatId: chatId,
       };
 
-      const response = await fetch('https://sunvillrest.netlify.app/.netlify/functions/payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Idempotence-Key': idempotenceKey,
-        },
-        body: JSON.stringify(requestData),
-        mode: 'cors',
-      });
+      const response = await fetch(
+        'https://sunvillrest.netlify.app/.netlify/functions/payment',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Idempotence-Key': idempotenceKey,
+          },
+          body: JSON.stringify(requestData),
+          mode: 'cors',
+        }
+      );
 
       const data = await response.json();
 
@@ -153,15 +168,18 @@ const RegRest = ({ chatId }) => {
         <p>Итоговая цена</p>
         <p>{totalPrice || 0} ₽</p>
       </div>
+      <div className={s.remark}>
+        <p className={s.remarktext}>Уважаемые гости! Пожалуйста, обращайте внимание на время приготовления, указанное на карточках блюд. Учитывайте его при бронировании столика или заказе доставки.</p>
+      </div>
       <div className={s.result}>
         <p>{totalPrice || 0} ₽</p>
         <button
-  className={isValid ? s.payValid : s.pay}
-  onClick={handlePayment}
-  disabled={!isValid}
->
-  Оплатить
-</button>
+          className={isValid ? s.payValid : s.pay}
+          onClick={handlePayment}
+          disabled={!isValid || isTimeRestricted()}
+        >
+          {isTimeRestricted() ? 'Оплата недоступна в это время' : 'Оплатить'}
+        </button>
       </div>
     </div>
   );

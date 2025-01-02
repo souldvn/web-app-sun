@@ -51,6 +51,8 @@
     justify-content: space-between;
     font-size: 16px;
     font-weight: 500;
+    border-bottom: 1px solid #d3d3d3; /* Серая линия */
+    padding-bottom: 8px; /* Отступ между текстом и линией */
   }
   
   .result {

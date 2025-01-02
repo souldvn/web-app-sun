@@ -209,7 +209,7 @@ const RegDel = ({ chatId }) => {
         {minimumOrderError && (
           <div className={s.errorText}>
             <img src={infored} alt="info" />
-            <p className={s.warninginfo}>Минимальная сумма доставки {DELIVERY_LOCATIONS.includes(deliveryData.flat) ? MINIMUM_ORDER_STANDARD : MINIMUM_ORDER_HIGH} ₽ Дополните заказ дляя продолжения</p>
+            <p className={s.warninginfo}>Минимальная сумма доставки {DELIVERY_LOCATIONS.includes(deliveryData.flat) ? MINIMUM_ORDER_STANDARD : MINIMUM_ORDER_HIGH} ₽ Дополните заказ для продолжения</p>
           </div>
         )}
       </div>

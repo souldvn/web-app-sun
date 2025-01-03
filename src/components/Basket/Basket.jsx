@@ -91,7 +91,7 @@ const Basket = () => {
           ))
         )}
       </div>
-      <ButtonBasket />
+      <ButtonBasket isEmpty={isEmpty} />
     </div>
   );
 };

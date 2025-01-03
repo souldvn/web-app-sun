@@ -30,6 +30,7 @@
 
 .cartbutton.empty {
     background-color: #f0f0f1; /* Новый цвет для пустой корзины */
+    color: #666;
 }
 
 .emptyMessage {

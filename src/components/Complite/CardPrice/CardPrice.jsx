@@ -22,11 +22,11 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     // Общие условия
     const isRestaurantClosed =
-      selectedOption === 'host' && (currentHour >= 21 || currentHour < 4);
+      selectedOption === 'host' && (currentHour >= 21 || currentHour < 9);
   
     const isDeliveryUnavailable =
       selectedOption === 'delivery' &&
-      !(currentHour >= 6 && currentHour < 15 || currentHour >= 15 && currentHour < 23);
+      !(currentHour >= 11 && currentHour < 15 || currentHour >= 19 && currentHour < 21);
   
     let buttonDisabled;
   

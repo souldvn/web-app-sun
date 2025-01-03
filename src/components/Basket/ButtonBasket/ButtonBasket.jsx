@@ -26,12 +26,12 @@ const ButtonBasket = ({ isEmpty }) => {
       <button
         onClick={handleBasketClick}
         className={`${s.cartbutton} ${isEmpty ? s.empty : ''}`}
+        disabled={isEmpty} // Кнопка отключается, если isEmpty равно true
       >
         Перейти к оформлению
       </button>
     </div>
   );
 };
-
 
 export default ButtonBasket;

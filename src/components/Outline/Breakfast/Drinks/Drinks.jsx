@@ -19,7 +19,7 @@ const Drinks = () => {
     const fetchDishes = async () => {
       try {
         const dbRef = ref(database);
-        const snapshot = await get(child(dbRef, "dishes"));
+        const snapshot = await get(child(dbRef, "drinks"));
         if (snapshot.exists()) {
           const dishesData = snapshot.val();
           const dishesArray = Object.keys(dishesData).map(key => ({

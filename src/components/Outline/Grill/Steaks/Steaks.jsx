@@ -15,6 +15,8 @@ const Steaks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
+  const [isModalOpen, setIsModalOpen] = useState(false); // Состояние модального окна
+  const [modalContent, setModalContent] = useState(''); // Текст модального окна
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -41,7 +43,14 @@ const Steaks = () => {
     };
 
     fetchDishes();
+
+    setModalContent('Внимание! Цена указана за 100г продукта');
+    setIsModalOpen(true);
   }, []);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleDisableStatusChange = (id, isDisabled) => {
     setDisabledStatuses((prevStatuses) => {
@@ -92,6 +101,16 @@ const Steaks = () => {
           <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
+      {isModalOpen && (
+        <div className={s.modal}>
+          <div className={s.modalContent}>
+            <span className={s.closeButton} onClick={closeModal}>×</span>
+            <div className={s.info}>
+              <p className={s.modalText}>{modalContent}</p>
+            </div>
+          </div>
+        </div>
+      )}
       <CartButton />
     </div>
   );

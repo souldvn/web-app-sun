@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TopBar from '../../Complite/TopBar/TopBar';
 import s from './RegDel.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
 import infored from '../../../assets/icons/infored.svg';
-
+import { TimeContext } from '../../Contextes/TimeContext';
 const DELIVERY_LOCATIONS = [
   'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5',
   'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11',
@@ -36,6 +36,7 @@ const RegDel = ({ chatId }) => {
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
+    const moscowTime = useContext(TimeContext); // Используем контекст времени
 
   // State initialization
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('phoneNumberDel') || '');
@@ -84,12 +85,17 @@ const RegDel = ({ chatId }) => {
     setPhoneError(!phoneValid);
     setGuestCountError(!guestCountValid);
     setFlatError(!flatValid);
-    setIsValid(phoneValid && guestCountValid && flatValid && timeValid && !minimumOrderError);
+    setIsValid(phoneValid && guestCountValid && flatValid && timeValid && !minimumOrderError && !isTimeRestricted());
+  };
+
+  const isTimeRestricted = () => {
+    const currentHour = moscowTime.getHours();
+    return currentHour >= 21 || currentHour < 9;
   };
 
   useEffect(() => {
     handleValidation();
-  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time, minimumOrderError]);
+  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time, minimumOrderError, moscowTime]);
 
   // Save data to localStorage
   useEffect(() => {
@@ -237,12 +243,12 @@ const RegDel = ({ chatId }) => {
       <div className={s.result}>
         <p>{totalPrice + deliveryCost} ₽</p>
         <button
-  className={isValid ? s.payValid : s.pay}
-  onClick={handlePayment}
-  disabled={!isValid}
->
-  Оплатить
-</button>
+          className={isValid ? s.payValid : s.pay}
+          onClick={handlePayment}
+          disabled={!isValid || isTimeRestricted()}
+        >
+          {isTimeRestricted() ? 'Оплата недоступна в это время' : 'Оплатить'}
+        </button>
 
 
       </div>

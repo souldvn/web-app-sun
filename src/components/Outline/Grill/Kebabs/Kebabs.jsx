@@ -7,14 +7,13 @@ import CartButton from '../../../Complite/CartButton/CartButton';
 import CardPrice from '../../../Complite/CardPrice/CardPrice';
 import { database } from '../../../../firebaseConfig';
 
-
 const Kebabs = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
-  const [extras, setExtras] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [disabledStatuses, setDisabledStatuses] = useState({}); // Статусы кнопок для всех карточек
+  const [isModalOpen, setIsModalOpen] = useState(false); // Состояние модального окна
+  const [modalContent, setModalContent] = useState(''); // Текст модального окна
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -41,28 +40,18 @@ const Kebabs = () => {
     };
 
     fetchDishes();
+
+    // Открываем модальное окно при монтировании компонента
+    setModalContent('Внимание! Цена указана за 100г продукта');
+    setIsModalOpen(true);
   }, []);
 
-  const handleDisableStatusChange = (id, isDisabled) => {
-    setDisabledStatuses((prevStatuses) => {
-      if (prevStatuses[id] === isDisabled) {
-        return prevStatuses; // Не обновляем, если статус не изменился
-      }
-      return {
-        ...prevStatuses,
-        [id]: isDisabled,
-      };
-    });
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const handleCardClick = (card) => {
-    navigate('/kebabIn', {
-      state: {
-        dish: card,
-        fromRecomendations: false,
-        isAddButtonDisabled: disabledStatuses[card.id] || false, // Передаем статус кнопки
-      }
-    });
+    navigate('/kebabIn', { state: { dish: card } });
   };
 
   if (loading) {
@@ -84,14 +73,23 @@ const Kebabs = () => {
               price={card.price} 
               weight={card.weight} 
               img={card.img}
-              description={card.description} 
-              onDisableStatusChange={(isDisabled) => handleDisableStatusChange(card.id, isDisabled)}
+              description={card.description}
             />
           </div>
         )) : (
           <div className={s.noDishes}>Нет доступных блюд</div>
         )}
       </div>
+      {isModalOpen && (
+        <div className={s.modal}>
+          <div className={s.modalContent}>
+            <span className={s.closeButton} onClick={closeModal}>×</span>
+            <div className={s.info}>
+              <p className={s.modalText}>{modalContent}</p>
+            </div>
+          </div>
+        </div>
+      )}
       <CartButton />
     </div>
   );

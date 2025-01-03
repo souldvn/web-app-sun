@@ -21,7 +21,7 @@ const CartButton = () => {
     if (cartCount > 0) {
       navigate('/basket');
     } else {
-      alert('Ваша корзина пуста!');
+      navigate('/basket');
     }
   };
 

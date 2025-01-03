@@ -44,7 +44,7 @@ const Fish = () => {
 
     fetchDishes();
 
-    setModalContent('Внимание! Цена указана за 100г продукта');
+    setModalContent('Цена указана за 100г готового продукта');
     setIsModalOpen(true);
   }, []);
 

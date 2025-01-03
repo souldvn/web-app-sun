@@ -22,17 +22,17 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     // Общие условия
     const isRestaurantClosed =
-      selectedOption === 'host' && (currentHour >= 21 || currentHour < 9);
+      selectedOption === 'host' && (currentHour >= 23 || currentHour < 9);
   
     const isDeliveryUnavailable =
       selectedOption === 'delivery' &&
-      !(currentHour >= 11 && currentHour < 15 || currentHour >= 19 && currentHour < 21);
+      !(currentHour >= 11 && currentHour < 15 || currentHour >= 15 && currentHour < 23);
   
     let buttonDisabled;
   
     if (type === 'dish' || type === 'drinks') {
       // Специальное условие для блюд
-      buttonDisabled = !(currentHour >= 10 && currentHour < 11);
+      buttonDisabled = !(currentHour >= 9 && currentHour < 23);
     } else {
       // Обычные условия
       buttonDisabled = selectedOption === 'delivery'

@@ -39,6 +39,10 @@ const HotIn = () => {
     }
   };
 
+  const shouldShowInfoCon = [
+    'Сидр в ассортименте',
+  ].includes(dish.text);
+
   return (
     <div className={s.Inline}>
       <div className={s.public}
@@ -68,6 +72,14 @@ const HotIn = () => {
         <div className={s.compoundCon}>
           <p className={s.compound}>Состав</p>
           <p className={s.text}>{dish.compound}</p>
+        </div>
+      )}
+      {shouldShowInfoCon && (
+        <div className={s.infoCon}>
+          <p className={s.assortInfo}>Дополнительная информация</p>
+          <p className={s.text}>
+            Это ассортиментный товар. При оформлении заказа, в поле комментарий укажите выбранный вкус
+          </p>
         </div>
       )}
       {!fromRecomendations && <RecomHot isAddButtonDisabled={isAddButtonDisabled} />}

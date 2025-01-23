@@ -17,14 +17,14 @@ const DeliveryInfo = () => {
           <img className={s.img} src={dostavka} alt="dostavka" />
           <div className={s.content}>
             <p className={s.title}>Рабочее время доставки</p>
-            <p className={s.text}>11:00–15:00 и 19:00–21:00 в рабочие часы ресторана</p>
+            <p className={s.text}>11:00–21:00 в рабочие часы ресторана</p>
           </div>
         </div>
         <div className={s.card}>
           <img className={s.img} src={location} alt="location" />
           <div className={s.content}>
             <p className={s.title}>Локации доставки</p>
-            <p className={s.text}>Доставка на территории Sun Village Arkhyz и отелей из списка «Отели с доставкой»</p>
+            <p className={s.text}>Доставка на территории Sun Village Arkhyz и в другие отели</p>
           </div>
         </div>
         <div className={s.card}>
@@ -32,9 +32,9 @@ const DeliveryInfo = () => {
           <div className={s.content}>
             <p className={s.title}>Отели с доставкой</p>
             <p className={s.remark}>От 1 500 ₽</p>
-            <p className={s.text}>При минимальной сумме заказа из ресторана от 1 500 ₽ в отелях Sun Village Arkhyz, Таулу, Solu Chalet, Шервуд, Azimuth House и Eco Shalet доставка — 700 ₽. Заказы на сумму до 1 500 ₽ можно забрать самостоятельно через самовывоз или забронировав столик в ресторане</p>
+            <p className={s.text}>При минимальной сумме заказа из ресторана от 1 500 ₽ в парк-отеле Sun Village Arkhyz доставка 700 ₽</p>
             <p className={s.remark}>От 3 000 ₽</p>
-            <p className={s.text}>При минимальной сумме заказа из ресторана от 3 500 ₽ в отелях Daut Resort, Leopard Hotel, La Vida, Горная Жемчужина и Шишка доставка — 700 ₽. Заказы на сумму до 3 500 ₽ можно забрать самостоятельно через самовывоз или забронировав столик в ресторане.</p>
+            <p className={s.text}>При минимальной сумме заказа из ресторана от 3 000 ₽ в другие отели доставка 700 ₽ </p>
           </div>
         </div>
         <div className={s.card}>

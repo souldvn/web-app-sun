@@ -14,7 +14,7 @@ const FlatDel = () => {
   const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
   const flats = [
-    'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5', 'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11'
+    'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5',  'Deluxe № 6', 'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11'
   ];
 
   const handleCheckboxChange = (index) => {

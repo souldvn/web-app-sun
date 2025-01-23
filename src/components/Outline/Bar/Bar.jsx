@@ -12,7 +12,7 @@ const cards = [
     img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20napitki.jpg?raw=true",
   },
   {
-    text: "Лимонады",
+    text: "Лимонады домашние",
     img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Limonadi.jpg?raw=true",
   },
   {
@@ -48,7 +48,7 @@ const Bar = () => {
   const handleCardClick = (cardName) => {
     const routes = {
       'Холодные напитки': '/colddrinks',
-      'Лимонады': '/limonades',
+      'Лимонады домашние': '/limonades',
       'Кофе': '/coffee',
       'Чай классический': '/tea',
       'Фирменные чаи': '/comtea',

@@ -18,7 +18,7 @@ const Address = () => {
       <TopBar text="Адрес доставки" />
       <div className={s.timecontainer}>
         <div className={s.time} onClick={() => handleClick('/SunVill')}>
-          <p>Sun Village Arkhyz</p>
+          <p>Парк отель Sun Village Arkhyz</p>
           <img src={next} alt="next"  />
         </div>
         <div className={s.time} onClick={() => handleClick('/hotels')}>

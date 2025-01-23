@@ -48,7 +48,7 @@ const RegRest = ({ chatId }) => {
 
   const isTimeRestricted = () => {
     const currentHour = moscowTime.getHours();
-    return currentHour >= 21 || currentHour < 9;
+    return currentHour >= 21 || currentHour < 4;
   };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const RegRest = ({ chatId }) => {
 
   return (
     <div className={s.rest}>
-      <TopBar text="Оформление" />
+      <TopBar text="Оформление в ресторане" />
       <div className={s.chatId} />
       <div className={s.restform}>
         <input

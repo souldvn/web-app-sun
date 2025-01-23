@@ -124,11 +124,11 @@ const Mainscreen = () => {
 
   return (
     <div className={s.mainscreen}>
-      <div className={s.functionpanel}>
+      {/* <div className={s.functionpanel}>
         <button className={s.balls}>
           <img src={balls} alt="balls" />
         </button>
-      </div>
+      </div> */}
 
       <div className={s.variants}>
         <button

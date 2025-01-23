@@ -14,7 +14,7 @@ const HouseDel = () => {
   const { totalPrice, cartItems } = location.state || { totalPrice: 0, cartItems: [] }; // Получаем cartItems
 
     const flats = [
-        'Дом Suite № 1', 'Дом Suite № 2', 'Дом Suite № 3', 'Дом Suite № 4', 'Дом Duplex № 5', 'Дом Duplex № 6', 'Дом Duplex № 7', 'Дом Duplex № 8', 'Дом Duplex № 9', 'Дом Duplex № 10', 'Сруб № 1', 'Сруб № 2', 'Баня по белому'
+        'Дом Suite № 1', 'Дом Suite № 2', 'Дом Suite № 3', 'Дом Suite № 4', 'Дом Duplex № 5', 'Дом Duplex № 6', 'Дом Duplex № 7', 'Дом Duplex № 8', 'Дом Duplex № 9', 'Дом Duplex № 10', 'Сруб № 1', 'Сруб № 2', 'Баня по-белому'
     ];
 
   const handleCheckboxChange = (index) => {

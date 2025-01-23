@@ -7,20 +7,20 @@ import { useDeliveryContext } from '../../Contextes/RegContext';
 import infored from '../../../assets/icons/infored.svg';
 import { TimeContext } from '../../Contextes/TimeContext';
 const DELIVERY_LOCATIONS = [
-  'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5',
+  'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5', 'Deluxe № 6',
   'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11',
   'Дом Suite № 1', 'Дом Suite № 2', 'Дом Suite № 3', 'Дом Suite № 4',
   'Дом Duplex № 5', 'Дом Duplex № 6', 'Дом Duplex № 7', 'Дом Duplex № 8', 'Дом Duplex № 9', 'Дом Duplex № 10',
-  'Сруб № 1', 'Сруб № 2', 'Баня по белому', 'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet'
+  'Сруб № 1', 'Сруб № 2', 'Баня по белому'
 ];
 
 const HIGH_MINIMUM_LOCATIONS = [
-  'Daut Resort', 'Leopard Hotel', 'La Vida', 'Горная Жемчужина', 'Гостевой дом Шишка'
+   'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet','Daut Resort', 'Leopard Hotel', 'La Vida', 'Горная Жемчужина', 'Гостевой дом Шишка'
 ];
 
 const DELIVERY_COST = 700;
 const MINIMUM_ORDER_STANDARD = 1500;
-const MINIMUM_ORDER_HIGH = 3500;
+const MINIMUM_ORDER_HIGH = 3000;
 
 const RegDel = ({ chatId }) => {
   useEffect(() => {
@@ -170,7 +170,7 @@ const RegDel = ({ chatId }) => {
 
   return (
     <div className={s.del}>
-      <TopBar text="Оформление" />
+      <TopBar text="Оформление доставки" />
       <div className={s.chatId}>
       </div>
       <div className={s.delform}>

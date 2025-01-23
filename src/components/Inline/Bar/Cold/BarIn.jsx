@@ -9,9 +9,7 @@ import { CartContext } from '../../../Contextes/CartContext';
 
 import RecomBar from './RecomBar/ReacomBar';
 
-
 const BarIn = () => {
-  
   const { cartItems } = useContext(CartContext);
 
   // Вычисление общего количества товаров в корзине
@@ -25,13 +23,14 @@ const BarIn = () => {
     isAddButtonDisabled: false,
   };
 
-    if (!dish) {
-      return <div>Блюдо не найдено</div>;
-    }
+  if (!dish) {
+    return <div>Блюдо не найдено</div>;
+  }
 
-    const handleBackClick = () => {
-      navigate(-1); // Вернуться на предыдущую страницу
-    };
+  const handleBackClick = () => {
+    navigate(-1); // Вернуться на предыдущую страницу
+  };
+
   const handleCardClick = () => {
     if (cartCount > 0) {
       navigate('/basket');
@@ -40,14 +39,23 @@ const BarIn = () => {
     }
   };
 
+  // Проверка текста для отображения дополнительной информации
+  const shouldShowInfoCon = [
+    'Лимонад домашний в ассортименте',
+    'Сок в ассортименте',
+    'Бутылочные лимонады в ассортименте',
+  ].includes(dish.text);
+
   return (
     <div className={s.Inline}>
-      <div className={s.public}
-      style={{
-        backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
-        backgroundSize: 'cover', // растягиваем изображение на весь контейнер
-        backgroundPosition: 'center', // центрируем изображение
-      }}>
+      <div
+        className={s.public}
+        style={{
+          backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
+          backgroundSize: 'cover', // растягиваем изображение на весь контейнер
+          backgroundPosition: 'center', // центрируем изображение
+        }}
+      >
         <div className={s.buttons}>
           <button className={s.arrow} onClick={handleBackClick}>
             <img src={arrowback} alt="arrowback" />
@@ -71,13 +79,24 @@ const BarIn = () => {
           <p className={s.text}>{dish.compound}</p>
         </div>
       )}
-      {!fromRecomendations && <RecomBar isAddButtonDisabled={isAddButtonDisabled}/>}
-      <BottomInfo price={dish.price} text={dish.text} weight={dish.weight} disabled={isAddButtonDisabled}
-              img={dish.img}
-              />
+      {shouldShowInfoCon && (
+        <div className={s.infoCon}>
+          <p className={s.assortInfo}>Дополнительная информация</p>
+          <p className={s.text}>
+            Это ассортиментный товар. При оформлении заказа, в поле комментарий укажите выбранный вкус
+          </p>
+        </div>
+      )}
+      {!fromRecomendations && <RecomBar isAddButtonDisabled={isAddButtonDisabled} />}
+      <BottomInfo
+        price={dish.price}
+        text={dish.text}
+        weight={dish.weight}
+        disabled={isAddButtonDisabled}
+        img={dish.img}
+      />
     </div>
   );
-  
 };
 
 export default BarIn;

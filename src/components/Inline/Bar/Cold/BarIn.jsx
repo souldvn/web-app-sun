@@ -46,6 +46,45 @@ const BarIn = () => {
     'Бутылочные лимонады в ассортименте',
   ].includes(dish.text);
 
+  const renderFlavors = () => {
+    switch (dish.text) {
+      case 'Сок в ассортименте':
+        return (
+          <ul className={s.flavorsList} style={{ listStyleType: 'none', paddingLeft: 0 }}>
+            <li>Апельсин</li>
+            <li>Вишня</li>
+            <li>Яблоко</li>
+            <li>Томат</li>
+            <li>Грейпфрут</li>
+          </ul>
+        );
+      case 'Бутылочные лимонады в ассортименте':
+        return (
+          <ul className={s.flavorsList} style={{ listStyleType: 'none', paddingLeft: 0 }}>
+            <li>Груша</li>
+            <li>Фейхоа</li>
+            <li>Крем сливки</li>
+            <li>Тархун</li>
+            <li>Саперави</li>
+          </ul>
+        );
+      case 'Лимонад домашний в ассортименте':
+        return (
+          <ul className={s.flavorsList} style={{ listStyleType: 'none', paddingLeft: 0 }}>
+            <li>Цитрусовый микс</li>
+            <li>Ягодный</li>
+            <li>Манго маракуйя</li>
+            <li>Огурец яблоко</li>
+            <li>Лаванда маракуйя</li>
+            <li>Малина маракуйя</li>
+            <li>Мохито</li>
+          </ul>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={s.Inline}>
       <div
@@ -85,6 +124,7 @@ const BarIn = () => {
           <p className={s.text}>
             Это ассортиментный товар. При оформлении заказа, в поле комментарий укажите выбранный вкус
           </p>
+          {renderFlavors()}
         </div>
       )}
       {!fromRecomendations && <RecomBar isAddButtonDisabled={isAddButtonDisabled} />}
@@ -100,3 +140,4 @@ const BarIn = () => {
 };
 
 export default BarIn;
+

@@ -70,6 +70,7 @@ import Success from './components/succsess';
 import {useQuery} from '../src/components/utils/util';
 import { TimeProvider } from './components/Contextes/TimeContext';
 import DeliveryInfo from './components/delivery/DeliveryInfo';
+import Policy from './components/Registration/RegRest/Policy';
 
 
 
@@ -174,6 +175,7 @@ const App = () => {
             <Route path="/hotels" element={<Hotels />} />
             <Route path="/success" element={<Success />} />
             <Route path="/deliveryinfo" element={<DeliveryInfo/>} />
+            <Route path="/policy" element={<Policy/>} />
 
           </Routes>
         )}

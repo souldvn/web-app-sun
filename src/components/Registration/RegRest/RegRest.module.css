@@ -180,3 +180,47 @@ input:disabled {
   color: #9c9da4;
 }
 
+.policy{
+  margin-top: 16px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.policy{
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.link{
+  color:#6b6b77 ;
+}
+
+.policy input[type="checkbox"] {
+  appearance: none; /* Убираем стандартный стиль чекбокса */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #9c9da4;
+  border-radius: 4px; /* Закругленные углы */
+  background-color: transparent;
+  position: relative;
+  cursor: pointer;
+}
+
+.policy input[type="checkbox"]:checked {
+  background-color: #333333; /* Тёмный фон */
+  border-color: #333333;
+}
+
+.policy input[type="checkbox"]:checked::before {
+  content: "✔"; /* Галочка */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* Белый цвет галочки */
+  font-size: 14px;
+  font-weight: bold;
+}
+

@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDeliveryContext } from '../../Contextes/RegContext';
 import infored from '../../../assets/icons/infored.svg';
 import { TimeContext } from '../../Contextes/TimeContext';
+
 const DELIVERY_LOCATIONS = [
   'Deluxe № 1', 'Deluxe № 2', 'Deluxe № 3', 'Deluxe № 4', 'Deluxe № 5', 'Deluxe № 6',
   'Standard № 7', 'Standard № 8', 'Standard № 9', 'Standard № 10', 'Standard № 11',
@@ -26,25 +27,28 @@ const RegDel = ({ chatId }) => {
   useEffect(() => {
     // Очистить данные о доставке при запуске компонента
     localStorage.removeItem('flatDel');
-    // Или при других нужных условиях
   }, []);
-  const { deliveryData, setDeliveryData } = useDeliveryContext();
 
+  const { deliveryData, setDeliveryData } = useDeliveryContext();
   const location = useLocation();
   const { state } = location;
   const totalPrice = state?.totalPrice || 0;
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
-    const moscowTime = useContext(TimeContext); // Используем контекст времени
+  const moscowTime = useContext(TimeContext);
 
   // State initialization
   const [phoneNumber, setPhoneNumber] = useState(() => localStorage.getItem('phoneNumberDel') || '');
   const [guestCount, setGuestCount] = useState(() => localStorage.getItem('guestCountDel') || '');
   const [comment, setComment] = useState(() => localStorage.getItem('commentDel') || '');
-
   const [deliveryCost, setDeliveryCost] = useState(DELIVERY_COST);
   const [minimumOrderError, setMinimumOrderError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+  const [guestCountError, setGuestCountError] = useState(false);
+  const [flatError, setFlatError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);  // Стейт для чекбокса согласия
 
   // Sync deliveryData.flat with localStorage
   useEffect(() => {
@@ -70,11 +74,6 @@ const RegDel = ({ chatId }) => {
     setMinimumOrderError(totalPrice < minimumOrder);
   }, [deliveryData.flat, totalPrice]);
 
-  const [phoneError, setPhoneError] = useState(false);
-  const [guestCountError, setGuestCountError] = useState(false);
-  const [flatError, setFlatError] = useState(false);
-  const [isValid, setIsValid] = useState(false);
-
   // Validation logic
   const handleValidation = () => {
     const phoneValid = phoneNumber && /^\+?\d{10,15}$/.test(phoneNumber);
@@ -82,20 +81,22 @@ const RegDel = ({ chatId }) => {
     const flatValid = deliveryData.flat && deliveryData.flat.trim() !== '';
     const timeValid = deliveryData.time && deliveryData.time.trim() !== '';
 
+    const isPolicyAcceptedValid = isPolicyAccepted;
+
     setPhoneError(!phoneValid);
     setGuestCountError(!guestCountValid);
     setFlatError(!flatValid);
-    setIsValid(phoneValid && guestCountValid && flatValid && timeValid && !minimumOrderError && !isTimeRestricted());
+    setIsValid(phoneValid && guestCountValid && flatValid && timeValid && !minimumOrderError && !isTimeRestricted() && isPolicyAcceptedValid);
   };
 
   const isTimeRestricted = () => {
     const currentHour = moscowTime.getHours();
-    return currentHour >= 21 || currentHour < 9;
+    return currentHour >= 21 || currentHour < 5;
   };
 
   useEffect(() => {
     handleValidation();
-  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time, minimumOrderError, moscowTime]);
+  }, [phoneNumber, guestCount, deliveryData.flat, deliveryData.time, minimumOrderError, moscowTime, isPolicyAccepted]);
 
   // Save data to localStorage
   useEffect(() => {
@@ -109,12 +110,6 @@ const RegDel = ({ chatId }) => {
   useEffect(() => {
     localStorage.setItem('commentDel', comment);
   }, [comment]);
-
-  // useEffect(() => {
-  //   if (deliveryData.flat) {
-  //     localStorage.setItem('flatDel', deliveryData.flat);
-  //   }
-  // }, [deliveryData.flat]);
 
   const handlePayment = async () => {
     const idempotenceKey = uuidv4();
@@ -171,8 +166,6 @@ const RegDel = ({ chatId }) => {
   return (
     <div className={s.del}>
       <TopBar text="Оформление доставки" />
-      <div className={s.chatId}>
-      </div>
       <div className={s.delform}>
         <input
           onClick={() => handleClick('/timedel')}
@@ -189,7 +182,6 @@ const RegDel = ({ chatId }) => {
           placeholder="Выберите место доставки"
           value={deliveryData.flat || ''}
           readOnly
-          
         />
         <input
           className={`${s.input} ${guestCountError ? s.errorInput : ''}`}
@@ -235,6 +227,22 @@ const RegDel = ({ chatId }) => {
           <p>{deliveryCost} ₽</p>
         </div>
       </div>
+
+      <div className={s.policy}>
+        <input
+          className={s.checkbox}
+          type="checkbox"
+          id="checkbox_policy"
+          checked={isPolicyAccepted}
+          onChange={(e) => setIsPolicyAccepted(e.target.checked)}
+        />
+        <p>
+          Я даю согласие на{' '}
+          <a onClick={() => handleClick('/policy')} className={s.link}>
+            обработку персональных данных
+          </a>
+        </p>
+      </div>
       
       <div className={s.remark}>
         <p className={s.remarktext}>Уважаемые гости! Пожалуйста, обращайте внимание на время приготовления, указанное на карточках блюд. Учитывайте его при бронировании столика или заказе доставки.</p>
@@ -249,8 +257,6 @@ const RegDel = ({ chatId }) => {
         >
           {isTimeRestricted() ? 'Оплата недоступна в это время' : 'Оплатить'}
         </button>
-
-
       </div>
     </div>
   );

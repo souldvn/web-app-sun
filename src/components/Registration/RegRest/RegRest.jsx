@@ -183,7 +183,7 @@ const RegRest = ({ chatId }) => {
           checked={isPolicyAccepted}
           onChange={(e) => setIsPolicyAccepted(e.target.checked)}
         />
-        <p>
+        <p className={s.linkpolicy}>
           Я даю согласие на{' '}
           <a onClick={() => handleClick('/policy')} className={s.link}>
             обработку персональных данных

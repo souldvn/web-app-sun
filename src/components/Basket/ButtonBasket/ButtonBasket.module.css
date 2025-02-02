@@ -12,6 +12,8 @@
     align-items: center;
     justify-content: center;
     border: none;
+    max-width: 550px;
+    margin: 0 auto;
 }
 
 .cartbutton {

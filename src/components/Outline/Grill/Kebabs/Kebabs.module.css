@@ -7,14 +7,15 @@
 }
 
 
+
 .modal {
     position: fixed;
     border-radius: 10px;
     top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
-    /* max-width: 328px; */
+    /* width: 90%; */
+    max-width: 550px;
     background-color: white;
     padding: 16px;
     border-radius: 20px;

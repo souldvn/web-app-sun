@@ -24,9 +24,10 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
     const isRestaurantClosed =
       selectedOption === 'host' && (currentHour >= 23 || currentHour < 5);
   
-    const isDeliveryUnavailable =
-      selectedOption === 'delivery' &&
-      !(currentHour >= 5 && currentHour < 15 || currentHour >= 15 && currentHour < 21);
+    const isDeliveryUnavailable = true// убрать true и раскоментить код ниже для активации доставки
+      // selectedOption === 'delivery' &&
+      // !(currentHour >= 5 && currentHour < 15 || currentHour >= 15 && currentHour < 21);
+
   
     let buttonDisabled;
   

@@ -1,0 +1,10 @@
+/* Contacts.module.css */
+.link {
+    color: #e1bb20;
+    text-decoration: underline;
+}
+
+.link:hover {
+    color: #0056b3;
+    text-decoration: none;
+}

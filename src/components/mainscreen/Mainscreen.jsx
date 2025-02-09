@@ -28,6 +28,10 @@ const Mainscreen = () => {
     navigate('/deliveryinfo');
   }
 
+  const handleContactsClick = () => {
+    navigate('/contacts');
+  }
+
   const handleCardClick = (cardName) => {
     const routes = {
       "Завтраки": "/breakfast",
@@ -124,11 +128,11 @@ const Mainscreen = () => {
 
   return (
     <div className={s.mainscreen}>
-      {/* <div className={s.functionpanel}>
+      <div onClick={handleContactsClick} className={s.functionpanel}>
         <button className={s.balls}>
           <img src={balls} alt="balls" />
         </button>
-      </div> */}
+      </div>
 
       <div className={s.variants}>
         <button

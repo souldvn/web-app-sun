@@ -71,6 +71,7 @@ import {useQuery} from '../src/components/utils/util';
 import { TimeProvider } from './components/Contextes/TimeContext';
 import DeliveryInfo from './components/delivery/DeliveryInfo';
 import Policy from './components/Registration/RegRest/Policy';
+import Contact from './components/mainscreen/Contacts/Contact';
 
 
 
@@ -109,6 +110,7 @@ const App = () => {
         ) : (
           <Routes>
             <Route path="/" element={<Mainscreen />} />
+            <Route path="contacts" element={<Contact />} />
             <Route path="/breakfast" element={<Breakfast />} />
             <Route path="bar" element={<Bar />} />
             <Route path="grill" element={<Grill />} />

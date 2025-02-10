@@ -36,7 +36,7 @@ exports.handler = async (event, context) => {
         description: `Оплата заказа (${orderType}), Номер заказа: ${orderId}`,
         confirmation: {
           type: 'redirect',
-          return_url: 'https://t.me/sunbaranbot', // Замените на реальный URL
+          return_url: 'https://sunvillage-6aec8.web.app/', // Замените на реальный URL
         },
         metadata: {
           orderId,
@@ -55,7 +55,7 @@ exports.handler = async (event, context) => {
       {
         auth: {
           username: '1003026', // Ваш Shop ID
-          password: 'test_OnkvybsCkcuQMqCuArnLlTd-KTGZ-3q1UqetvsnJFo8', // Ваш секретный ключ
+          password: 'live_i83-GCp3ynkYbki2Exp8sGOst73vHWaoZXCt8st_GBo', // Ваш секретный ключ
         },
         headers: {
           'Idempotence-Key': idempotenceKey,

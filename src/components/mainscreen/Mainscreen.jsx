@@ -37,7 +37,7 @@ const Mainscreen = () => {
       "Завтраки": "/breakfast",
       "Барная карта": "/bar",
       "Гриль & Мангал": "/grill",
-      "Бургеры с картофелем фри": "/burgers",
+      "Бургеры": "/burgers",
       "Горячие блюда": "/hot",
       "Горячие закуски": "/hotSnacks",
       "Супы": "/soups",
@@ -69,7 +69,7 @@ const Mainscreen = () => {
       img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Gril%20i%20Mangal.jpg?raw=true",
     },
     {
-      text: "Бургеры с картофелем фри",
+      text: "Бургеры",
       img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Burgeri.jpg?raw=true",
     },
     {

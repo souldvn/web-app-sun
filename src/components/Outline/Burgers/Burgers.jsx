@@ -75,7 +75,7 @@ const Burgers = () => {
 
   return (
     <div className={s.dishes}>
-      <TopBar text={"Бургеры с картофелем"} />
+      <TopBar text={"Бургеры"} />
       <div className={s.cardsContainer}>
         {cards.length > 0 ? cards.map((card) => (
           <div key={card.id} onClick={() => handleCardClick(card)} className={s.cardItem}>

@@ -27,6 +27,10 @@ exports.handler = async (event, context) => {
   }
 
   try {
+
+    console.log('Shop ID:', process.env.YOOKASSA_SHOP_ID);
+  console.log('Secret Key:', process.env.YOOKASSA_SECRET_KEY ? 'OK' : 'MISSING');
+
     const response = await axios.post(
       'https://api.yookassa.ru/v3/payments',
       {

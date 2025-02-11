@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
       },
       {
         auth: {
-          username: '1003026', // Ваш Shop ID
+          username: '447590', // Ваш Shop ID
           password: 'live_i83-GCp3ynkYbki2Exp8sGOst73vHWaoZXCt8st_GBo', // Ваш секретный ключ
         },
         headers: {

@@ -55,7 +55,7 @@ const RegRest = ({ chatId }) => {
 
   const isTimeRestricted = () => {
     const currentHour = moscowTime.getHours();
-    return currentHour >= 21 || currentHour < 4;
+    return currentHour >= 21 || currentHour < 3;
   };
 
   useEffect(() => {

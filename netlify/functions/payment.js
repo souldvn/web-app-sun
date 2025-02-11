@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
+
 
 exports.handler = async (event, context) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -54,9 +56,10 @@ exports.handler = async (event, context) => {
       },
       {
         auth: {
-          username: '447590', // Ваш Shop ID
-          password: 'live_i83-GCp3ynkYbki2Exp8sGOst73vHWaoZXCt8st_GBo', // Ваш секретный ключ
+          username: process.env.YOOKASSA_SHOP_ID,
+          password: process.env.YOOKASSA_SECRET_KEY,
         },
+        
         headers: {
           'Idempotence-Key': idempotenceKey,
         },

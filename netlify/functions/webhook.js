@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();  // Подключаем .env
 
 exports.handler = async (event, context) => {
   if (event.httpMethod === 'POST') {
@@ -19,11 +20,10 @@ exports.handler = async (event, context) => {
         totalPrice = parseFloat(totalPrice).toFixed(2);
       }
 
-      const TELEGRAM_BOT_TOKEN = '8049756630:AAHbPxs3rn6El7OfDxd1rmqxQA2PGJngktQ';
-      const TELEGRAM_BOT_TOKEN_USER = '7515370853:AAEikh7iTegPcr8vhxpYsBNNJOuB30M3oaQ';
-
-      const TELEGRAM_CHAT_ID_KITCHEN = '-1002346852862'; 
-      const TELEGRAM_CHAT_ID_USER = telegramChatId; 
+      const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+      const TELEGRAM_BOT_TOKEN_USER = process.env.TELEGRAM_BOT_TOKEN_USER;
+      const TELEGRAM_CHAT_ID_KITCHEN = process.env.TELEGRAM_CHAT_ID_KITCHEN;
+      const TELEGRAM_CHAT_ID_USER = telegramChatId;
 
       const cartItemsText = parsedCartItems
         .map((item, index) => `${index + 1}. ${item.text} - ${item.count} шт.`)
@@ -63,7 +63,6 @@ ${cartItemsText}
 📙 svarkhyz.ru 
 🏔 https://t.me/sunvillagearkhyz`;
 
-      // Отправка сообщения на кухню
       try {
         await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
           chat_id: TELEGRAM_CHAT_ID_KITCHEN,
@@ -74,7 +73,6 @@ ${cartItemsText}
         console.error('Error sending message to kitchen:', error.response ? error.response.data : error.message);
       }
 
-      // Отправка сообщения пользователю
       if (TELEGRAM_CHAT_ID_USER) {
         try {
           await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN_USER}/sendMessage`, {

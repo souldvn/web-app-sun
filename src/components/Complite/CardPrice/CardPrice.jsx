@@ -22,7 +22,7 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     // Общие условия
     const isRestaurantClosed =
-      selectedOption === 'host' && (currentHour >= 23 || currentHour < 3);
+      selectedOption === 'host' && (currentHour >= 22 || currentHour < 11);
   
     const isDeliveryUnavailable = true// убрать true и раскоментить код ниже для активации доставки
       // selectedOption === 'delivery' &&
@@ -33,7 +33,7 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     if (type === 'dish' || type === 'drinks') {
       // Специальное условие для блюд
-      buttonDisabled = !(currentHour >= 9 && currentHour < 23);
+      buttonDisabled = !(currentHour >= 9 && currentHour < 11);
     } else {
       // Обычные условия
       buttonDisabled = selectedOption === 'delivery'

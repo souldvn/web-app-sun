@@ -1,12 +1,24 @@
-/* splash.module.css */
 .splashContainer {
     display: flex;
+    flex-direction: column;
+    text-align: center;
     justify-content: center;
     align-items: center;
     height: 100vh; /* Занять всю высоту экрана */
     background-color: #ffffff;
+    position: relative; /* Для абсолютного позиционирования ссылки */
 }
 
 .splash {
     max-width: 100%; /* Ограничьте размер изображения при необходимости */
+}
+
+.link {
+    position: absolute;
+    bottom: 20px; /* Отступ снизу */
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    color: #d9d9d9;
+    font-size: 16px;
 }

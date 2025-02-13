@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, child } from "firebase/database"; // Убедитесь, что ref импортирован
+import { getDatabase, ref, get, child } from "firebase/database";
 
 const firebaseConfig = {
 
@@ -17,4 +17,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database, ref, get, child }; // Экспортируем функции, если они нужны в других файлах
+export { database, ref, get, child }; 

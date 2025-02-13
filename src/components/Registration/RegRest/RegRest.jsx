@@ -7,7 +7,7 @@ import { TimeContext } from '../../Contextes/TimeContext';
 
 const RegRest = ({ chatId }) => {
   useEffect(() => {
-    // Очистить данные о доставке при запуске компонента
+
     localStorage.removeItem('guestCount');
   }, []);
 
@@ -18,7 +18,7 @@ const RegRest = ({ chatId }) => {
   const cartItems = state?.cartItems || [];
 
   const navigate = useNavigate();
-  const moscowTime = useContext(TimeContext); // Используем контекст времени
+  const moscowTime = useContext(TimeContext); 
 
   const [phoneNumber, setPhoneNumber] = useState(() => {
     return localStorage.getItem('phoneNumber') || '';

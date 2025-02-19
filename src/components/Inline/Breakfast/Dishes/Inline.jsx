@@ -71,8 +71,8 @@ const Inline = () => {
         className={s.public}
         style={{
           backgroundImage: `url(${dish.img})`, // динамическое фоновое изображение
-          backgroundSize: 'cover', // растягиваем изображение на весь контейнер
-          backgroundPosition: 'center', // центрируем изображение
+          backgroundSize: 'cover',
+          // backgroundPosition: 'center center'
         }}
       >
         <div className={s.buttons}>

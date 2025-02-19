@@ -1,17 +1,27 @@
-.inline{
-
+.inline {
+    max-width: 550px;
+    margin: 0 auto; /* Центрируем контейнер */
 }
 
 .public {
     padding: 20px 16px;
     background-color: #D9D9D9;
     height: 260px;
-    width: 100vw; /* Занимает всю ширину окна */
+    width: 100%;
+    max-width: 550px; /* Чтобы не растягивалось бесконечно */
     position: relative;
-    margin-left: calc(-1 * 16px); /* Выравнивает с учетом внешнего отступа приложения */
-    margin-top: calc(-1 * 20px); /* Убирает верхний отступ */
-    margin-bottom: 16px;
+    margin: 0 auto 16px auto; 
+    
+    background-size: cover; /* Растягиваем на весь блок */
+    background-position: center center; /* Центрируем */
+    background-repeat: no-repeat; /* Убираем повторение */
+
+    overflow: hidden; /* Обрезаем лишнее */
+    
 }
+
+
+
 
 .buttons{
     display: flex;

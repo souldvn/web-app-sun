@@ -22,7 +22,7 @@ const CardPrice = ({ price, text, weight, img, onDisableStatusChange, type }) =>
   
     // Общие условия
     const isRestaurantClosed =
-      selectedOption === 'host' && (currentHour >= 22 || currentHour < 11);
+      selectedOption === 'host' && (currentHour >= 15 || currentHour < 11);
   
     const isDeliveryUnavailable = true// убрать true и раскоментить код ниже для активации доставки
       // selectedOption === 'delivery' &&

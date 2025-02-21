@@ -44,7 +44,7 @@ const Steaks = () => {
 
     fetchDishes();
 
-    setModalContent('Цена указана за 100г готового продукта');
+    setModalContent('Цена указана за 300г готового продукта');
     setIsModalOpen(true);
   }, []);
 

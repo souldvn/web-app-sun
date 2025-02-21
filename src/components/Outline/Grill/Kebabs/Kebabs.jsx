@@ -42,7 +42,7 @@ const Kebabs = () => {
     fetchDishes();
 
     // Открываем модальное окно при монтировании компонента
-    setModalContent('Цена указана за 100г готового продукта');
+    setModalContent('Цена указана за 300г готового продукта');
     setIsModalOpen(true);
   }, []);
 

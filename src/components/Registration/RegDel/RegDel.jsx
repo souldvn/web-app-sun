@@ -16,7 +16,7 @@ const DELIVERY_LOCATIONS = [
 ];
 
 const HIGH_MINIMUM_LOCATIONS = [
-   'Турбаза Таулу', 'Solu Chalet', 'Шервуд', 'Azimuth House', 'Eco Shalet','Daut Resort', 'Leopard Hotel', 'La Vida', 'Горная Жемчужина', 'Гостевой дом Шишка'
+   'Шервуд', 'KayaSity', 'Sunshine', 'Solu Chalet', 'Azimuth House','Eco Shalet', 'Daut Resort', 'Турбаза Таулу', 'Leopard Hotel'
 ];
 
 const DELIVERY_COST = 700;

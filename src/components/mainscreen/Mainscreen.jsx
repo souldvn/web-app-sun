@@ -152,13 +152,13 @@ const Mainscreen = () => {
        
       <div onClick={handleDelInfoOpen} className={s.deli}>
         <div className={s.content}>     
-          {/* <img src={dostavka} alt="Delivery Time" /> 
+          <img src={dostavka} alt="Delivery Time" /> 
               <div className={s.info}>
                 <p className={s.titleinfo}>Доставка ресторана SUN VILL REST</p>
                 <p className={s.titletext}>Ознакомиться с условиями</p>
-              </div> */}
+              </div>
 
-              Доставка временно недоступна
+              {/* Доставка временно недоступна */}
         </div>
       </div>
     );

@@ -9,37 +9,38 @@ import CartButton from '../../Complite/CartButton/CartButton';
 const cards = [
   {
     text: "Холодные напитки",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20napitki.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20napitki.jpg",
   },
   {
     text: "Лимонады домашние",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Limonadi.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Limonadi.jpg",
   },
   {
     text: "Кофе",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Kofe.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Kofe.jpg",
   },
   {
     text: "Чай классический",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Chai%20klassicheskiy.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Chai%20klassicheskiy.jpg",
   },
   {
     text: "Фирменные чаи",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Firmennii%20chai.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Firmennii%20chai.jpg",
   },
   {
     text: "Горячие напитки",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20napitki.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20napitki.jpg",
   },
   {
     text: "Пиво",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivo.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivo.jpg",
   },
   {
     text: "Пивные напитки",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivnie%20napitki.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Pivnie%20napitki.jpg",
   }
 ];
+
 
 const Bar = () => {
   const { selectedOption } = useContext(CartContext); // Получаем текущий режим (доставка/в ресторане)

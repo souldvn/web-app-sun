@@ -58,57 +58,58 @@ const Mainscreen = () => {
   const cards = [
     {
       text: "Завтраки",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Zavtraki.jpg?raw=true",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Zavtraki.jpg",
     },
     {
       text: "Барная карта",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Barnaya%20karta.jpg?raw=true",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Barnaya%20karta.jpg",
     },
     {
       text: "Гриль & Мангал",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Gril%20i%20Mangal.jpg?raw=true",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Gril%20i%20Mangal.jpg",
     },
     {
       text: "Бургеры",
-      img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Burgeri.jpg?raw=true",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Burgeri.jpg",
     },
     {
-      text:"Горячие блюда",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20bluda.jpg?raw=true"
+      text: "Горячие блюда",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Goryachie%20bluda.jpg",
     },
     {
-      text:"Горячие закуски",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Goryachie%20zakuski.jpg?raw=true"
+      text: "Горячие закуски",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Goryachie%20zakuski.jpg",
     },
     {
-      text:"Супы",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Supi.jpg?raw=true"
+      text: "Супы",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Supi.jpg",
     },
     {
-      text:"Салаты",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Salati.jpg?raw=true"
+      text: "Салаты",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Salati.jpg",
     },
     {
-      text:"Тесто",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Testo.jpg?raw=true"
+      text: "Тесто",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Testo.jpg",
     },
     {
-      text:"Холодные закуски",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Xolodnie%20zakuski.jpg?raw=true"
+      text: "Холодные закуски",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Xolodnie%20zakuski.jpg",
     },
     {
-      text:"Гарниры",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Garniri.jpg?raw=true"
+      text: "Гарниры",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Garniri.jpg",
     },
     {
-      text:"Мороженое",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Morojenoe.jpg?raw=true"
+      text: "Мороженое",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Morojenoe.jpg",
     },
     {
-      text:"Соусы",
-      img:"https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Sousi.jpg?raw=true"
+      text: "Соусы",
+      img: "https://raw.githubusercontent.com/souldvn/SunVillImg/main/Обложки%20новые/Sousi.jpg",
     }
   ];
+  
 
   const filteredCards = selectedOption === 'delivery'
     ? cards.filter((card) => card.text !== "Завтраки")

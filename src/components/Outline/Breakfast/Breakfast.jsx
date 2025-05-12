@@ -8,11 +8,11 @@ import TopBar from '../../Complite/TopBar/TopBar';
 const cards = [
   {
     text: "Блюда",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Bluda.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Bluda.jpg?raw=true",
   },
   {
     text: "Напитки",
-    img: "https://github.com/souldvn/SunVillImg/blob/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Napitki.jpg?raw=true",
+    img: "https://github.com/souldvn/SunVillImg/raw/main/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8%20%D0%BD%D0%BE%D0%B2%D1%8B%D0%B5/Napitki.jpg?raw=true",
   },
 ];
 

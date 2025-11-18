@@ -6,10 +6,10 @@
     padding: 20px 16px;
     background-color: #D9D9D9;
     height: 260px;
-    width: 100vw; /* Занимает всю ширину окна */
+    width: 100vw; 
     position: relative;
-    margin-left: calc(-1 * 16px); /* Выравнивает с учетом внешнего отступа приложения */
-    margin-top: calc(-1 * 20px); /* Убирает верхний отступ */
+    margin-left: calc(-1 * 16px); 
+    margin-top: calc(-1 * 20px);
     margin-bottom: 16px;
 }
 
@@ -38,7 +38,7 @@
  .number {
         font-size: 9px;
         color: white;
-        border-radius: 10px; /* Делает цифру круглой */
+        border-radius: 10px; 
         background-color: #e53e3e;
         width: 19px;
         height: 10px;
@@ -59,10 +59,10 @@
     height: 30px;
     border-radius: 12px;
     background-color: #212233;
-    position: absolute; /* Позиционируем элемент */
-    right: 16px; /* Отступ от правого края */
-    bottom: 10px; /* Отступ от нижнего края */
-    font-size: 16px; /* При необходимости */
+    position: absolute; 
+    right: 16px; 
+    bottom: 10px; 
+    font-size: 16px;
     color: white;
 }
 

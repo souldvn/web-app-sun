@@ -15,12 +15,12 @@
     content: '';
     position: absolute;
     left: 0;
-    width: 100vw; /* Растянуть линию на всю ширину экрана */
+    width: 100vw; 
     height: 1px;
     background-color: #E0E0E0;
-    bottom: -25px; /* Расположение под элементами */
-    transform: translateX(-50%); /* Смещаем линию влево на половину экрана */
-    left: 50%; /* Центрируем линию */
+    bottom: -25px; 
+    transform: translateX(-50%); 
+    left: 50%; 
 }
 
 
